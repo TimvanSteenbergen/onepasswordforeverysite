@@ -8,7 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         chrome.tabs.getSelected(null, function(tab) {
             d = document;
-
+            // var uidThisSite = $('#myuidthissite').value;
+            // var pwdUser = $('#myonlypassword').value;
+            // alert(uidThisSite + 'd en password: ' + pwdUser);
+            // alert('d en password: ' + pwdUser);
+            alert('d en password: ');
             var f = d.createElement('form');
             f.action = 'http://gtmetrix.com/analyze.html?bm';
             f.method = 'post';
