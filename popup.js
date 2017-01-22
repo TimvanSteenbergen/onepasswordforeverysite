@@ -1,28 +1,49 @@
-
 /**
  * Created by Gebruiker on 21-1-2017.
  */
-document.addEventListener('DOMContentLoaded', function() {
-    var checkPageButton = document.getElementById('btn_login');
-    checkPageButton.addEventListener('click', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    var loginButton = document.getElementById('loginButton');
+    setValueForElementDomain();
+    setValueForElementMyUidThisSite();
 
-        chrome.tabs.getSelected(null, function(tab) {
-            d = document;
-            // var uidThisSite = $('#myuidthissite').value;
-            // var pwdUser = $('#myonlypassword').value;
-            // alert(uidThisSite + 'd en password: ' + pwdUser);
-            // alert('d en password: ' + pwdUser);
-            alert('d en password: ');
-            var f = d.createElement('form');
-            f.action = 'http://gtmetrix.com/analyze.html?bm';
-            f.method = 'post';
-            var i = d.createElement('input');
-            i.type = 'hidden';
-            i.name = 'url';
-            i.value = tab.url;
-            f.appendChild(i);
-            d.body.appendChild(f);
-            f.submit();
+    function setValueForElementDomain() {
+        chrome.tabs.getSelected(null, function (tab) {
+            var ourPopup = document;
+            var domain = getDomain(tab.url);
+            var domainElement = ourPopup.getElementById('domain');
+            domainElement.value = domain;
+
+            function getDomain(url)
+            //This function gets the domainname from the url.
+            {
+                domain = url.match(/:\/\/(.[^/]+)/)[1];
+                return domain;
+            }
         });
+    }
+
+    function setValueForElementMyUidThisSite() {
+        var uidsUsedOnThisSite = ['myusername', 'yourusername', 'John Doe'];
+        var ourPopup = document;
+        var myUidThisSiteElement = ourPopup.getElementById('myUidThisSite');
+        myUidThisSiteElement.value = uidsUsedOnThisSite[0];
+    }
+
+    loginButton.addEventListener('click', function () {
+
+        var ourPopup = document;
+        var domain = ourPopup.getElementById('domain').value;
+        var myUidThisSite = ourPopup.getElementById('myUidThisSite').value; //alert('myUidThisSite:' + myUidThisSite);
+        var myOnlyPassword = ourPopup.getElementById('myOnlyPassword').value; //alert('myOnlyPassword:' + myOnlyPassword);
+        var pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, myUidThisSite, myOnlyPassword); //alert('pwdForThisSiteForThisUid: ' + pwdForThisSiteForThisUid);
+        var passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
+        passwordElement.value = pwdForThisSiteForThisUid;
+        // insertPwd(pwdForThisSiteForThisUid, passwordElement);
+
+        function getPwdForThisSiteForThisUid(domain, uidThisSite, pwdUser) {
+            generatedPassword = 'rew54UIu!.09';
+            return generatedPassword;
+        }
     }, false);
 }, false);
+
