@@ -6,20 +6,40 @@
     <script src="popup.js"></script>
 </head>
 <body>
-
+<h1>One password only</h1>
 <label for="domain">website's domainname</label>
 <input id="domain" value="" placeholder="domainname"/>
+
+<label for="mySaltThisSite">Your salt on this site</label>
+<input id="mySaltThisSite" value="" placeholder="userid"/>
 
 <label for="myUidThisSite">Your userid on this site</label>
 <input id="myUidThisSite" value="" placeholder="userid"/>
 
 <label for="myOnlyPassword">Your only password</label>
-<input id="myOnlyPassword" value="" placeholder="password"/>
+<input id="myOnlyPassword" value="" placeholder="password" type="password"/>
 
 <input id="loginButton" type="button" value="Show Password"/><br/>
 
 <label for="pwdForThisSiteForThisUid">Your password on this site</label>
 <input id="pwdForThisSiteForThisUid" value="" placeholder="password"/>
-
+<h2>Fully Open source</h2>
+<p>Extra security because this code is fully opensource. This has several security advantages:
+<ul>
+    <li>You can follow your password along every step of the way.</li>
+    <li>Every single line of code is visible to you. No hidden functions. No surprises.</li>
+    <li>Code is publicly available and every change to it is traceble to the programmer</li>
+</ul>
+</p>
+</body>
+<h2>Only Client-side code</h2>
+<p>The only code that is executed is in javascript on your own computer. No on-line services, no cloud-applications. No
+    one gets any bit of information about your password.</p>
+<h2>Salted Security</h2>
+<p>Your password gets hashed using the domainname, your userid for this particular site, your password and a salt for
+    this domain.
+    Without the salt it would be possible to take the generated password for this site-you-re-trying-to-login-to and
+    find out what your-only-password is. Either by bruteforcing or via rainbowtables.
+    The salt is unknown to the site-you-re-trying-to-login-to un thus makes that impossible.</p>
 </body>
 </html>
