@@ -7,10 +7,12 @@ Looking for the simplest and safest solution? You found it!
 This Chrome-extension allows you to use one password for every site! All you have to remember is one simple password, that really does not need to be a complex or long one.
 <h2>No password stored anywhere</h2>
 This extension will not store any password at all. Not locally on your pc, not in any cookie, not anywhere online. 
-Of course your password does get stored in the usual way: at the site where you are logging in to. But that is of no concern to this extension. Never will this extension request any of your passwords, since it does not need to.
+Of course your password does get stored in the usual way: at the site where you are logging into. But that is of no concern to this extension.
+ Never will this extension request any of your passwords, simply because it does not need to.
 
-<h2>Fully Open source</h2>
-<p>Extra security because this code is fully opensource. This has several security advantages:
+<h2>100% Open source</h2>
+<p>Every bit of code is out in the open, for everyone to see. No hidden functions or tricks possible. 
+This results in extra security because fully opensource code can get monitored by anyone. This has several security advantages:
 <ul>
  <li>You can follow your password along every step of the way.</li>
  <li>Every single line of code is visible to you. No hidden functions. No surprises.</li>

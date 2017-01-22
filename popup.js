@@ -36,20 +36,21 @@ document.addEventListener('DOMContentLoaded', function () {
         var domain = ourPopup.getElementById('domain').value;
         var mySaltThisSite = ourPopup.getElementById('mySaltThisSite').value;//alert('mySaltThisSite: ' + mySaltThisSite);
         var myUidThisSite = ourPopup.getElementById('myUidThisSite').value;//alert('myUidThisSite:' + myUidThisSite);
+        var mySequenceThisSite = ourPopup.getElementById('mySequenceThisSite').value;//alert('mySequenceThisSite:' + mySequenceThisSite);
         var myOnlyPassword = ourPopup.getElementById('myOnlyPassword').value;//alert('myOnlyPassword:' + myOnlyPassword);
-        var pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, myOnlyPassword);
+        var pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myOnlyPassword);
         // alert('pwdForThisSiteForThisUid: ' + pwdForThisSiteForThisUid);
         var passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
         passwordElement.value = pwdForThisSiteForThisUid;
         //// insertPwd(pwdForThisSiteForThisUid, passwordElement);
 
-        function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, pwdUser) {
+        function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, pwdUser) {
 
             //get the SHA512
-            var generatedPassword = SHA512(domain + saltThisSite + uidThisSite + pwdUser);
+            var generatedPassword = SHA512(domain + saltThisSite + uidThisSite + sequenceNr + pwdUser);
 
             //add two literals
-            //TODO make this less recogni
+            //TODO make this more obscure
             generatedPassword = generatedPassword.substr(0, 4) + '!' + generatedPassword.substr(4, 3) + '.' + generatedPassword.substr(8);
 
             //add one capital
