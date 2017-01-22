@@ -1,5 +1,5 @@
 /**
- * Created by Gebruiker on 21-1-2017.
+ * Created by Tim van Steenbergen on 21-1-2017.
  */
 document.addEventListener('DOMContentLoaded', function () {
     var loginButton = document.getElementById('loginButton');
@@ -17,10 +17,13 @@ document.addEventListener('DOMContentLoaded', function () {
             //This function gets the domainname from the url.
             {
                 domain = url.match(/:\/\/(.[^/]+)/)[1];
+                //remove the subdomain
+                domain = domain.substr(domain.indexOf('.') + 1, domain.strlen);
                 return domain;
             }
         });
     }
+
     function setValueForElementMyUidThisSite() {
         var uidsUsedOnThisSite = ['myusername', 'yourusername', 'John Doe'];
         var ourPopup = document;
@@ -35,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var myUidThisSite = ourPopup.getElementById('myUidThisSite').value;//alert('myUidThisSite:' + myUidThisSite);
         var myOnlyPassword = ourPopup.getElementById('myOnlyPassword').value;//alert('myOnlyPassword:' + myOnlyPassword);
         var pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, myOnlyPassword);
-        //alert('pwdForThisSiteForThisUid: ' + pwdForThisSiteForThisUid);
+        // alert('pwdForThisSiteForThisUid: ' + pwdForThisSiteForThisUid);
         var passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
         passwordElement.value = pwdForThisSiteForThisUid;
         //// insertPwd(pwdForThisSiteForThisUid, passwordElement);
@@ -46,10 +49,11 @@ document.addEventListener('DOMContentLoaded', function () {
             var generatedPassword = SHA512(domain + saltThisSite + uidThisSite + pwdUser);
 
             //add two literals
-            generatedPassword = generatedPassword.substr(0,4) + '!' + generatedPassword.substr(4,3) + '.' + generatedPassword.substr(8);
+            //TODO make this less recogni
+            generatedPassword = generatedPassword.substr(0, 4) + '!' + generatedPassword.substr(4, 3) + '.' + generatedPassword.substr(8);
 
             //add one capital
-            for (var i = 0; i < 12; i++){
+            for (var i = 0; i < 12; i++) {
                 char = generatedPassword[i];
                 if (char >= 'a' && char <= 'z') {
                     generatedPassword = generatedPassword.substr(0, i) + char.toUpperCase() + generatedPassword.substr(i + 1);
@@ -58,6 +62,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     generatedPassword = 'Z' + generatedPassword.substr(1);
                 }
             }
+
+            //Shorten it to 12 characters
+            generatedPassword = generatedPassword.substr(0, 12);
 
             return generatedPassword;
 
@@ -280,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 str = utf8_encode(str);
-                strlen = str.length*charsize;
+                strlen = str.length * charsize;
                 str = str2binb(str);
 
                 str[strlen >> 5] |= 0x80 << (24 - strlen % 32);
@@ -298,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     for (j = 0; j < 80; j++) {
                         if (j < 16) {
-                            W[j] = new Int64(str[j*2 + i], str[j*2 + i + 1]);
+                            W[j] = new Int64(str[j * 2 + i], str[j * 2 + i + 1]);
                         } else {
                             W[j] = safe_add_4(gamma1(W[j - 2]), W[j - 7], gamma0(W[j - 15]), W[j - 16]);
                         }
@@ -336,3 +343,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }, false);
 }, false);
 
+/*Sample:
+ domain ebay.com
+ salt: zout
+ uid: tivansteenberge_0
+ password: geheim
+ wachtwoord:
+ */
