@@ -2,9 +2,16 @@
  * Created by Tim van Steenbergen on 21-1-2017.
  */
 document.addEventListener('DOMContentLoaded', function () {
+    chrome.storage.local.set({
+            "sites": [
+                ["ebay.com", "heet", "tivansteenberge_0", "3"],
+                ["stackoverflow.com", "koud", "tim@tieka.nl", "2"],
+                ["nrc.nl", "koud", "elm@tieka.nl", "1"]
+            ]
+        }
+    );
     var loginButton = document.getElementById('loginButton');
     setValueForElementDomain();
-    setValueForElementMyUidThisSite();
 
     function setValueForElementDomain() {
         chrome.tabs.getSelected(null, function (tab) {
@@ -13,24 +20,36 @@ document.addEventListener('DOMContentLoaded', function () {
             var domainElement = ourPopup.getElementById('domain');
             domainElement.value = domain;
 
+            setValueForElements(domain);
+
             function getDomain(url)
             //This function gets the domainname from the url.
             {
-                domain = url.match(/:\/\/(.[^/]+)/)[1];
+                domain = url.match(/http?:\/\/(.[^/]+)/)[1];
                 //remove the subdomain
                 domain = domain.substr(domain.indexOf('.') + 1, domain.strlen);
                 return domain;
             }
+
+            function setValueForElements(domain) {
+                chrome.storage.local.get("sites", function (result) {
+                    sites = result.sites;
+                    for (var i = 0; i < sites.length; i++) {
+                        if (sites[i][0] == domain) {
+                            document.getElementById('mySaltThisSite').value = sites[i][1];
+                            document.getElementById('myUidThisSite').value = sites[i][2];
+                            document.getElementById('mySequenceThisSite').value = sites[i][3];
+                        }
+                    }
+                });
+            }
+
         });
     }
 
-    function setValueForElementMyUidThisSite() {
-        var uidsUsedOnThisSite = ['myusername', 'yourusername', 'John Doe'];
-        var ourPopup = document;
-        var myUidThisSiteElement = ourPopup.getElementById('myUidThisSite');
-        myUidThisSiteElement.value = uidsUsedOnThisSite[0];
-    }
-
+    /*
+     * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence and given password.
+     */
     loginButton.addEventListener('click', function () {
         var ourPopup = document;
         var domain = ourPopup.getElementById('domain').value;
@@ -64,8 +83,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            //Shorten it to 12 characters
-            generatedPassword = generatedPassword.substr(0, 12);
+            //Shorten it to 20 characters
+            generatedPassword = generatedPassword.substr(0, 20);
 
             return generatedPassword;
 
@@ -74,7 +93,6 @@ document.addEventListener('DOMContentLoaded', function () {
              *  http://www.happycode.info/
              */
             function SHA512(str) {
-                //return 'asdf1324';
                 function Int64(msint_32, lsint_32) {
                     this.highOrder = msint_32;
                     this.lowOrder = lsint_32;

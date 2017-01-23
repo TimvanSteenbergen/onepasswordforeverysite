@@ -11,6 +11,7 @@
     "default_title": "Login in. The safe way!"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ]
 }
