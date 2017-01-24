@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
             function getDomain(url)
             //This function gets the domainname from the url.
             {
-                domain = url.match(/http?:\/\/(.[^/]+)/)[1];
+                domain = url.match(/:\/\/(.[^/]+)/)[1];
                 //remove the subdomain
                 domain = domain.substr(domain.indexOf('.') + 1, domain.strlen);
                 return domain;
@@ -36,9 +36,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     sites = result.sites;
                     for (var i = 0; i < sites.length; i++) {
                         if (sites[i][0] == domain) {
-                            document.getElementById('mySaltThisSite').value = sites[i][1];
-                            document.getElementById('myUidThisSite').value = sites[i][2];
-                            document.getElementById('mySequenceThisSite').value = sites[i][3];
+                            document.getElementById('domain').disabled = "disabled";
+                            if (sites[i][1] != "") {
+                                document.getElementById('mySaltThisSite').value = sites[i][1];
+                                document.getElementById('mySaltThisSite').disabled = "disabled";
+                            }
+                            if (sites[i][1] != "") {
+                                document.getElementById('myUidThisSite').value = sites[i][1];
+                                document.getElementById('myUidThisSite').disabled = "disabled";
+                            }
+                            if (sites[i][1] != "") {
+                                document.getElementById('mySequenceThisSite').value = sites[i][1];
+                                document.getElementById('mySequenceThisSite').disabled = "disabled";
+                            }
                         }
                     }
                 });
