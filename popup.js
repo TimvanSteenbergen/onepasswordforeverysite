@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ]
         }
     );
-    var loginButton = document.getElementById('loginButton');
     setValueForElementDomain();
 
     function setValueForElementDomain() {
@@ -56,6 +55,47 @@ document.addEventListener('DOMContentLoaded', function () {
 
         });
     }
+
+    domainToggle.addEventListener('click', function() {
+        var elementToToggle = document.getElementById(this.id.substr(0,this.id.length - 6));
+        if (elementToToggle.hasAttribute('disabled')) {
+            elementToToggle.removeAttribute('disabled');
+        } else {
+            elementToToggle.disabled = "disabled";
+        }
+    });
+    mySaltThisSiteToggle.addEventListener('click', function() {
+        var elementToToggle = document.getElementById(this.id.substr(0,this.id.length - 6));
+        if (elementToToggle.hasAttribute('disabled')) {
+            elementToToggle.removeAttribute('disabled');
+        } else {
+            elementToToggle.disabled = "disabled";
+        }
+    });
+    myUidThisSiteToggle.addEventListener('click', function() {
+        var elementToToggle = document.getElementById(this.id.substr(0,this.id.length - 6));
+        if (elementToToggle.hasAttribute('disabled')) {
+            elementToToggle.removeAttribute('disabled');
+        } else {
+            elementToToggle.disabled = "disabled";
+        }
+    });
+    mySequenceThisSiteToggle.addEventListener('click', function() {
+        var elementToToggle = document.getElementById(this.id.substr(0,this.id.length - 6));
+        if (elementToToggle.hasAttribute('disabled')) {
+            elementToToggle.removeAttribute('disabled');
+        } else {
+            elementToToggle.disabled = "disabled";
+        }
+    });
+    myOnlyPasswordToggle.addEventListener('click', function() {
+        var elementToToggle = document.getElementById(this.id.substr(0,this.id.length - 6));
+        if (elementToToggle.hasAttribute('disabled')) {
+            elementToToggle.removeAttribute('disabled');
+        } else {
+            elementToToggle.disabled = "disabled";
+        }
+    });
 
     /*
      * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence and given password.

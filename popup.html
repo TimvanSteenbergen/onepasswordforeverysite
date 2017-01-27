@@ -10,21 +10,29 @@
 <h1>One password only</h1>
 <dl>
     <dt><label for="domain">website's domainname</label></dt>
-    <dd><input id="domain" value="" placeholder="domainname"/></dd>
-    <dd><input type="button" value="change"/></dd>
-    <dd><input type="button" value="save"/></dd>
-    <dd><input type="button" value="remove"/></dd>
+    <dd><input id="domain" value="" placeholder="domainname"/>
+        <input id="domainToggle" type="button" value="Change" title="Open this field to Change its value."/></dd>
+
     <dt><label for="mySaltThisSite">Your salt on this site</label></dt>
-    <dd><input id="mySaltThisSite" value="zout" placeholder="salt"/></dd>
+    <dd><input id="mySaltThisSite" value="zout" placeholder="salt"/>
+        <input id="mySaltThisSiteToggle" type="button" value="Change" title="Open this field to Change its value."/></dd>
+
     <dt><label for="myUidThisSite">Your userid on this site</label></dt>
-    <dd><input id="myUidThisSite" value="" placeholder="userid"/></dd>
+    <dd><input id="myUidThisSite" value="" placeholder="userid"/>
+        <input id="myUidThisSiteToggle" type="button" value="Change" title="Open this field to Change its value."/></dd>
+
     <dt><label for="mySequenceThisSite">Sequencenr</label></dt>
-    <dd><input id="mySequenceThisSite" value="1" placeholder="number"/></dd>
+    <dd><input id="mySequenceThisSite" value="1" placeholder="number"/>
+        <input id="mySequenceThisSiteToggle" type="button" value="Change" title="Open this field to Change its value."/></dd>
+
     <dt><label for="myOnlyPassword">Your only password</label></dt>
-    <dd><input id="myOnlyPassword" value="" placeholder="password" type="password"/></dd>
-    <dd><input id="loginButton" type="button" value="Show Password"/><br/></dd>
+    <dd><input id="myOnlyPassword" value="" placeholder="password" type="password"/>
+        <input id="myOnlyPasswordToggle" type="button" value="Change" title="Open this field to Change its value."/></dd>
+
     <dt><label for="pwdForThisSiteForThisUid">Your password on this site</label></dt>
-    <dd><input id="pwdForThisSiteForThisUid" value="" placeholder="password"/></dd>
+    <dd><input id="pwdForThisSiteForThisUid" value="" placeholder="password"/>
+        <input id="loginButton" type="button" value="Show Password"/><br/></dd>
+
 </dl>
 <h2><a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/master/README.md"
        title="The Opensource code available on Git">100% Open source</a></h2>
