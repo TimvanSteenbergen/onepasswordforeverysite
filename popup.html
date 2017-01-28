@@ -11,27 +11,34 @@
 <dl>
     <dt><label for="domain">website's domainname</label></dt>
     <dd><input id="domain" value="" placeholder="domainname"/>
-        <input id="domainToggle" type="button" value="Change" title="Open this field to Change its value."/></dd>
+        <input id="domainToggle" type="button" value="Change domain" title="Need to change the domainname you need for this site? This button enables you to do so."/></dd>
 
     <dt><label for="mySaltThisSite">Your salt on this site</label></dt>
     <dd><input id="mySaltThisSite" value="zout" placeholder="salt"/>
-        <input id="mySaltThisSiteToggle" type="button" value="Change" title="Open this field to Change its value."/></dd>
+        <input id="mySaltThisSiteToggle" type="button" value="Change salt" title="Need to change the salt you need for this site? This button enables you to do so."/></dd>
 
     <dt><label for="myUidThisSite">Your userid on this site</label></dt>
     <dd><input id="myUidThisSite" value="" placeholder="userid"/>
-        <input id="myUidThisSiteToggle" type="button" value="Change" title="Open this field to Change its value."/></dd>
+        <input id="myUidThisSiteToggle" type="button" value="Change userid" title="Need to change the userid you need for this site? This button enables you to do so.."/></dd>
 
     <dt><label for="mySequenceThisSite">Sequencenr</label></dt>
     <dd><input id="mySequenceThisSite" value="1" placeholder="number"/>
-        <input id="mySequenceThisSiteToggle" type="button" value="Change" title="Open this field to Change its value."/></dd>
+        <input id="mySequenceThisSiteToggle" type="button" value="Change number" title="Need to change the domainname you need for this site? This button enables you to do so."/>
+        <input id="mySequenceThisSiteInformation" type="button" value="?" title="The sequencenumber makes it possible to generate a next password for this domain-salt-uid combination. This is mainly useful when the website requires you to change your password."/></dd>
 
     <dt><label for="myOnlyPassword">Your only password</label></dt>
     <dd><input id="myOnlyPassword" value="" placeholder="password" type="password"/>
-        <input id="myOnlyPasswordToggle" type="button" value="Change" title="Open this field to Change its value."/></dd>
+        <input id="myOnlyPasswordShow" type="button" value="Show" title="Show the characters. Should only do this if no one is peeping."/>
+        <input id="myOnlyPasswordHide" type="button" value="Hide" title="Hide whatever you type." disabled="disabled"/></dd>
 
     <dt><label for="pwdForThisSiteForThisUid">Your password on this site</label></dt>
     <dd><input id="pwdForThisSiteForThisUid" value="" placeholder="password"/>
         <input id="loginButton" type="button" value="Show Password"/><br/></dd>
+
+    <dt><label for="showDataButton">Show or hide data</label></dt>
+    <dd><input id="showDataButton" type="button" value="ShowData"/>
+        <input id="importDataButton" type="button" value="ImportData"/>
+        <input id="exportDataButton" type="button" value="ExportData"/><br/></dd>
 
 </dl>
 <h2><a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/master/README.md"
@@ -44,8 +51,6 @@
     <li>Every single line of code is visible to you. No hidden functions. No surprises.</li>
     <li>Code is publicly available and every change to it is traceble to the programmer</li>
 </ul>
-</p>
-</body>
 <h2>Only Client-side code</h2>
 <p>The only code that is executed is in javascript on your own computer. No on-line services, no cloud-applications. No
     one gets any bit of information about your password.</p>

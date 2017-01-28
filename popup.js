@@ -88,13 +88,17 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.disabled = "disabled";
         }
     });
-    myOnlyPasswordToggle.addEventListener('click', function() {
-        var elementToToggle = document.getElementById(this.id.substr(0,this.id.length - 6));
-        if (elementToToggle.hasAttribute('disabled')) {
-            elementToToggle.removeAttribute('disabled');
-        } else {
-            elementToToggle.disabled = "disabled";
-        }
+    myOnlyPasswordShow.addEventListener('click', function() {
+        var elementToToggle = document.getElementById(this.id.substr(0,this.id.length - 4));
+        elementToToggle.setAttribute('type', 'text');
+        document.getElementById('myOnlyPasswordShow').setAttribute('disabled', 'DISABLED');
+        document.getElementById('myOnlyPasswordHide').removeAttribute('disabled');
+    });
+    myOnlyPasswordHide.addEventListener('click', function() {
+        var elementToToggle = document.getElementById(this.id.substr(0,this.id.length - 4));
+        elementToToggle.setAttribute('type', 'password');
+        document.getElementById('myOnlyPasswordShow').removeAttribute('disabled');
+        document.getElementById('myOnlyPasswordHide').setAttribute('disabled', 'DISABLED');
     });
 
     /*
