@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 ["webassessor.com", "koud", "TimvanSteenbergen", "1"],
                 ["stackoverflow.com", "koud", "tim@tieka.nl", "1"],
                 ["ebay.com", "heet", "tivansteenberge_0", "3"],
-                ["nrc.nl", "koud", "elm@tieka.nl", "1"],
-                ["nrc.nl", "koud", "elm@tieka.nl", "1"],
-                ["nrc.nl", "koud", "elm@tieka.nl", "1"],
-                ["nrc.nl", "koud", "elm@tieka.nl", "1"]
+                ["nrc.nl", "koud", "iliketoread", "1"],
+                ["anothersite.nl", "koud", "thegrunter", "1"],
+                ["yetanothersite.nl", "koud", "alias24", "1"],
+                ["andonemore.nl", "koud", "myusernamehere", "1"]
             ]
         }
     );
@@ -76,13 +76,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 dataTableHTML += '<td>' + sites[i][3] + '</td>';
                 dataTableHTML += '<td>' + '</td></tr>';
             }
-            if (sites.length > numOfLines){
-                dataTableHTML += '<tr><td colspan="5"><span onclick="showTheLocallyStoredData(10000)">...</span></td></tr>';
+            if (sites.length > numOfLines) {
+                document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: inline");
+            } else {
+                document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: none");
             }
             dataTableHTML += '</table>';
             document.getElementById('locallyStoredUserData').innerHTML = dataTableHTML;
         });
     }
+    showAllTheLocallyStoredData.addEventListener('click', function () {
+        showTheLocallyStoredData(100000);
+    });
 
     domainToggle.addEventListener('click', function () {
         var elementToToggle = document.getElementById(this.id.substr(0, this.id.length - 6));
