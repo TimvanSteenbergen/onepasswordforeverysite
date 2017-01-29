@@ -14,28 +14,8 @@ dw_php_codehinting.config
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
-
-# User-specific stuff:
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/dictionaries
-.idea/vcs.xml
-.idea/jsLibraryMappings.xml
-
-# Sensitive or high-churn files:
-.idea/dataSources.ids
-.idea/dataSources.xml
-.idea/dataSources.local.xml
-.idea/sqlDataSources.xml
-.idea/dynamic.xml
-.idea/uiDesigner.xml
-
-# Gradle:
-.idea/gradle.xml
-.idea/libraries
-
-# Mongo Explorer plugin:
-.idea/mongoSettings.xml
+.idea/*
+.idea/*/*
 
 ## File-based project format:
 *.iws
@@ -86,7 +66,7 @@ cwallet.sso.lck### VisualStudioCode template
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## Build generated
-build/
+#build/ Already defined in # NetBeans template
 DerivedData/
 
 ## Various settings
@@ -158,6 +138,8 @@ local.properties
 .recommenders/
 ### NotepadPP template
 # Notepad++ backups #
-*.bak
+#*.bak Already defined in metadata
 
 # Created by .ignore support plugin (hsz.mobi)
+/greeter/
+/greeter/*
