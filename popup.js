@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     chrome.storage.local.set({
             "sites": [
                 ["gavelsnipe.com", "koud", "timvans", "1"],
-                ["webassessor.com", "koud", "TimvanSteenbergen", "1"],
+                ["webassessor.com", "koud", "TimvanSteenbergen", "2"],
                 ["stackoverflow.com", "koud", "tim@tieka.nl", "1"],
                 ["ebay.com", "heet", "tivansteenberge_0", "3"],
                 ["nrc.nl", "koud", "iliketoread", "1"],
