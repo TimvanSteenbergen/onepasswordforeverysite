@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 ["gavelsnipe.com", "koud", "timvans", "1"],
                 ["webassessor.com", "koud", "TimvanSteenbergen", "2"],
                 ["stackoverflow.com", "koud", "tim@tieka.nl", "1"],
+                ["quora.com", "koud", "tim@tieka.nl", "1"],
                 ["ebay.com", "heet", "tivansteenberge_0", "3"],
                 ["nrc.nl", "koud", "iliketoread", "1"],
-                ["anothersite.nl", "koud", "thegrunter", "1"],
                 ["yetanothersite.nl", "koud", "alias24", "1"],
                 ["andonemore.nl", "koud", "myusernamehere", "1"]
             ]
