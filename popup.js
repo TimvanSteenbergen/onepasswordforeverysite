@@ -2,19 +2,20 @@
  * Created by Tim van Steenbergen on 21-1-2017.
  */
 document.addEventListener('DOMContentLoaded', function () {
-    chrome.storage.local.set({
-            "sites": [
-                ["gavelsnipe.com", "koud", "timvans", "1"],
-                ["webassessor.com", "koud", "TimvanSteenbergen", "2"],
-                ["stackoverflow.com", "koud", "tim@tieka.nl", "1"],
-                ["quora.com", "koud", "tim@tieka.nl", "1"],
-                ["ebay.com", "heet", "tivansteenberge_0", "3"],
-                ["nrc.nl", "koud", "iliketoread", "1"],
-                ["yetanothersite.nl", "koud", "alias24", "1"],
-                ["andonemore.nl", "koud", "myusernamehere", "1"]
-            ]
-        }
-    );
+    var sites = [];
+    var json = {
+        "sites": [
+            ["gavelsnipe.com", "koud", "timvans", "1"],
+            ["webassessor.com", "koud", "TimvanSteenbergen", "2"],
+            ["stackoverflow.com", "koud", "tim@tieka.nl", "1"],
+            ["quora.com", "koud", "tim@tieka.nl", "1"],
+            ["ebay.com", "heet", "tivansteenberge_0", "3"],
+            ["nrc.nl", "koud", "iliketoread", "1"],
+            ["yetanothersite.nl", "koud", "alias24", "1"],
+            ["andonemore.nl", "koud", "myusernamehere", "1"]
+        ]
+    };
+    localStorage.setItem("sites", JSON.stringify(json));
     setValueForElementDomain();
     showTheLocallyStoredData(5);
     function setValueForElementDomain() {
@@ -40,51 +41,50 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             function setValueForElements(domain) {
-                chrome.storage.local.get("sites", function (result) {
-                    sites = result.sites;
-                    for (var i = 0; i < sites.length; i++) {
-                        if (sites[i][0] == domain) {
-                            document.getElementById('domain').disabled = "disabled";
-                            if (sites[i][1] != "") {
-                                document.getElementById('mySaltThisSite').value = sites[i][1];
-                                document.getElementById('mySaltThisSite').disabled = "disabled";
-                            }
-                            if (sites[i][1] != "") {
-                                document.getElementById('myUidThisSite').value = sites[i][2];
-                                document.getElementById('myUidThisSite').disabled = "disabled";
-                            }
-                            if (sites[i][1] != "") {
-                                document.getElementById('mySequenceThisSite').value = sites[i][3];
-                                document.getElementById('mySequenceThisSite').disabled = "disabled";
-                            }
+                json = JSON.parse(localStorage.getItem("sites"));
+                sites = json.sites;
+                for (var i = 0; i < sites.length; i++) {
+                    if (sites[i][0] == domain) {
+                        document.getElementById('domain').disabled = "disabled";
+                        if (sites[i][1] != "") {
+                            document.getElementById('mySaltThisSite').value = sites[i][1];
+                            document.getElementById('mySaltThisSite').disabled = "disabled";
+                        }
+                        if (sites[i][2] != "") {
+                            document.getElementById('myUidThisSite').value = sites[i][2];
+                            document.getElementById('myUidThisSite').disabled = "disabled";
+                        }
+                        if (sites[i][3] != "") {
+                            document.getElementById('mySequenceThisSite').value = sites[i][3];
+                            document.getElementById('mySequenceThisSite').disabled = "disabled";
                         }
                     }
-                });
+                }
             }
 
         });
     }
 
     function showTheLocallyStoredData(numOfLines) {
-        chrome.storage.local.get("sites", function (result) {
-            var sites = result.sites;
-            var dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>remark</td></thead>";
-            for (var i = 0; i < sites.length && i < numOfLines; i++) {
-                dataTableHTML += '<tr><td>' + sites[i][0] + '</td>';
-                dataTableHTML += '<td>' + sites[i][1] + '</td>';
-                dataTableHTML += '<td>' + sites[i][2] + '</td>';
-                dataTableHTML += '<td>' + sites[i][3] + '</td>';
-                dataTableHTML += '<td>' + '</td></tr>';
-            }
-            if (sites.length > numOfLines) {
-                document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: inline");
-            } else {
-                document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: none");
-            }
-            dataTableHTML += '</table>';
-            document.getElementById('locallyStoredUserData').innerHTML = dataTableHTML;
-        });
+        json = JSON.parse(localStorage.getItem("sites"));
+        sites = json.sites;
+        var dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>remark</td></thead>";
+        for (var i = 0; i < sites.length && i < numOfLines; i++) {
+            dataTableHTML += '<tr><td>' + sites[i][0] + '</td>';
+            dataTableHTML += '<td>' + sites[i][1] + '</td>';
+            dataTableHTML += '<td>' + sites[i][2] + '</td>';
+            dataTableHTML += '<td>' + sites[i][3] + '</td>';
+            dataTableHTML += '<td>' + '</td></tr>';
+        }
+        if (sites.length > numOfLines) {
+            document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: inline");
+        } else {
+            document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: none");
+        }
+        dataTableHTML += '</table>';
+        document.getElementById('locallyStoredUserData').innerHTML = dataTableHTML;
     }
+
     showAllTheLocallyStoredData.addEventListener('click', function () {
         showTheLocallyStoredData(100000);
     });
@@ -177,11 +177,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }, false);
 }, false);
-
-/*Sample:
- domain ebay.com
- salt: zout
- uid: tivansteenberge_0
- password: geheim
- wachtwoord:
- */
