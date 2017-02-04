@@ -22,7 +22,13 @@ This results in extra security because fully opensource code can get monitored b
 
 <h2>Only Client-side code</h2>
 <p>The only code that is executed is in javascript on your own computer. No on-line services, no cloud-applications. No
-    one gets any bit of information about your password.</p>
+    one gets any bit of information about your one-and-only password.</p>
+
+<h2>What does gets stored? And where?</h2>
+This extension can store per domainname: your userid, a <a title="">salt</a> and a sequencenumber. These are all optional.</br>
+Also per domain these informational fields: used at, a remark.</br>
+This data is stored in the webappsstore.sqlite file in the profile folder of your browser. Usually this file only
+ available with administrator rights, which is why it is also showed in the extension itself
 
 <h2>Salted Security</h2>
 <p>Your password gets hashed using the domainname, your userid for this particular site, a sequencenumber, your password and a salt for this domain.
