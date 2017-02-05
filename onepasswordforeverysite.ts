@@ -1,13 +1,16 @@
 /**
  * Created by Tim van Steenbergen on 21-1-2017.
  */
-
+interface Window {
+    chrome: typeof chrome;
+}
+/// <reference path="pathTo/chrome.d.ts"/>
 declare function SHA512(string): string;
 document.addEventListener('DOMContentLoaded', function () {
     // importScripts("SHA512.js");
 
     let sites = [];
-    let`` json = {
+    let json = {
         "sites": [//domain, salt, username, sequencenr, lastused
             ["gavelsnipe.com", "koud", "timvans", "1", "20160101"],
             ["webassessor.com", "koud", "TimvanSteenbergen", "2", "20160101"],
@@ -90,11 +93,11 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('locallyStoredUserData').innerHTML = dataTableHTML;
     }
 
-    showAllTheLocallyStoredData.addEventListener('click', function () {
+    document.getElementById('showAllTheLocallyStoredData').addEventListener('click', function () {
         showTheLocallyStoredData(100000);
     });
 
-    domainToggle.addEventListener('click', function () {
+    document.getElementById('domainToggle').addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 6);
         let elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
@@ -103,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
-    mySaltThisSiteToggle.addEventListener('click', function () {
+    document.getElementById('mySaltThisSiteToggle').addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 6);
         let elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
@@ -112,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
-    myUidThisSiteToggle.addEventListener('click', function () {
+    document.getElementById('myUidThisSiteToggle').addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 6);
         let elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
@@ -121,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
-    mySequenceThisSiteToggle.addEventListener('click', function () {
+    document.getElementById('mySequenceThisSiteToggle').addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 6);
         let elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
@@ -130,14 +133,14 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
-    myOnlyPasswordShow.addEventListener('click', function () {
+    document.getElementById('myOnlyPasswordShow').addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 4);
         let elementToToggle = document.getElementById(elementId);
         elementToToggle.setAttribute('type', 'text');
         document.getElementById('myOnlyPasswordShow').setAttribute('disabled', 'DISABLED');
         document.getElementById('myOnlyPasswordHide').removeAttribute('disabled');
     });
-    myOnlyPasswordHide.addEventListener('click', function () {
+    document.getElementById('myOnlyPasswordHide').addEventListener('click', function () {
         let elementToToggle = document.getElementById(this.id.substr(0, this.id.length - 4));
         elementToToggle.setAttribute('type', 'password');
         document.getElementById('myOnlyPasswordShow').removeAttribute('disabled');
@@ -147,13 +150,13 @@ document.addEventListener('DOMContentLoaded', function () {
     /*
      * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence and given password.
      */
-    loginButton.addEventListener('click', function () {
+    document.getElementById('loginButton').addEventListener('click', function () {
         let ourPopup = document;
-        let domain = ourPopup.getElementById('domain').value;
-        let mySaltThisSite = ourPopup.getElementById('mySaltThisSite').value;//alert('mySaltThisSite: ' + mySaltThisSite);
-        let myUidThisSite = ourPopup.getElementById('myUidThisSite').value;//alert('myUidThisSite:' + myUidThisSite);
-        let mySequenceThisSite = ourPopup.getElementById('mySequenceThisSite').value;//alert('mySequenceThisSite:' + mySequenceThisSite);
-        let myOnlyPassword = ourPopup.getElementById('myOnlyPassword').value;//alert('myOnlyPassword:' + myOnlyPassword);
+        let domain = ourPopup.getElementById('domain').getAttribute('value');
+        let mySaltThisSite = ourPopup.getElementById('mySaltThisSite').getAttribute('value');//alert('mySaltThisSite: ' + mySaltThisSite);
+        let myUidThisSite = ourPopup.getElementById('myUidThisSite').getAttribute('value');//alert('myUidThisSite:' + myUidThisSite);
+        let mySequenceThisSite = ourPopup.getElementById('mySequenceThisSite').getAttribute('value');//alert('mySequenceThisSite:' + mySequenceThisSite);
+        let myOnlyPassword = ourPopup.getElementById('myOnlyPassword').getAttribute('value');//alert('myOnlyPassword:' + myOnlyPassword);
         let pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myOnlyPassword);
         // alert('pwdForThisSiteForThisUid: ' + pwdForThisSiteForThisUid);
         let passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');

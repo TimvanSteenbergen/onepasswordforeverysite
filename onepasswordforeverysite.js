@@ -1,19 +1,16 @@
-/**
- * Created by Tim van Steenbergen on 21-1-2017.
- */
 document.addEventListener('DOMContentLoaded', function () {
     // importScripts("SHA512.js");
     var sites = [];
     var json = {
         "sites": [
-            ["gavelsnipe.com", "koud", "timvans", "1"],
-            ["webassessor.com", "koud", "TimvanSteenbergen", "2"],
-            ["stackoverflow.com", "koud", "tim@tieka.nl", "1"],
-            ["quora.com", "koud", "tim@tieka.nl", "1"],
-            ["ebay.com", "heet", "tivansteenberge_0", "3"],
-            ["nrc.nl", "koud", "iliketoread", "1"],
-            ["yetanothersite.nl", "koud", "alias24", "1"],
-            ["andonemore.nl", "koud", "myusernamehere", "1"]
+            ["gavelsnipe.com", "koud", "timvans", "1", "20160101"],
+            ["webassessor.com", "koud", "TimvanSteenbergen", "2", "20160101"],
+            ["stackoverflow.com", "koud", "tim@tieka.nl", "1", "20160101"],
+            ["quora.com", "koud", "tim@tieka.nl", "1", "20160101"],
+            ["ebay.com", "heet", "tivansteenberge_0", "3", "20160101"],
+            ["nrc.nl", "koud", "iliketoread", "1", "20160101"],
+            ["yetanothersite.nl", "koud", "alias24", "1", "20160101"],
+            ["andonemore.nl", "koud", "myusernamehere", "1", "20160101"]
         ]
     };
     localStorage.setItem("sites", JSON.stringify(json));
@@ -61,12 +58,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function showTheLocallyStoredData(numOfLines) {
         json = JSON.parse(localStorage.getItem("sites"));
         sites = json.sites;
-        var dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>remark</td></thead>";
+        var dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>used at</td></ts><td>remark</td></thead>";
         for (var i = 0; i < sites.length && i < numOfLines; i++) {
             dataTableHTML += '<tr><td>' + sites[i][0] + '</td>';
             dataTableHTML += '<td>' + sites[i][1] + '</td>';
             dataTableHTML += '<td>' + sites[i][2] + '</td>';
             dataTableHTML += '<td>' + sites[i][3] + '</td>';
+            dataTableHTML += '<td>' + sites[i][4] + '</td>';
             dataTableHTML += '<td>' + '</td></tr>';
         }
         if (sites.length > numOfLines) {
@@ -78,10 +76,10 @@ document.addEventListener('DOMContentLoaded', function () {
         dataTableHTML += '</table>';
         document.getElementById('locallyStoredUserData').innerHTML = dataTableHTML;
     }
-    showAllTheLocallyStoredData.addEventListener('click', function () {
+    document.getElementById('showAllTheLocallyStoredData').addEventListener('click', function () {
         showTheLocallyStoredData(100000);
     });
-    domainToggle.addEventListener('click', function () {
+    document.getElementById('domainToggle').addEventListener('click', function () {
         var elementId = this.id.substr(0, this.id.length - 6);
         var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
@@ -91,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
-    mySaltThisSiteToggle.addEventListener('click', function () {
+    document.getElementById('mySaltThisSiteToggle').addEventListener('click', function () {
         var elementId = this.id.substr(0, this.id.length - 6);
         var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
@@ -101,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
-    myUidThisSiteToggle.addEventListener('click', function () {
+    document.getElementById('myUidThisSiteToggle').addEventListener('click', function () {
         var elementId = this.id.substr(0, this.id.length - 6);
         var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
@@ -111,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
-    mySequenceThisSiteToggle.addEventListener('click', function () {
+    document.getElementById('mySequenceThisSiteToggle').addEventListener('click', function () {
         var elementId = this.id.substr(0, this.id.length - 6);
         var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
@@ -121,14 +119,14 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
-    myOnlyPasswordShow.addEventListener('click', function () {
+    document.getElementById('myOnlyPasswordShow').addEventListener('click', function () {
         var elementId = this.id.substr(0, this.id.length - 4);
         var elementToToggle = document.getElementById(elementId);
         elementToToggle.setAttribute('type', 'text');
         document.getElementById('myOnlyPasswordShow').setAttribute('disabled', 'DISABLED');
         document.getElementById('myOnlyPasswordHide').removeAttribute('disabled');
     });
-    myOnlyPasswordHide.addEventListener('click', function () {
+    document.getElementById('myOnlyPasswordHide').addEventListener('click', function () {
         var elementToToggle = document.getElementById(this.id.substr(0, this.id.length - 4));
         elementToToggle.setAttribute('type', 'password');
         document.getElementById('myOnlyPasswordShow').removeAttribute('disabled');
@@ -137,13 +135,13 @@ document.addEventListener('DOMContentLoaded', function () {
     /*
      * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence and given password.
      */
-    loginButton.addEventListener('click', function () {
+    document.getElementById('loginButton').addEventListener('click', function () {
         var ourPopup = document;
-        var domain = ourPopup.getElementById('domain').value;
-        var mySaltThisSite = ourPopup.getElementById('mySaltThisSite').value; //alert('mySaltThisSite: ' + mySaltThisSite);
-        var myUidThisSite = ourPopup.getElementById('myUidThisSite').value; //alert('myUidThisSite:' + myUidThisSite);
-        var mySequenceThisSite = ourPopup.getElementById('mySequenceThisSite').value; //alert('mySequenceThisSite:' + mySequenceThisSite);
-        var myOnlyPassword = ourPopup.getElementById('myOnlyPassword').value; //alert('myOnlyPassword:' + myOnlyPassword);
+        var domain = ourPopup.getElementById('domain').getAttribute('value');
+        var mySaltThisSite = ourPopup.getElementById('mySaltThisSite').getAttribute('value'); //alert('mySaltThisSite: ' + mySaltThisSite);
+        var myUidThisSite = ourPopup.getElementById('myUidThisSite').getAttribute('value'); //alert('myUidThisSite:' + myUidThisSite);
+        var mySequenceThisSite = ourPopup.getElementById('mySequenceThisSite').getAttribute('value'); //alert('mySequenceThisSite:' + mySequenceThisSite);
+        var myOnlyPassword = ourPopup.getElementById('myOnlyPassword').getAttribute('value'); //alert('myOnlyPassword:' + myOnlyPassword);
         var pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myOnlyPassword);
         // alert('pwdForThisSiteForThisUid: ' + pwdForThisSiteForThisUid);
         var passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
