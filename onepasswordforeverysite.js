@@ -1,13 +1,10 @@
 /**
  * Created by Tim van Steenbergen on 21-1-2017.
  */
-
-declare function SHA512(string): string;
 document.addEventListener('DOMContentLoaded', function () {
     // importScripts("SHA512.js");
-
-    let sites = [];
-    let json = {
+    var sites = [];
+    var json = {
         "sites": [
             ["gavelsnipe.com", "koud", "timvans", "1"],
             ["webassessor.com", "koud", "TimvanSteenbergen", "2"],
@@ -24,30 +21,24 @@ document.addEventListener('DOMContentLoaded', function () {
     showTheLocallyStoredData(5);
     function setValueForElementDomain() {
         chrome.tabs.getSelected(null, function (tab) {
-            let ourPopup = document;
-            let domain = getDomain(tab.url);
-            let domainElement = ourPopup.getElementById('domain');
+            var ourPopup = document;
+            var domain = getDomain(tab.url);
+            var domainElement = ourPopup.getElementById('domain');
             domainElement.setAttribute('value', domain);
-
             setValueForElements(domain);
-
-            function getDomain(url)
-            //This function gets the domainname from the url.
-            //Can't use "window.location.host" because this will return the domain of the popup.html
-            {
+            function getDomain(url) {
                 domain = url.match(/:\/\/(.[^/]+)/)[1];
                 //remove the sub-domain(s)
-                let numberOfDotsInDomain = (domain.match(/\./g) || []).length;
-                for (let dot = 1; dot < numberOfDotsInDomain; dot++) {
+                var numberOfDotsInDomain = (domain.match(/\./g) || []).length;
+                for (var dot = 1; dot < numberOfDotsInDomain; dot++) {
                     domain = domain.substr(domain.indexOf('.') + 1, domain.strlen);
                 }
                 return domain;
             }
-
             function setValueForElements(domain) {
                 json = JSON.parse(localStorage.getItem("sites"));
                 sites = json.sites;
-                for (let i = 0; i < sites.length; i++) {
+                for (var i = 0; i < sites.length; i++) {
                     if (sites[i][0] == domain) {
                         document.getElementById('domain').setAttribute('disabled', "disabled");
                         if (sites[i][1] != "") {
@@ -65,15 +56,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             }
-
         });
     }
-
     function showTheLocallyStoredData(numOfLines) {
         json = JSON.parse(localStorage.getItem("sites"));
         sites = json.sites;
-        let dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>remark</td></thead>";
-        for (let i = 0; i < sites.length && i < numOfLines; i++) {
+        var dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>remark</td></thead>";
+        for (var i = 0; i < sites.length && i < numOfLines; i++) {
             dataTableHTML += '<tr><td>' + sites[i][0] + '</td>';
             dataTableHTML += '<td>' + sites[i][1] + '</td>';
             dataTableHTML += '<td>' + sites[i][2] + '</td>';
@@ -82,107 +71,105 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (sites.length > numOfLines) {
             document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: inline");
-        } else {
+        }
+        else {
             document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: none");
         }
         dataTableHTML += '</table>';
         document.getElementById('locallyStoredUserData').innerHTML = dataTableHTML;
     }
-
     showAllTheLocallyStoredData.addEventListener('click', function () {
         showTheLocallyStoredData(100000);
     });
-
     domainToggle.addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
+        var elementId = this.id.substr(0, this.id.length - 6);
+        var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
             elementToToggle.removeAttribute('disabled');
-        } else {
+        }
+        else {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
     mySaltThisSiteToggle.addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
+        var elementId = this.id.substr(0, this.id.length - 6);
+        var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
             elementToToggle.removeAttribute('disabled');
-        } else {
+        }
+        else {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
     myUidThisSiteToggle.addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
+        var elementId = this.id.substr(0, this.id.length - 6);
+        var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
             elementToToggle.removeAttribute('disabled');
-        } else {
+        }
+        else {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
     mySequenceThisSiteToggle.addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
+        var elementId = this.id.substr(0, this.id.length - 6);
+        var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
             elementToToggle.removeAttribute('disabled');
-        } else {
+        }
+        else {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
     myOnlyPasswordShow.addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 4);
-        let elementToToggle = document.getElementById(elementId);
+        var elementId = this.id.substr(0, this.id.length - 4);
+        var elementToToggle = document.getElementById(elementId);
         elementToToggle.setAttribute('type', 'text');
         document.getElementById('myOnlyPasswordShow').setAttribute('disabled', 'DISABLED');
         document.getElementById('myOnlyPasswordHide').removeAttribute('disabled');
     });
     myOnlyPasswordHide.addEventListener('click', function () {
-        let elementToToggle = document.getElementById(this.id.substr(0, this.id.length - 4));
+        var elementToToggle = document.getElementById(this.id.substr(0, this.id.length - 4));
         elementToToggle.setAttribute('type', 'password');
         document.getElementById('myOnlyPasswordShow').removeAttribute('disabled');
         document.getElementById('myOnlyPasswordHide').setAttribute('disabled', 'DISABLED');
     });
-
     /*
      * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence and given password.
      */
     loginButton.addEventListener('click', function () {
-        let ourPopup = document;
-        let domain = ourPopup.getElementById('domain').value;
-        let mySaltThisSite = ourPopup.getElementById('mySaltThisSite').value;//alert('mySaltThisSite: ' + mySaltThisSite);
-        let myUidThisSite = ourPopup.getElementById('myUidThisSite').value;//alert('myUidThisSite:' + myUidThisSite);
-        let mySequenceThisSite = ourPopup.getElementById('mySequenceThisSite').value;//alert('mySequenceThisSite:' + mySequenceThisSite);
-        let myOnlyPassword = ourPopup.getElementById('myOnlyPassword').value;//alert('myOnlyPassword:' + myOnlyPassword);
-        let pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myOnlyPassword);
+        var ourPopup = document;
+        var domain = ourPopup.getElementById('domain').value;
+        var mySaltThisSite = ourPopup.getElementById('mySaltThisSite').value; //alert('mySaltThisSite: ' + mySaltThisSite);
+        var myUidThisSite = ourPopup.getElementById('myUidThisSite').value; //alert('myUidThisSite:' + myUidThisSite);
+        var mySequenceThisSite = ourPopup.getElementById('mySequenceThisSite').value; //alert('mySequenceThisSite:' + mySequenceThisSite);
+        var myOnlyPassword = ourPopup.getElementById('myOnlyPassword').value; //alert('myOnlyPassword:' + myOnlyPassword);
+        var pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myOnlyPassword);
         // alert('pwdForThisSiteForThisUid: ' + pwdForThisSiteForThisUid);
-        let passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
+        var passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
         passwordElement.setAttribute("value", pwdForThisSiteForThisUid);
         //// insertPwd(pwdForThisSiteForThisUid, passwordElement);
-
         function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, pwdUser) {
-
             //get the SHA512
-            let generatedPassword = SHA512(domain + saltThisSite + uidThisSite + sequenceNr + pwdUser);
-
+            var generatedPassword = SHA512(domain + saltThisSite + uidThisSite + sequenceNr + pwdUser);
             //add two literals
             //TODO make this more obscure
             generatedPassword = generatedPassword.substr(0, 4) + '!' + generatedPassword.substr(4, 3) + '.' + generatedPassword.substr(8);
-
             //add one capital
-            for (let i = 0; i < 12; i++) {
-               let char = generatedPassword[i];
+            for (var i = 0; i < 12; i++) {
+                var char = generatedPassword[i];
                 if (char >= 'a' && char <= 'z') {
                     generatedPassword = generatedPassword.substr(0, i) + char.toUpperCase() + generatedPassword.substr(i + 1);
                     break;
-                } else if (i = 12) {
+                }
+                else if (i = 12) {
                     generatedPassword = 'Z' + generatedPassword.substr(1);
                 }
             }
-
             //Shorten it to 20 characters
             generatedPassword = generatedPassword.substr(0, 20);
-
             return generatedPassword;
         }
     }, false);
 }, false);
+//# sourceMappingURL=onepasswordforeverysite.js.map

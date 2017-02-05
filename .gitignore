@@ -143,3 +143,12 @@ local.properties
 # Created by .ignore support plugin (hsz.mobi)
 /greeter/
 /greeter/*
+/set_page_color/
+/set_page_color/popup.html
+/set_page_color/popup.js
+/set_page_color/manifest.json
+/set_page_color/.idea/
+/set_page_color/icon.png
+/event_page/manifest.json
+/event_page/
+/event_page/sample.js
