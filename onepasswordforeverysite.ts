@@ -1,10 +1,6 @@
 /**
  * Created by Tim van Steenbergen on 21-1-2017.
  */
-interface Window {
-    chrome: typeof chrome;
-}
-/// <reference path="pathTo/chrome.d.ts"/>
 declare function SHA512(string): string;
 document.addEventListener('DOMContentLoaded', function () {
     // importScripts("SHA512.js");
