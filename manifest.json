@@ -8,7 +8,7 @@
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html",
-    "default_title": "Login in. The safe way!"
+    "default_title": "Enter any site with only one password!"
   },
   "permissions": [
     "activeTab",

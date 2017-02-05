@@ -7,16 +7,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // importScripts("SHA512.js");
 
     let sites = [];
-    let json = {
-        "sites": [
-            ["gavelsnipe.com", "koud", "timvans", "1"],
-            ["webassessor.com", "koud", "TimvanSteenbergen", "2"],
-            ["stackoverflow.com", "koud", "tim@tieka.nl", "1"],
-            ["quora.com", "koud", "tim@tieka.nl", "1"],
-            ["ebay.com", "heet", "tivansteenberge_0", "3"],
-            ["nrc.nl", "koud", "iliketoread", "1"],
-            ["yetanothersite.nl", "koud", "alias24", "1"],
-            ["andonemore.nl", "koud", "myusernamehere", "1"]
+    let`` json = {
+        "sites": [//domain, salt, username, sequencenr, lastused
+            ["gavelsnipe.com", "koud", "timvans", "1", "20160101"],
+            ["webassessor.com", "koud", "TimvanSteenbergen", "2", "20160101"],
+            ["stackoverflow.com", "koud", "tim@tieka.nl", "1", "20160101"],
+            ["quora.com", "koud", "tim@tieka.nl", "1", "20160101"],
+            ["ebay.com", "heet", "tivansteenberge_0", "3", "20160101"],
+            ["nrc.nl", "koud", "iliketoread", "1", "20160101"],
+            ["yetanothersite.nl", "koud", "alias24", "1", "20160101"],
+            ["andonemore.nl", "koud", "myusernamehere", "1", "20160101"]
         ]
     };
     localStorage.setItem("sites", JSON.stringify(json));
@@ -72,12 +72,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function showTheLocallyStoredData(numOfLines) {
         json = JSON.parse(localStorage.getItem("sites"));
         sites = json.sites;
-        let dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>remark</td></thead>";
+        let dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>used at</td></ts><td>remark</td></thead>";
         for (let i = 0; i < sites.length && i < numOfLines; i++) {
             dataTableHTML += '<tr><td>' + sites[i][0] + '</td>';
             dataTableHTML += '<td>' + sites[i][1] + '</td>';
             dataTableHTML += '<td>' + sites[i][2] + '</td>';
             dataTableHTML += '<td>' + sites[i][3] + '</td>';
+            dataTableHTML += '<td>' + sites[i][4] + '</td>';
             dataTableHTML += '<td>' + '</td></tr>';
         }
         if (sites.length > numOfLines) {
