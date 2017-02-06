@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
             ["gavelsnipe.com", "koud", "timvans", "1", "20160101"],
             ["webassessor.com", "koud", "TimvanSteenbergen", "2", "20160101"],
             ["stackoverflow.com", "koud", "tim@tieka.nl", "1", "20160101"],
+            ["robbshop.com", "koud", "tim@tieka.nl", "1", "20160101"],
+            ["lynda.com", "koud", "tim@tieka.nl", "1", "20160101"],
             ["quora.com", "koud", "tim@tieka.nl", "1", "20160101"],
             ["ebay.com", "heet", "tivansteenberge_0", "3", "20160101"],
             ["nrc.nl", "koud", "iliketoread", "1", "20160101"],
@@ -168,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let generatedHash = SHA512(domain + saltThisSite + uidThisSite + sequenceNr + pwdUser);
 
             // Take 20 characters out of it:
-            let varCentury = (generatedHash.charCodeAt(98) % 3 + 1) * 100; // = 100, 200 or 300
+            let varCentury = (generatedHash.charCodeAt(98) % 3 + 1) * 29; // = 29, 58 or 87
             let varTwenty = generatedHash.charCodeAt(32) % 20 // = 0 - 19
             let chosenStartPosition = varCentury + varTwenty + 4;
             let generatedPassword = generatedHash.substr(chosenStartPosition, 20);
