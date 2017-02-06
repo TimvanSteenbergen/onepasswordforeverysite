@@ -1,3 +1,4 @@
+///<reference path="chrome/index.d.ts"/>
 document.addEventListener('DOMContentLoaded', function () {
     // importScripts("SHA512.js");
     var sites = [];
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showTheLocallyStoredData(5);
     function setValueForElementDomain() {
         chrome.tabs.getSelected(null, function (tab) {
+            // chrome.tabs.query({active: true, currentWindow: true},function (tab) {
             var ourPopup = document;
             var domain = getDomain(tab.url);
             var domainElement = ourPopup.getElementById('domain');
@@ -149,10 +151,21 @@ document.addEventListener('DOMContentLoaded', function () {
         //// insertPwd(pwdForThisSiteForThisUid, passwordElement);
         function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, pwdUser) {
             //get the SHA512
-            var generatedPassword = SHA512(domain + saltThisSite + uidThisSite + sequenceNr + pwdUser);
-            //add two literals
-            //TODO make this more obscure
-            generatedPassword = generatedPassword.substr(0, 4) + '!' + generatedPassword.substr(4, 3) + '.' + generatedPassword.substr(8);
+            var generatedHash = SHA512(domain + saltThisSite + uidThisSite + sequenceNr + pwdUser);
+            // Take 20 characters out of it:
+            var varCentury = (generatedHash.charCodeAt(98) % 3 + 1) * 100; // = 100, 200 or 300
+            var varTwenty = generatedHash.charCodeAt(32) % 20; // = 0 - 19
+            var chosenStartPosition = varCentury + varTwenty + 4;
+            var generatedPassword = generatedHash.substr(chosenStartPosition, 20);
+            //add 1, 2 or 3 literals, restricted to `'/\~!@#$%^()_+-=.:?![]{}
+            // @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
+            var specialCharacters = ["`", "\"", "'", "/", "\\", "~", "!", "@", "#", "$", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "[", "]", "{", "}"];
+            var numOfCharsToInsert = generatedHash.charCodeAt(98) % 3; // = 0, 1 or 2
+            for (var i = 0; i <= numOfCharsToInsert; i++) {
+                var chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(98) % 25];
+                var chosenPosition = generatedHash.charCodeAt(i) % 20;
+                generatedPassword.replace(generatedPassword.charAt(chosenPosition), chosenSpecialCharacter);
+            }
             //add one capital
             for (var i = 0; i < 12; i++) {
                 var char = generatedPassword[i];
@@ -170,4 +183,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }, false);
 }, false);
-//# sourceMappingURL=onepasswordforeverysite.js.map

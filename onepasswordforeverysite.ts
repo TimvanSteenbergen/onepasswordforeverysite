@@ -2,6 +2,8 @@
  * Created by Tim van Steenbergen on 21-1-2017.
  */
 declare function SHA512(string): string;
+declare let chrome: any;
+///<reference path="chrome/index.d.ts"/>
 document.addEventListener('DOMContentLoaded', function () {
     // importScripts("SHA512.js");
 
@@ -23,25 +25,26 @@ document.addEventListener('DOMContentLoaded', function () {
     showTheLocallyStoredData(5);
     function setValueForElementDomain() {
         chrome.tabs.getSelected(null, function (tab) {
-            let ourPopup = document;
-            let domain = getDomain(tab.url);
-            let domainElement = ourPopup.getElementById('domain');
-            domainElement.setAttribute('value', domain);
+        // chrome.tabs.query({active: true, currentWindow: true},function (tab) {
+                let ourPopup = document;
+                let domain = getDomain(tab.url);
+                let domainElement = ourPopup.getElementById('domain');
+                domainElement.setAttribute('value', domain);
 
-            setValueForElements(domain);
+                setValueForElements(domain);
 
-            function getDomain(url)
-            //This function gets the domainname from the url.
-            //Can't use "window.location.host" because this will return the domain of the popup.html
-            {
-                domain = url.match(/:\/\/(.[^/]+)/)[1];
-                //remove the sub-domain(s)
-                let numberOfDotsInDomain = (domain.match(/\./g) || []).length;
-                for (let dot = 1; dot < numberOfDotsInDomain; dot++) {
-                    domain = domain.substr(domain.indexOf('.') + 1, domain.strlen);
+                function getDomain(url)
+                //This function gets the domainname from the url.
+                //Can't use "window.location.host" because this will return the domain of the popup.html
+                {
+                    domain = url.match(/:\/\/(.[^/]+)/)[1];
+                    //remove the sub-domain(s)
+                    let numberOfDotsInDomain = (domain.match(/\./g) || []).length;
+                    for (let dot = 1; dot < numberOfDotsInDomain; dot++) {
+                        domain = domain.substr(domain.indexOf('.') + 1, domain.strlen);
+                    }
+                    return domain;
                 }
-                return domain;
-            }
 
             function setValueForElements(domain) {
                 json = JSON.parse(localStorage.getItem("sites"));
@@ -162,11 +165,23 @@ document.addEventListener('DOMContentLoaded', function () {
         function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, pwdUser) {
 
             //get the SHA512
-            let generatedPassword = SHA512(domain + saltThisSite + uidThisSite + sequenceNr + pwdUser);
+            let generatedHash = SHA512(domain + saltThisSite + uidThisSite + sequenceNr + pwdUser);
 
-            //add two literals
-            //TODO make this more obscure
-            generatedPassword = generatedPassword.substr(0, 4) + '!' + generatedPassword.substr(4, 3) + '.' + generatedPassword.substr(8);
+            // Take 20 characters out of it:
+            let varCentury = (generatedHash.charCodeAt(98) % 3 + 1) * 100; // = 100, 200 or 300
+            let varTwenty = generatedHash.charCodeAt(32) % 20 // = 0 - 19
+            let chosenStartPosition = varCentury + varTwenty + 4;
+            let generatedPassword = generatedHash.substr(chosenStartPosition, 20);
+
+            //add 1, 2 or 3 literals, restricted to `'/\~!@#$%^()_+-=.:?![]{}
+            // @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
+            let specialCharacters = ["`", "\"", "'", "/", "\\", "~", "!", "@", "#", "$", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "[", "]", "{", "}"];
+            let numOfCharsToInsert = generatedHash.charCodeAt(98) % 3; // = 0, 1 or 2
+            for (let i = 0; i <= numOfCharsToInsert; i++){
+                let chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(98) % 25];
+                let chosenPosition = generatedHash.charCodeAt(i) % 20;
+                generatedPassword.replace(generatedPassword.charAt(chosenPosition), chosenSpecialCharacter);
+            }
 
             //add one capital
             for (let i = 0; i < 12; i++) {
