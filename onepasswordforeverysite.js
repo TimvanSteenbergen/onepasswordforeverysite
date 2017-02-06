@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
             ["gavelsnipe.com", "koud", "timvans", "1", "20160101"],
             ["webassessor.com", "koud", "TimvanSteenbergen", "2", "20160101"],
             ["stackoverflow.com", "koud", "tim@tieka.nl", "1", "20160101"],
+            ["robbshop.com", "koud", "tim@tieka.nl", "1", "20160101"],
+            ["lynda.com", "koud", "tim@tieka.nl", "1", "20160101"],
             ["quora.com", "koud", "tim@tieka.nl", "1", "20160101"],
             ["ebay.com", "heet", "tivansteenberge_0", "3", "20160101"],
             ["nrc.nl", "koud", "iliketoread", "1", "20160101"],
@@ -151,10 +153,11 @@ document.addEventListener('DOMContentLoaded', function () {
         //// insertPwd(pwdForThisSiteForThisUid, passwordElement);
         function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, pwdUser) {
             //get the SHA512
-            var generatedHash = SHA512(domain + saltThisSite + uidThisSite + sequenceNr + pwdUser);
+            var stringToHash = domain + saltThisSite + uidThisSite + sequenceNr + pwdUser;
+            var generatedHash = SHA512(stringToHash);
             // Take 20 characters out of it:
-            var varCentury = (generatedHash.charCodeAt(98) % 3 + 1) * 100; // = 100, 200 or 300
-            var varTwenty = generatedHash.charCodeAt(32) % 20; // = 0 - 19
+            var varCentury = (generatedHash.charCodeAt(98) % 3 + 1) * 29; // = 29, 58 or 87
+            var varTwenty = generatedHash.charCodeAt(32) % 20 + 1; // = 1 - 20
             var chosenStartPosition = varCentury + varTwenty + 4;
             var generatedPassword = generatedHash.substr(chosenStartPosition, 20);
             //add 1, 2 or 3 literals, restricted to `'/\~!@#$%^()_+-=.:?![]{}
@@ -162,24 +165,22 @@ document.addEventListener('DOMContentLoaded', function () {
             var specialCharacters = ["`", "\"", "'", "/", "\\", "~", "!", "@", "#", "$", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "[", "]", "{", "}"];
             var numOfCharsToInsert = generatedHash.charCodeAt(98) % 3; // = 0, 1 or 2
             for (var i = 0; i <= numOfCharsToInsert; i++) {
-                var chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(98) % 25];
+                var chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(i * varTwenty) % 25];
                 var chosenPosition = generatedHash.charCodeAt(i) % 20;
-                generatedPassword.replace(generatedPassword.charAt(chosenPosition), chosenSpecialCharacter);
+                var firstPart = (chosenPosition >= 1) ? generatedPassword.substr(0, chosenPosition - 1) : "";
+                var lastPart = generatedPassword.substr(chosenPosition + 1);
+                generatedPassword = firstPart + chosenSpecialCharacter + lastPart;
             }
-            //add one capital
-            for (var i = 0; i < 12; i++) {
-                var char = generatedPassword[i];
-                if (char >= 'a' && char <= 'z') {
+            //add some capitals
+            for (var i = 0; i < 20; i++) {
+                var char = generatedPassword.charAt(i);
+                var capitalise = (char.charCodeAt(i + 2) % 2 == 0); //coinToss-boolean to capitalise or not
+                if (char >= 'a' && char <= 'z' && capitalise) {
                     generatedPassword = generatedPassword.substr(0, i) + char.toUpperCase() + generatedPassword.substr(i + 1);
-                    break;
-                }
-                else if (i = 12) {
-                    generatedPassword = 'Z' + generatedPassword.substr(1);
                 }
             }
-            //Shorten it to 20 characters
-            generatedPassword = generatedPassword.substr(0, 20);
             return generatedPassword;
         }
     }, false);
 }, false);
+//# sourceMappingURL=onepasswordforeverysite.js.map

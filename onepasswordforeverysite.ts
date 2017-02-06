@@ -167,11 +167,12 @@ document.addEventListener('DOMContentLoaded', function () {
         function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, pwdUser) {
 
             //get the SHA512
-            let generatedHash = SHA512(domain + saltThisSite + uidThisSite + sequenceNr + pwdUser);
+            let stringToHash:string = domain + saltThisSite + uidThisSite + sequenceNr + pwdUser;
+            let generatedHash = SHA512(stringToHash);
 
             // Take 20 characters out of it:
             let varCentury = (generatedHash.charCodeAt(98) % 3 + 1) * 29; // = 29, 58 or 87
-            let varTwenty = generatedHash.charCodeAt(32) % 20 // = 0 - 19
+            let varTwenty = generatedHash.charCodeAt(32) % 20 + 1; // = 1 - 20
             let chosenStartPosition = varCentury + varTwenty + 4;
             let generatedPassword = generatedHash.substr(chosenStartPosition, 20);
 
@@ -180,24 +181,21 @@ document.addEventListener('DOMContentLoaded', function () {
             let specialCharacters = ["`", "\"", "'", "/", "\\", "~", "!", "@", "#", "$", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "[", "]", "{", "}"];
             let numOfCharsToInsert = generatedHash.charCodeAt(98) % 3; // = 0, 1 or 2
             for (let i = 0; i <= numOfCharsToInsert; i++){
-                let chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(98) % 25];
+                let chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(i * varTwenty) % 25];
                 let chosenPosition = generatedHash.charCodeAt(i) % 20;
-                generatedPassword.replace(generatedPassword.charAt(chosenPosition), chosenSpecialCharacter);
+                let firstPart = (chosenPosition >= 1) ? generatedPassword.substr(0, chosenPosition - 1):"";
+                let lastPart = generatedPassword.substr(chosenPosition + 1);
+                generatedPassword = firstPart + chosenSpecialCharacter + lastPart;
             }
 
-            //add one capital
-            for (let i = 0; i < 12; i++) {
-               let char = generatedPassword[i];
-                if (char >= 'a' && char <= 'z') {
+            //add some capitals
+            for (let i = 0; i < 20; i++) {
+                let char = generatedPassword.charAt(i);
+                let capitalise = (char.charCodeAt(i + 2) % 2 == 0); //coinToss-boolean to capitalise or not
+                if (char >= 'a' && char <= 'z' && capitalise) {
                     generatedPassword = generatedPassword.substr(0, i) + char.toUpperCase() + generatedPassword.substr(i + 1);
-                    break;
-                } else if (i = 12) {
-                    generatedPassword = 'Z' + generatedPassword.substr(1);
                 }
             }
-
-            //Shorten it to 20 characters
-            generatedPassword = generatedPassword.substr(0, 20);
 
             return generatedPassword;
         }
