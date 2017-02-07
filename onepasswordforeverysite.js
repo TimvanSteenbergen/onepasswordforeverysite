@@ -1,6 +1,8 @@
 ///<reference path="chrome/index.d.ts"/>
+console.log('before DOMContentLoaded');
 document.addEventListener('DOMContentLoaded', function () {
     // importScripts("SHA512.js");
+    console.log('upon DOMContentLoaded');
     var sites = [];
     var json = {
         "sites": [
@@ -141,17 +143,19 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     document.getElementById('loginButton').addEventListener('click', function () {
         var ourPopup = document;
-        var domain = ourPopup.getElementById('domain').getAttribute('value');
-        var mySaltThisSite = ourPopup.getElementById('mySaltThisSite').getAttribute('value'); //alert('mySaltThisSite: ' + mySaltThisSite);
-        var myUidThisSite = ourPopup.getElementById('myUidThisSite').getAttribute('value'); //alert('myUidThisSite:' + myUidThisSite);
-        var mySequenceThisSite = ourPopup.getElementById('mySequenceThisSite').getAttribute('value'); //alert('mySequenceThisSite:' + mySequenceThisSite);
-        var myOnlyPassword = ourPopup.getElementById('myOnlyPassword').getAttribute('value'); //alert('myOnlyPassword:' + myOnlyPassword);
+        var domain = ourPopup.getElementById('domain').value;
+        var mySaltThisSite = ourPopup.getElementById('mySaltThisSite').value; //alert('mySaltThisSite: ' + mySaltThisSite);
+        var myUidThisSite = ourPopup.getElementById('myUidThisSite').value; //alert('myUidThisSite:' + myUidThisSite);
+        var mySequenceThisSite = ourPopup.getElementById('mySequenceThisSite').value; //alert('mySequenceThisSite:' + mySequenceThisSite);
+        var myOnlyPassword = ourPopup.getElementById('myOnlyPassword').value; //alert('myOnlyPassword:' + myOnlyPassword);
         var pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myOnlyPassword);
         // alert('pwdForThisSiteForThisUid: ' + pwdForThisSiteForThisUid);
         var passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
         passwordElement.setAttribute("value", pwdForThisSiteForThisUid);
-        //// insertPwd(pwdForThisSiteForThisUid, passwordElement);
+        // Insert the pwdForThisSiteForThisUid in the password-input field in the document
+        // insertPwd(pwdForThisSiteForThisUid, passwordElement);
         function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, pwdUser) {
+            var passwordLength = 20;
             //get the SHA512
             var stringToHash = domain + saltThisSite + uidThisSite + sequenceNr + pwdUser;
             var generatedHash = SHA512(stringToHash);
@@ -159,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var varCentury = (generatedHash.charCodeAt(98) % 3 + 1) * 29; // = 29, 58 or 87
             var varTwenty = generatedHash.charCodeAt(32) % 20 + 1; // = 1 - 20
             var chosenStartPosition = varCentury + varTwenty + 4;
-            var generatedPassword = generatedHash.substr(chosenStartPosition, 20);
+            var generatedPassword = generatedHash.substr(chosenStartPosition, passwordLength);
             //add 1, 2 or 3 literals, restricted to `'/\~!@#$%^()_+-=.:?![]{}
             // @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
             var specialCharacters = ["`", "\"", "'", "/", "\\", "~", "!", "@", "#", "$", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "[", "]", "{", "}"];
@@ -172,11 +176,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 generatedPassword = firstPart + chosenSpecialCharacter + lastPart;
             }
             //add some capitals
-            for (var i = 0; i < 20; i++) {
+            for (var i = 0; i < passwordLength; i++) {
                 var char = generatedPassword.charAt(i);
-                var capitalise = (char.charCodeAt(i + 2) % 2 == 0); //coinToss-boolean to capitalise or not
-                if (char >= 'a' && char <= 'z' && capitalise) {
+                var capitalise = (generatedPassword.charCodeAt(i + 2) % 2 == 0); //coinToss-boolean to capitalise or not
+                var noCapitalYet = true;
+                if (char >= 'a' && char <= 'z' && (capitalise || noCapitalYet)) {
                     generatedPassword = generatedPassword.substr(0, i) + char.toUpperCase() + generatedPassword.substr(i + 1);
+                    noCapitalYet = false;
+                }
+                if (noCapitalYet) {
+                    generatedPassword = generatedPassword.substr(0, passwordLength - 1) + "E";
                 }
             }
             return generatedPassword;
