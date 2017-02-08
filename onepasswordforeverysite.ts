@@ -29,26 +29,26 @@ document.addEventListener('DOMContentLoaded', function () {
     showTheLocallyStoredData(5);
     function setValueForElementDomain() {
         chrome.tabs.getSelected(null, function (tab) {
-        // chrome.tabs.query({active: true, currentWindow: true},function (tab) {
-                let ourPopup = document;
-                let domain = getDomain(tab.url);
-                let domainElement = ourPopup.getElementById('domain');
-                domainElement.setAttribute('value', domain);
+            // chrome.tabs.query({active: true, currentWindow: true},function (tab) {
+            let ourPopup = document;
+            let domain = getDomain(tab.url);
+            let domainElement = ourPopup.getElementById('domain');
+            domainElement.setAttribute('value', domain);
 
-                setValueForElements(domain);
+            setValueForElements(domain);
 
-                function getDomain(url)
-                //This function gets the domainname from the url.
-                //Can't use "window.location.host" because this will return the domain of the popup.html
-                {
-                    domain = url.match(/:\/\/(.[^/]+)/)[1];
-                    //remove the sub-domain(s)
-                    let numberOfDotsInDomain = (domain.match(/\./g) || []).length;
-                    for (let dot = 1; dot < numberOfDotsInDomain; dot++) {
-                        domain = domain.substr(domain.indexOf('.') + 1, domain.strlen);
-                    }
-                    return domain;
+            function getDomain(url)
+            //This function gets the domainname from the url.
+            //Can't use "window.location.host" because this will return the domain of the popup.html
+            {
+                domain = url.match(/:\/\/(.[^/]+)/)[1];
+                //remove the sub-domain(s)
+                let numberOfDotsInDomain = (domain.match(/\./g) || []).length;
+                for (let dot = 1; dot < numberOfDotsInDomain; dot++) {
+                    domain = domain.substr(domain.indexOf('.') + 1, domain.length);
                 }
+                return domain;
+            }
 
             function setValueForElements(domain) {
                 json = JSON.parse(localStorage.getItem("sites"));
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let passwordLength = 20;
 
             //get the SHA512
-            let stringToHash:string = domain + saltThisSite + uidThisSite + sequenceNr + pwdUser;
+            let stringToHash: string = domain + saltThisSite + uidThisSite + sequenceNr + pwdUser;
             let generatedHash = SHA512(stringToHash);
 
             // Take 20 characters out of it:
@@ -185,25 +185,37 @@ document.addEventListener('DOMContentLoaded', function () {
             // @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
             let specialCharacters = ["`", "\"", "'", "/", "\\", "~", "!", "@", "#", "$", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "[", "]", "{", "}"];
             let numOfCharsToInsert = generatedHash.charCodeAt(98) % 3; // = 0, 1 or 2
-            for (let i = 0; i <= numOfCharsToInsert; i++){
+            for (let i = 0; i <= numOfCharsToInsert; i++) {
                 let chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(i * varTwenty) % 25];
                 let chosenPosition = generatedHash.charCodeAt(i) % 20;
-                let firstPart = (chosenPosition >= 1) ? generatedPassword.substr(0, chosenPosition - 1):"";
+                let firstPart = (chosenPosition >= 1) ? generatedPassword.substr(0, chosenPosition - 1) : "";
                 let lastPart = generatedPassword.substr(chosenPosition + 1);
                 generatedPassword = firstPart + chosenSpecialCharacter + lastPart;
             }
 
-            //add some capitals
+            //add one or some capitals and make sure there is at least one lowercase
             for (let i = 0; i < passwordLength; i++) {
                 let char = generatedPassword.charAt(i);
-                let capitalise = (generatedPassword.charCodeAt(i + 2) % 2 == 0); //coinToss-boolean to capitalise or not
+                let doCapitalise = (generatedPassword.charCodeAt(i + 2) % 2 == 0); //coinToss-boolean to capitalise or not
                 let noCapitalYet = true;
-                if (char >= 'a' && char <= 'z' && (capitalise || noCapitalYet)) {
-                    generatedPassword = generatedPassword.substr(0, i) + char.toUpperCase() + generatedPassword.substr(i + 1);
-                    noCapitalYet = false;
+                let noLowercaseYet = true;
+                if (char >= 'a' && char <= 'z') {
+                    if (doCapitalise || noCapitalYet) {
+                        generatedPassword = generatedPassword.substr(0, i) + char.toUpperCase() + generatedPassword.substr(i + 1);
+                        noCapitalYet = false;
+                    } else {
+                        noLowercaseYet = false;
+                    }
                 }
                 if (noCapitalYet) {
                     generatedPassword = generatedPassword.substr(0, passwordLength - 1) + "E";
+                }
+                if (noLowercaseYet) {
+                    let chosenLowercaseCharacter = generatedHash.charCodeAt(i * varTwenty) % 25;
+                    let chosenPosition = generatedHash.charCodeAt(i) % 16 + 1; // = 1 to 16
+                    let firstPart = generatedPassword.substr(0, chosenPosition - 1);
+                    let lastPart = generatedPassword.substr(chosenPosition + 1);
+                    generatedPassword = firstPart + chosenLowercaseCharacter + lastPart;
                 }
             }
 
