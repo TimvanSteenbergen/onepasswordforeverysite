@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 //remove the sub-domain(s)
                 var numberOfDotsInDomain = (domain.match(/\./g) || []).length;
                 for (var dot = 1; dot < numberOfDotsInDomain; dot++) {
-                    domain = domain.substr(domain.indexOf('.') + 1, domain.strlen);
+                    domain = domain.substr(domain.indexOf('.') + 1, domain.length);
                 }
                 return domain;
             }
@@ -175,21 +175,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 var lastPart = generatedPassword.substr(chosenPosition + 1);
                 generatedPassword = firstPart + chosenSpecialCharacter + lastPart;
             }
-            //add some capitals
+            //add one or some capitals and make sure there is at least one lowercase
             for (var i = 0; i < passwordLength; i++) {
                 var char = generatedPassword.charAt(i);
-                var capitalise = (generatedPassword.charCodeAt(i + 2) % 2 == 0); //coinToss-boolean to capitalise or not
+                var doCapitalise = (generatedPassword.charCodeAt(i + 2) % 2 == 0); //coinToss-boolean to capitalise or not
                 var noCapitalYet = true;
-                if (char >= 'a' && char <= 'z' && (capitalise || noCapitalYet)) {
-                    generatedPassword = generatedPassword.substr(0, i) + char.toUpperCase() + generatedPassword.substr(i + 1);
-                    noCapitalYet = false;
+                var noLowercaseYet = true;
+                if (char >= 'a' && char <= 'z') {
+                    if (doCapitalise || noCapitalYet) {
+                        generatedPassword = generatedPassword.substr(0, i) + char.toUpperCase() + generatedPassword.substr(i + 1);
+                        noCapitalYet = false;
+                    }
+                    else {
+                        noLowercaseYet = false;
+                    }
                 }
                 if (noCapitalYet) {
                     generatedPassword = generatedPassword.substr(0, passwordLength - 1) + "E";
+                }
+                if (noLowercaseYet) {
+                    var chosenLowercaseCharacter = generatedHash.charCodeAt(i * varTwenty) % 25;
+                    var chosenPosition = generatedHash.charCodeAt(i) % 16 + 1; // = 1 to 16
+                    var firstPart = generatedPassword.substr(0, chosenPosition - 1);
+                    var lastPart = generatedPassword.substr(chosenPosition + 1);
+                    generatedPassword = firstPart + chosenLowercaseCharacter + lastPart;
                 }
             }
             return generatedPassword;
         }
     }, false);
 }, false);
-//# sourceMappingURL=onepasswordforeverysite.js.map
+//# sourceMappingURL=OnepasswordforeverysiteApp.js.map
