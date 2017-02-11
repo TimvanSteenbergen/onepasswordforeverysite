@@ -1,6 +1,7 @@
 /**
  * Created by Tim van Steenbergen on 11-2-2017.
  */
+
 interface ISite {
     domain: string,
     salt: string,
