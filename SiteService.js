@@ -4,16 +4,15 @@
  */
 var Model_1 = require('./Model');
 function getTheLocallyStoredSites(numOfLines) {
-    if (numOfLines === void 0) { numOfLines = 999; }
+    if (numOfLines === void 0) { numOfLines = 9999; }
     var json = JSON.parse(localStorage.getItem("sites"));
     var sites = json.sites;
-    if (numOfLines == 999) {
+    if (numOfLines == 9999) {
         return sites;
     }
     else {
-        return sites;
+        return sites.slice(0, numOfLines);
     }
-    ;
 }
 var SiteService = (function () {
     function SiteService(sites) {

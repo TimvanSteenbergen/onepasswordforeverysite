@@ -9,14 +9,14 @@ export interface ISiteService {
     getAll(): Site[];
 }
 
-function getTheLocallyStoredSites (numOfLines: number = 999): Site[] {
+function getTheLocallyStoredSites (numOfLines: number = 9999): Site[] {
     let json = JSON.parse(localStorage.getItem("sites"));
     let sites = json.sites;
-    if (numOfLines == 999){
+    if (numOfLines == 9999){
         return sites;
     } else {
-        return sites;
-    };
+        return sites.slice(0, numOfLines);
+    }
 }
 
 export default class SiteService implements ISiteService {
@@ -29,7 +29,7 @@ export default class SiteService implements ISiteService {
         return true;
     };
     getByDomain(domain: string): Site {
-        var site: Site = new Site;
+        let site: Site = new Site;
         getTheLocallyStoredSites();
         // site->setDomain()
         return site;
