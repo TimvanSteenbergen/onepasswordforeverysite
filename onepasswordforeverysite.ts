@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
             ["robbshop.com", "koud", "tim@tieka.nl", "1", "20160101"],
             ["lynda.com", "koud", "tim@tieka.nl", "1", "20160101"],
             ["quora.com", "koud", "tim@tieka.nl", "1", "20160101"],
-            ["ebay.com", "heet", "tivansteenberge_0", "3", "20160101"],
             ["nrc.nl", "koud", "iliketoread", "1", "20160101"],
+            ["ebay.com", "heet", "tivansteenberge_0", "3", "20160101"],
             ["yetanothersite.nl", "koud", "alias24", "1", "20160101"],
             ["andonemore.nl", "koud", "myusernamehere", "1", "20160101"]
         ]
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showTheLocallyStoredData(5);
     function setValueForElementDomain() {
         chrome.tabs.getSelected(null, function (tab) {
-            // chrome.tabs.query({active: true, currentWindow: true},function (tab) {
+        // chrome.tabs.query({active: true, currentWindow: true}, function (tab) {
             let ourPopup = document;
             let domain = getDomain(tab.url);
             let domainElement = ourPopup.getElementById('domain');
@@ -169,54 +169,54 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, pwdUser) {
 
-            let passwordLength = 20;
+            let passwordLength = 120; //Minimal 20 and an even number!
 
             //get the SHA512
             let stringToHash: string = domain + saltThisSite + uidThisSite + sequenceNr + pwdUser;
             let generatedHash = SHA512(stringToHash);
 
-            // Take 20 characters out of it:
-            let varCentury = (generatedHash.charCodeAt(98) % 3 + 1) * 29; // = 29, 58 or 87
-            let varTwenty = generatedHash.charCodeAt(32) % 20 + 1; // = 1 - 20
-            let chosenStartPosition = varCentury + varTwenty + 4;
-            let generatedPassword = generatedHash.substr(chosenStartPosition, passwordLength);
-
-            //add 1, 2 or 3 literals, restricted to `'/\~!@#$%^()_+-=.:?![]{}
-            // @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
-            let specialCharacters = ["`", "\"", "'", "/", "\\", "~", "!", "@", "#", "$", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "[", "]", "{", "}"];
-            let numOfCharsToInsert = generatedHash.charCodeAt(98) % 3; // = 0, 1 or 2
-            for (let i = 0; i <= numOfCharsToInsert; i++) {
-                let chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(i * varTwenty) % 25];
-                let chosenPosition = generatedHash.charCodeAt(i) % 20;
-                let firstPart = (chosenPosition >= 1) ? generatedPassword.substr(0, chosenPosition - 1) : "";
-                let lastPart = generatedPassword.substr(chosenPosition + 1);
-                generatedPassword = firstPart + chosenSpecialCharacter + lastPart;
+            //Now we have got a hexadecimal hash. Let's transform it to the 64 out of the 87 characters available in passwords:
+            // a-z A-Z 0-9 and these 24: `'/\~!@#$%^()_+-=.:?[]{}
+            //   @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
+            // I choose to exclude these 23: iIjJlLoOqQxXyY`\$[]017 and we are leftover with these 64 possible password characters
+            const lowerCaseCharacters = ["a", "b", "c", "d", "e", "f", "g", "h", "k", "m", "n", "p", "r", "s", "t", "u", "v", "w", "z"];
+            const upperCaseCharacters = ["A", "B", "C", "D", "E", "F", "G", "H", "K", "M", "N", "P", "R", "S", "T", "U", "V", "W", "Z"];
+            const numberCharacters = ["2", "3", "4", "5", "6", "8", "9"];
+            const specialCharacters = ["'", "/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
+            const passwordCharacters = lowerCaseCharacters.concat(upperCaseCharacters).concat(numberCharacters).concat(specialCharacters);
+            let counterHash: number = 0;
+            let generatedPassword: string = "";
+            for (let counterPwd = 0; counterPwd < (passwordLength / 2); counterPwd++) {
+                let nextHashPart = generatedHash.substr(counterHash, 3);
+                let nextDecimal = parseInt(nextHashPart, 16);
+                let secondChar = nextDecimal % 64;
+                let firstChar = ((nextDecimal - secondChar) / 64);
+                generatedPassword += passwordCharacters[firstChar] + passwordCharacters[secondChar];
+                counterHash = ((counterHash + 3) > 128) ? 0 : (counterHash + 3);
             }
 
-            //add one or some capitals and make sure there is at least one lowercase
-            for (let i = 0; i < passwordLength; i++) {
-                let char = generatedPassword.charAt(i);
-                let doCapitalise = (generatedPassword.charCodeAt(i + 2) % 2 == 0); //coinToss-boolean to capitalise or not
-                let noCapitalYet = true;
-                let noLowercaseYet = true;
-                if (char >= 'a' && char <= 'z') {
-                    if (doCapitalise || noCapitalYet) {
-                        generatedPassword = generatedPassword.substr(0, i) + char.toUpperCase() + generatedPassword.substr(i + 1);
-                        noCapitalYet = false;
-                    } else {
-                        noLowercaseYet = false;
-                    }
-                }
-                if (noCapitalYet) {
-                    generatedPassword = generatedPassword.substr(0, passwordLength - 1) + "E";
-                }
-                if (noLowercaseYet) {
-                    let chosenLowercaseCharacter = generatedHash.charCodeAt(i * varTwenty) % 25;
-                    let chosenPosition = generatedHash.charCodeAt(i) % 16 + 1; // = 1 to 16
-                    let firstPart = generatedPassword.substr(0, chosenPosition - 1);
-                    let lastPart = generatedPassword.substr(chosenPosition + 1);
-                    generatedPassword = firstPart + chosenLowercaseCharacter + lastPart;
-                }
+            //Make sure there is at least one uppercase
+            if ((/[A-Z]/.test(generatedPassword)) === false) {
+                generatedPassword = "E" + generatedPassword.substr(1, passwordLength - 1);
+            }
+
+            //Make sure there is at least one lowercase
+            if ((/[a-z]/.test(generatedPassword)) === false) {
+                let chosenLowercaseCharacter = lowerCaseCharacters[generatedHash.charCodeAt(3) % 19];
+                let chosenPosition = generatedHash.charCodeAt(4) % 16 + 1; // = 1 to 16
+                let firstPart = generatedPassword.substr(0, chosenPosition);
+                let lastPart = generatedPassword.substr(chosenPosition + 1);
+                generatedPassword = firstPart + chosenLowercaseCharacter + lastPart;
+            }
+
+            //Make sure there is at least one number
+            if ((/[0-9]/.test(generatedPassword)) === false) {
+                generatedPassword = generatedPassword.substr(0, passwordLength - 1) + "9";
+            }
+
+            //Make sure there is at least one special character
+            if ((/['/~@#%^()_+-=.:?!{}]/.test(generatedPassword)) === false) {
+                generatedPassword = generatedPassword.substr(0, passwordLength - 1) + "E";
             }
 
             return generatedPassword;
