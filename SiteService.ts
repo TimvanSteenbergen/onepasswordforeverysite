@@ -20,7 +20,7 @@ function getTheLocallyStoredSites (numOfLines: number = 999): Site[] {
 }
 
 export default class SiteService implements ISiteService {
-    constructor(sites: string[]){
+    constructor(sites: Site[]){
         if (sites) {
             sites.forEach(site => this.add(site))
         }
@@ -29,13 +29,12 @@ export default class SiteService implements ISiteService {
         return true;
     };
     getByDomain(domain: string): Site {
-        let site: Site = new Site;
+        var site: Site = new Site;
         getTheLocallyStoredSites();
-        site->setDomain()
+        // site->setDomain()
         return site;
     };
     getAll(): Site[]{
         return getTheLocallyStoredSites();
     };
-
 }

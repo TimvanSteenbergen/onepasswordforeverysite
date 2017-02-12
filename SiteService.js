@@ -29,7 +29,7 @@ var SiteService = (function () {
     SiteService.prototype.getByDomain = function (domain) {
         var site = new Model_1.Site;
         getTheLocallyStoredSites();
-        site -  > setDomain();
+        // site->setDomain()
         return site;
     };
     ;
