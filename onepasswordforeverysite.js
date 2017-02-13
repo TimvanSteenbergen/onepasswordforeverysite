@@ -61,6 +61,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    /**
+     * This function retrieves the locally stored sites, changes the popup to:
+     * - only show numOfLines of the sites
+     * - show the "..." if some sites are not shown
+     * @param numOfLines Number of lines to show in the popup.html
+     */
     function showTheLocallyStoredData(numOfLines) {
         json = JSON.parse(localStorage.getItem("sites"));
         sites = json.sites;
