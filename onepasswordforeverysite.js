@@ -154,12 +154,24 @@ document.addEventListener('DOMContentLoaded', function () {
         passwordElement.setAttribute("value", pwdForThisSiteForThisUid);
         // Insert the pwdForThisSiteForThisUid in the password-input field in the document
         // insertPwd(pwdForThisSiteForThisUid, passwordElement);
+        /**
+         * This function takes its parameters and returns a hashed password that:
+         * - has length of 120 characters (unless you change the constant passwordLength)
+         * - is made up of 64 different characters
+         * - includes at least one: uppercase, lowercase, integer and special character
+         * @param domain
+         * @param saltThisSite
+         * @param uidThisSite
+         * @param sequenceNr
+         * @param pwdUser
+         * @returns {string}
+         */
         function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, pwdUser) {
             var passwordLength = 120; //Minimal 20 and an even number!
             //get the SHA512
             var stringToHash = domain + saltThisSite + uidThisSite + sequenceNr + pwdUser;
             var generatedHash = SHA512(stringToHash);
-            //Now we have got a hexadecimal hash. Let's transform it to the 64 out of the 87 characters available in passwords:
+            //Now we have got a hexadecimal hash. Let's transform it to the 64 out of the 86 characters available in passwords:
             // a-z A-Z 0-9 and these 24: `'/\~!@#$%^()_+-=.:?[]{}
             //   @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
             // I choose to exclude these 23: iIjJlLoOqQxXyY`\$[]017 and we are leftover with these 64 possible password characters
@@ -176,11 +188,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 var secondChar = nextDecimal % 64;
                 var firstChar = ((nextDecimal - secondChar) / 64);
                 generatedPassword += passwordCharacters[firstChar] + passwordCharacters[secondChar];
-                counterHash = ((counterHash + 3) > 128) ? 0 : (counterHash + 3);
+                counterHash = ((counterHash + 3) > 128) ? 1 : (counterHash + 3); //resetting counterHash to 1 (instead of 0) to get different nextHashParts the second time
             }
             //Make sure there is at least one uppercase
             if ((/[A-Z]/.test(generatedPassword)) === false) {
-                generatedPassword = "E" + generatedPassword.substr(1, passwordLength - 1);
+                var chosenUppercaseCharacter = upperCaseCharacters[generatedHash.charCodeAt(3) % 19];
+                generatedPassword = chosenUppercaseCharacter + generatedPassword.substr(1, passwordLength - 1);
             }
             //Make sure there is at least one lowercase
             if ((/[a-z]/.test(generatedPassword)) === false) {
@@ -192,11 +205,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             //Make sure there is at least one number
             if ((/[0-9]/.test(generatedPassword)) === false) {
-                generatedPassword = generatedPassword.substr(0, passwordLength - 1) + "9";
+                var chosenNumberCharacter = numberCharacters[generatedHash.charCodeAt(3) % 19];
+                generatedPassword = generatedPassword.substr(0, passwordLength - 1) + chosenNumberCharacter;
             }
             //Make sure there is at least one special character
             if ((/['/~@#%^()_+-=.:?!{}]/.test(generatedPassword)) === false) {
-                generatedPassword = generatedPassword.substr(0, passwordLength - 1) + "E";
+                var chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(3) % 19];
+                generatedPassword = generatedPassword.substr(0, passwordLength - 1) + chosenSpecialCharacter;
             }
             return generatedPassword;
         }
