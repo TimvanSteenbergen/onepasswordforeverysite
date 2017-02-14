@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let json = {
         "sites": [//domain, salt, username, sequencenr, lastused
             ["gavelsnipe.com", "koud", "timvans", "1", "20160101"],
-            ["webassessor.com", "koud", "TimvanSteenbergen", "2", "20160101"],
+            ["webassessor.com", "koud", "TimvanSteenbergen", "2", "20160101"],//
             ["stackoverflow.com", "koud", "tim@tieka.nl", "1", "20160101"],
             ["robbshop.com", "koud", "tim@tieka.nl", "1", "20160101"],
             ["lynda.com", "koud", "tim@tieka.nl", "1", "20160101"],
             ["quora.com", "koud", "tim@tieka.nl", "1", "20160101"],
-            ["nrc.nl", "koud", "iliketoread", "1", "20160101"],
+            ["nrc.nl", "koud", "elma@tieka.nl", "1", "20160101"],
             ["ebay.com", "heet", "tivansteenberge_0", "3", "20160101"],
             ["yetanothersite.nl", "koud", "alias24", "1", "20160101"],
             ["andonemore.nl", "koud", "myusernamehere", "1", "20160101"]
