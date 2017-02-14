@@ -11,17 +11,17 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('upon DOMContentLoaded');
     let sites = [];
     let json = {
-        "sites": [//domain, salt, username, sequencenr, lastused
-            ["gavelsnipe.com", "koud", "timvans", "1", "20160101"],
-            ["webassessor.com", "koud", "TimvanSteenbergen", "2", "20160101"],//
-            ["stackoverflow.com", "koud", "tim@tieka.nl", "1", "20160101"],
-            ["robbshop.com", "koud", "tim@tieka.nl", "1", "20160101"],
-            ["lynda.com", "koud", "tim@tieka.nl", "1", "20160101"],
-            ["quora.com", "koud", "tim@tieka.nl", "1", "20160101"],
-            ["nrc.nl", "koud", "elma@tieka.nl", "1", "20160101"],
-            ["ebay.com", "heet", "tivansteenberge_0", "3", "20160101"],
-            ["yetanothersite.nl", "koud", "alias24", "1", "20160101"],
-            ["andonemore.nl", "koud", "myusernamehere", "1", "20160101"]
+        "sites": [//domain, salt, username, sequencenr, maxPwdChars, lastused, remarks
+            ["gavelsnipe.com", "koud", "timvans", "1", "", "20160101"],//
+            ["webassessor.com", "koud", "TimvanSteenbergen", "2", "", "20160101", ""],//
+            ["stackoverflow.com", "koud", "tim@tieka.nl", "1", "", "20160101", ""],//
+            ["robbshop.com", "koud", "tim@tieka.nl", "1", "", "20160101", ""],//
+            ["lynda.com", "koud", "tim@tieka.nl", "1", "", "20160101", ""],//3!{pWv'4(Tv}fSu.U.e!}S}aaPK'sDpCD^9K9(EhvnHb#9TgFp5WVFhGhDh~!ch(D=W:)M2GfEn9AW+@k-ffcm}RU=epHskBu#Fd{4/TuR-u@ah2:ACU)C9:
+            ["quora.com", "koud", "tim@tieka.nl", "1", "75", "20160101", "Max 75 karakters in het wachtwoord"],//
+            ["nrc.nl", "koud", "elma@tieka.nl", "1", "", "20160101", ""],//}EA#@MfaU98/Wd#=ha@@MKB_=)(WNgZv+K+6aCaB!@2tb)Tz5pGTc~h%Abd._6u?br#Wu?zSNMse9uzn=G~#a')(?Mhbvk8n:5a?Pw@rrhg)s/NNmhw5Bs_!
+            ["ebay.com", "heet", "tivansteenberge_0", "3", "64", "20160101", "Max 64 karakters in het wachtwoord"],//
+            ["yetanothersite.nl", "koud", "alias24", "1", "", "20160101", ""],//
+            ["andonemore.nl", "koud", "myusernamehere", "1", "", "20160101", ""]//
         ]
     };
     localStorage.setItem("sites", JSON.stringify(json));
@@ -84,13 +84,15 @@ document.addEventListener('DOMContentLoaded', function () {
     function showTheLocallyStoredData(numOfLines) {
         json = JSON.parse(localStorage.getItem("sites"));
         sites = json.sites;
-        let dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>used at</td></ts><td>remark</td></thead>";
+        let dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
         for (let i = 0; i < sites.length && i < numOfLines; i++) {
             dataTableHTML += '<tr><td>' + sites[i][0] + '</td>';
             dataTableHTML += '<td>' + sites[i][1] + '</td>';
             dataTableHTML += '<td>' + sites[i][2] + '</td>';
             dataTableHTML += '<td>' + sites[i][3] + '</td>';
             dataTableHTML += '<td>' + sites[i][4] + '</td>';
+            dataTableHTML += '<td>' + sites[i][5] + '</td>';
+            dataTableHTML += '<td>' + sites[i][6] + '</td>';
             dataTableHTML += '<td>' + '</td></tr>';
         }
         if (sites.length > numOfLines) {
@@ -165,8 +167,9 @@ document.addEventListener('DOMContentLoaded', function () {
         let mySaltThisSite = (<HTMLInputElement>ourPopup.getElementById('mySaltThisSite')).value;//alert('mySaltThisSite: ' + mySaltThisSite);
         let myUidThisSite = (<HTMLInputElement>ourPopup.getElementById('myUidThisSite')).value;//alert('myUidThisSite:' + myUidThisSite);
         let mySequenceThisSite = (<HTMLInputElement>ourPopup.getElementById('mySequenceThisSite')).value;//alert('mySequenceThisSite:' + mySequenceThisSite);
+        let myMaxPwdChars = <number>((<HTMLInputElement>ourPopup.getElementById('myMaxPwdChars')).value);//alert('myMaxPwdChars:' + myMaxPwdChars);
         let myOnlyPassword = (<HTMLInputElement>ourPopup.getElementById('myOnlyPassword')).value;//alert('myOnlyPassword:' + myOnlyPassword);
-        let pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myOnlyPassword);
+        let pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myMaxPwdChars, myOnlyPassword);
         // alert('pwdForThisSiteForThisUid: ' + pwdForThisSiteForThisUid);
         let passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
         passwordElement.setAttribute("value", pwdForThisSiteForThisUid);
@@ -178,16 +181,17 @@ document.addEventListener('DOMContentLoaded', function () {
          * - has length of 120 characters (unless you change the constant passwordLength)
          * - is made up of 64 different characters
          * - includes at least one: uppercase, lowercase, integer and special character
-         * @param domain
-         * @param saltThisSite
-         * @param uidThisSite
-         * @param sequenceNr
-         * @param pwdUser
+         * @param domain: string
+         * @param saltThisSite: string
+         * @param uidThisSite: string
+         * @param sequenceNr: number
+         * @param maxPwdChar: number
+         * @param pwdUser: string
          * @returns {string}
          */
-        function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, pwdUser): string {
+        function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, maxPwdChars: Number = 120, pwdUser): string {
 
-            const passwordLength: number = 120; //Minimal 20 and an even number!
+            const passwordLength: number = maxPwdChars; //Minimal 20 and an even number!
 
             //get the SHA512
             let stringToHash: string = domain + saltThisSite + uidThisSite + sequenceNr + pwdUser;
