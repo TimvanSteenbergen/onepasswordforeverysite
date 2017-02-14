@@ -1,6 +1,7 @@
 /**
  * Created by Tim van Steenbergen on 21-1-2017.
  */
+
 declare function SHA512(string): string;
 declare let chrome: any;
 ///<reference path="chrome/index.d.ts"/>
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
             ["quora.com", "koud", "tim@tieka.nl", "1", "75", "20160101", "Max 75 karakters in het wachtwoord"],//
             ["nrc.nl", "koud", "elma@tieka.nl", "1", "", "20160101", ""],//}EA#@MfaU98/Wd#=ha@@MKB_=)(WNgZv+K+6aCaB!@2tb)Tz5pGTc~h%Abd._6u?br#Wu?zSNMse9uzn=G~#a')(?Mhbvk8n:5a?Pw@rrhg)s/NNmhw5Bs_!
             ["ebay.com", "heet", "tivansteenberge_0", "3", "64", "20160101", "Max 64 karakters in het wachtwoord"],//
+            ["ebay.nl", "heet", "tivansteenberge_0", "3", "64", "20160101", "Max 64 karakters in het wachtwoord"],//
             ["yetanothersite.nl", "koud", "alias24", "1", "", "20160101", ""],//
             ["andonemore.nl", "koud", "myusernamehere", "1", "", "20160101", ""]//
         ]
@@ -67,6 +69,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (sites[i][3] != "") {
                             document.getElementById('mySequenceThisSite').setAttribute('value', sites[i][3]);
                             document.getElementById('mySequenceThisSite').setAttribute('disabled', "disabled");
+                        }
+                        if (sites[i][4] != "") {
+                            document.getElementById('myMaxPwdCharsThisSite').setAttribute('value', sites[i][4]);
+                            document.getElementById('myMaxPwdCharsThisSite').setAttribute('disabled', "disabled");
                         }
                     }
                 }
@@ -144,6 +150,15 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
+    document.getElementById('myMaxPwdCharsToggle').addEventListener('click', function () {
+        let elementId = this.id.substr(0, this.id.length - 6);
+        let elementToToggle = document.getElementById(elementId);
+        if (elementToToggle.hasAttribute('disabled')) {
+            elementToToggle.removeAttribute('disabled');
+        } else {
+            elementToToggle.setAttribute("disabled", "disabled");
+        }
+    });
     document.getElementById('myOnlyPasswordShow').addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 4);
         let elementToToggle = document.getElementById(elementId);
@@ -167,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let mySaltThisSite = (<HTMLInputElement>ourPopup.getElementById('mySaltThisSite')).value;//alert('mySaltThisSite: ' + mySaltThisSite);
         let myUidThisSite = (<HTMLInputElement>ourPopup.getElementById('myUidThisSite')).value;//alert('myUidThisSite:' + myUidThisSite);
         let mySequenceThisSite = (<HTMLInputElement>ourPopup.getElementById('mySequenceThisSite')).value;//alert('mySequenceThisSite:' + mySequenceThisSite);
-        let myMaxPwdChars = <number>((<HTMLInputElement>ourPopup.getElementById('myMaxPwdChars')).value);//alert('myMaxPwdChars:' + myMaxPwdChars);
+        let myMaxPwdChars = (<HTMLSelectElement>ourPopup.getElementById('myMaxPwdChars')).selectedIndex;//alert('myMaxPwdChars:' + myMaxPwdChars);
         let myOnlyPassword = (<HTMLInputElement>ourPopup.getElementById('myOnlyPassword')).value;//alert('myOnlyPassword:' + myOnlyPassword);
         let pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myMaxPwdChars, myOnlyPassword);
         // alert('pwdForThisSiteForThisUid: ' + pwdForThisSiteForThisUid);
@@ -189,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
          * @param pwdUser: string
          * @returns {string}
          */
-        function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, maxPwdChars: Number = 120, pwdUser): string {
+        function getPwdForThisSiteForThisUid(domain, saltThisSite, uidThisSite, sequenceNr, maxPwdChars: number = 120, pwdUser): string {
 
             const passwordLength: number = maxPwdChars; //Minimal 20 and an even number!
 
@@ -200,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
             //Now we have got a hexadecimal hash. Let's transform it to the 64 out of the 86 characters available in passwords:
             // a-z A-Z 0-9 and these 24: `'/\~!@#$%^()_+-=.:?[]{}
             //   @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
+            //op ebay.nl:  !@#$+*^~-
             // I choose to exclude these 23: iIjJlLoOqQxXyY`\$[]017 and we are leftover with these 64 possible password characters
             const lowerCaseCharacters: string[] = ["a", "b", "c", "d", "e", "f", "g", "h", "k", "m", "n", "p", "r", "s", "t", "u", "v", "w", "z"];
             const upperCaseCharacters: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "K", "M", "N", "P", "R", "S", "T", "U", "V", "W", "Z"];
