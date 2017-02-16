@@ -11,24 +11,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     console.log('upon DOMContentLoaded');
     let sites = [];
-    let json = {
-        "sites": [//domain, salt, username, sequencenr, maxPwdChars, lastused, remarks
-            ["gavelsnipe.com", "koud", "timvans", "1", "", "20160101"],//
-            ["webassessor.com", "koud", "TimvanSteenbergen", "2", "", "20160101", ""],//
-            ["stackoverflow.com", "koud", "tim@tieka.nl", "1", "", "20160101", ""],//
-            ["robbshop.com", "koud", "tim@tieka.nl", "1", "", "20160101", ""],//
-            ["lynda.com", "koud", "tim@tieka.nl", "1", "", "20160101", ""],//
-            ["quora.com", "koud", "tim@tieka.nl", "1", "75", "20160101", "Max 75 karakters in het wachtwoord"],//
-            ["nrc.nl", "koud", "elma@tieka.nl", "1", "", "20160101", ""],//
-            ["ebay.com", "heet", "tivansteenberge_0", "3", "64", "20160101", "Max 64 karakters in het wachtwoord"],//
-            ["ebay.nl", "heet", "tivansteenberge_0", "3", "64", "20160101", "Max 64 karakters in het wachtwoord"],//
-            ["yetanothersite.nl", "koud", "alias24", "1", "", "20160101", ""],//
-            ["andonemore.nl", "koud", "myusernamehere", "1", "", "20160101", ""]//
-        ]
-    };
-    localStorage.setItem("sites", JSON.stringify(json));
-    setValueForElementDomain();
+    let json = {"sites": []};
     showTheLocallyStoredData(5);
+    // let json = {
+    //     "sites": [//domain, salt, username, sequencenr, maxPwdChars, lastused, remarks
+    //         ["gavelsnipe.com", "koud", "timvans", "1", 120, "20160101", ""],//
+    //         ["webassessor.com", "koud", "TimvanSteenbergen", "2", 120, "20160101", ""],//
+    //         ["stackoverflow.com", "koud", "tim@tieka.nl", "1", 120, "20160101", ""],//
+    //         ["quora.com", "koud", "tim@tieka.nl", "1", 75, "20160101", "Max 75 karakters in het wachtwoord"],//
+    //         ["robbshop.com", "koud", "tim@tieka.nl", "1", 120, "20160101", ""],//
+    //         ["lynda.com", "koud", "tim@tieka.nl", "1", 120, "20160101", ""],//
+    //         ["nrc.nl", "koud", "elma@tieka.nl", "1", 120, "20160101", ""],//
+    //         ["ebay.com", "heet", "tivansteenberge_0", "3", 64, "20160101", "Max 64 karakters in het wachtwoord"],//
+    //         ["ebay.nl", "heet", "tivansteenberge_0", "3", 64, "20160101", "Max 64 karakters in het wachtwoord"],//
+    //         ["yetanothersite.nl", "koud", "alias24", "1", 120, "20160101", ""],//
+    //         ["andonemore.nl", "koud", "myusernamehere", "1", 120, "20160101", ""]//
+    //     ]
+    // };
+    // localStorage.setItem("sites", JSON.stringify(json));
+    setValueForElementDomain();
     function setValueForElementDomain() {
         chrome.tabs.getSelected(null, function (tab) {
             // chrome.tabs.query({active: true, currentWindow: true}, function (tab) {
@@ -150,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
-    document.getElementById('myMaxPwdCharsToggle').addEventListener('click', function () {
+    document.getElementById('myMaxPwdCharsThisSiteToggle').addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 6);
         let elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
@@ -178,14 +179,28 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     document.getElementById('loginButton').addEventListener('click', function () {
         let ourPopup = document;
-        let domain = (<HTMLInputElement>ourPopup.getElementById('domain')).value;
+        let myDomain = (<HTMLInputElement>ourPopup.getElementById('domain')).value;
         let mySaltThisSite = (<HTMLInputElement>ourPopup.getElementById('mySaltThisSite')).value;//alert('mySaltThisSite: ' + mySaltThisSite);
         let myUidThisSite = (<HTMLInputElement>ourPopup.getElementById('myUidThisSite')).value;//alert('myUidThisSite:' + myUidThisSite);
         let mySequenceThisSite = (<HTMLInputElement>ourPopup.getElementById('mySequenceThisSite')).value;//alert('mySequenceThisSite:' + mySequenceThisSite);
-        let myMaxPwdChars = (<HTMLSelectElement>ourPopup.getElementById('myMaxPwdChars')).selectedIndex;//alert('myMaxPwdChars:' + myMaxPwdChars);
+        let myMaxPwdCharsThisSite = (<HTMLSelectElement>ourPopup.getElementById('myMaxPwdCharsThisSite')).selectedIndex;//alert('myMaxPwdCharsThisSite:' + myMaxPwdCharsThisSite);
         let myOnlyPassword = (<HTMLInputElement>ourPopup.getElementById('myOnlyPassword')).value;//alert('myOnlyPassword:' + myOnlyPassword);
-        let pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(domain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myMaxPwdChars, myOnlyPassword);
-        // alert('pwdForThisSiteForThisUid: ' + pwdForThisSiteForThisUid);
+
+        //save the sites data every time the password gets generated
+        let siteToSave = [myDomain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myMaxPwdCharsThisSite, "20170214", ""];
+        for (let i = 0; i < json.sites.length; i++) {
+            if (json.sites[i][0] == myDomain) {
+                json.sites[i] = siteToSave;
+                siteToSave = [];
+            }
+        }
+        if (siteToSave !== []){
+            json.sites.push(siteToSave);
+        }
+        localStorage.setItem("sites", JSON.stringify(json));
+
+        let pwdForThisSiteForThisUid = getPwdForThisSiteForThisUid(myDomain, mySaltThisSite, myUidThisSite, mySequenceThisSite, myMaxPwdCharsThisSite, myOnlyPassword);
+        alert('The password for this site for this userid is: ' + pwdForThisSiteForThisUid);
         let passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
         passwordElement.setAttribute("value", pwdForThisSiteForThisUid);
         // Insert the pwdForThisSiteForThisUid in the password-input field in the document
@@ -200,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
          * @param saltThisSite: string
          * @param uidThisSite: string
          * @param sequenceNr: number
-         * @param maxPwdChar: number
+         * @param maxPwdChars: number
          * @param pwdUser: string
          * @returns {string}
          */
@@ -212,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let stringToHash: string = domain + saltThisSite + uidThisSite + sequenceNr + pwdUser;
             let generatedHash: string = SHA512(stringToHash);
 
-            //Now we have got a hexadecimal hash. Let's create our own BASE-64 password characterset and
+            //Now we have got a hexadecimal hash. Let's create our own BASE-64 password character set and
             // transform the hex to that. There are 86 characters available in passwords:
             // a-z A-Z 0-9 and these 24: `'/\~!@#$%^()_+-=.:?[]{}
             //   @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA

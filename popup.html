@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>One password for every site</title>
     <link type="text/css" rel="stylesheet" href="popup.css"/>
-    <script src="onepasswordforeverysite.js"></script>
+    <script src="OnepasswordforeverysiteApp.js"></script>
     <!--<script src="popup.js"></script>-->
     <script src="SHA512.js"></script>
 </head>
@@ -28,8 +28,8 @@
         <input id="mySequenceThisSiteToggle" type="button" value="Change number" title="Need to change the domain name you need for this site? This button enables you to do so."/>
         <input id="mySequenceThisSiteInformation" type="button" value="?" title="The sequence number makes it possible to generate a next password for this domain-salt-uid combination. This is mainly useful when the website requires you to change your password."/></dd>
 
-    <dt><label for="myMaxPwdChars">Maximum number of password characters</label></dt>
-    <dd><select id='myMaxPwdChars'>
+    <dt><label for="myMaxPwdCharsThisSite">Maximum number of password characters</label></dt>
+    <dd><select id='myMaxPwdCharsThisSite'>
         <option value="20">20</option>
         <option value="21">21</option>
         <option value="22">22</option>
@@ -132,8 +132,7 @@
         <option value="119">119</option>
         <option value="120" selected>120</option>
     </select>​
-        <!--<input id="myMaxPwdChars" value="120" type="number"/>-->
-        <input id="myMaxPwdCharsShow" type="button" value="Change max" title="Change the max number of passwordcharacters that is allowed by this site."/></dd>
+        <input id="myMaxPwdCharsThisSiteToggle" type="button" value="Change max" title="Change the max number of password characters that is allowed by this site."/></dd>
 
     <dt><label for="myOnlyPassword">Your only password</label></dt>
     <dd><input id="myOnlyPassword" value="" placeholder="********" type="password"/>
