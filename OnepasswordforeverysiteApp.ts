@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', function () {
             ["webassessor.com", "koud", "TimvanSteenbergen", "2", "", "20160101", ""],//
             ["stackoverflow.com", "koud", "tim@tieka.nl", "1", "", "20160101", ""],//
             ["robbshop.com", "koud", "tim@tieka.nl", "1", "", "20160101", ""],//
-            ["lynda.com", "koud", "tim@tieka.nl", "1", "", "20160101", ""],//3!{pWv'4(Tv}fSu.U.e!}S}aaPK'sDpCD^9K9(EhvnHb#9TgFp5WVFhGhDh~!ch(D=W:)M2GfEn9AW+@k-ffcm}RU=epHskBu#Fd{4/TuR-u@ah2:ACU)C9:
+            ["lynda.com", "koud", "tim@tieka.nl", "1", "", "20160101", ""],//
             ["quora.com", "koud", "tim@tieka.nl", "1", "75", "20160101", "Max 75 karakters in het wachtwoord"],//
-            ["nrc.nl", "koud", "elma@tieka.nl", "1", "", "20160101", ""],//}EA#@MfaU98/Wd#=ha@@MKB_=)(WNgZv+K+6aCaB!@2tb)Tz5pGTc~h%Abd._6u?br#Wu?zSNMse9uzn=G~#a')(?Mhbvk8n:5a?Pw@rrhg)s/NNmhw5Bs_!
+            ["nrc.nl", "koud", "elma@tieka.nl", "1", "", "20160101", ""],//
             ["ebay.com", "heet", "tivansteenberge_0", "3", "64", "20160101", "Max 64 karakters in het wachtwoord"],//
             ["ebay.nl", "heet", "tivansteenberge_0", "3", "64", "20160101", "Max 64 karakters in het wachtwoord"],//
             ["yetanothersite.nl", "koud", "alias24", "1", "", "20160101", ""],//
@@ -212,11 +212,12 @@ document.addEventListener('DOMContentLoaded', function () {
             let stringToHash: string = domain + saltThisSite + uidThisSite + sequenceNr + pwdUser;
             let generatedHash: string = SHA512(stringToHash);
 
-            //Now we have got a hexadecimal hash. Let's transform it to the 64 out of the 86 characters available in passwords:
+            //Now we have got a hexadecimal hash. Let's create our own BASE-64 password characterset and
+            // transform the hex to that. There are 86 characters available in passwords:
             // a-z A-Z 0-9 and these 24: `'/\~!@#$%^()_+-=.:?[]{}
             //   @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
             //op ebay.nl:  !@#$+*^~-
-            // I choose to exclude these 23: iIjJlLoOqQxXyY`\$[]017 and we are leftover with these 64 possible password characters
+            // I choose to exclude these: iIjJlLoOqQxXyY`\$[]017 and we are leftover with these 64 possible password characters
             const lowerCaseCharacters: string[] = ["a", "b", "c", "d", "e", "f", "g", "h", "k", "m", "n", "p", "r", "s", "t", "u", "v", "w", "z"];
             const upperCaseCharacters: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "K", "M", "N", "P", "R", "S", "T", "U", "V", "W", "Z"];
             const numberCharacters: string[] = ["2", "3", "4", "5", "6", "8", "9"];
