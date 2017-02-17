@@ -5,31 +5,30 @@
     <title>One password for every site</title>
     <link type="text/css" rel="stylesheet" href="popup.css"/>
     <script src="OnepasswordforeverysiteApp.js"></script>
-    <!--<script src="popup.js"></script>-->
     <script src="SHA512.js"></script>
 </head>
 <body style="background-color: lightgray;" >
 <h1>One password only</h1>
 <dl>
-    <dt><label for="domain">website's domain name</label></dt>
-    <dd><input id="domain" value="" placeholder="domain name"/>
-        <input id="domainToggle" type="button" value="Change domain" title="Need to change the domain name you need for this site? This button enables you to do so."/></dd>
+    <dt><label for="inputDomain">website's domain name</label></dt>
+    <dd><input id="inputDomain" value="" placeholder="domain name"/>
+        <input id="inputDomainToggle" type="button" value="Change domain" title="Need to change the domain name you need for this site? This button enables you to do so."/></dd>
 
-    <dt><label for="mySaltThisSite">Your salt on this site</label></dt>
-    <dd><input id="mySaltThisSite" value="zout" placeholder="salt"/>
-        <input id="mySaltThisSiteToggle" type="button" value="Change salt" title="Need to change the salt you need for this site? This button enables you to do so."/></dd>
+    <dt><label for="inputSalt">Your salt on this site</label></dt>
+    <dd><input id="inputSalt" value="zout" placeholder="salt"/>
+        <input id="inputSaltToggle" type="button" value="Change salt" title="Need to change the salt you need for this site? This button enables you to do so."/></dd>
 
-    <dt><label for="myUidThisSite">Your userid on this site</label></dt>
-    <dd><input id="myUidThisSite" value="" placeholder="user-id"/>
-        <input id="myUidThisSiteToggle" type="button" value="Change user-id" title="Need to change the user-id you need for this site? This button enables you to do so.."/></dd>
+    <dt><label for="inputUserid">Your userid on this site</label></dt>
+    <dd><input id="inputUserid" value="" placeholder="user-id"/>
+        <input id="inputUseridToggle" type="button" value="Change user-id" title="Need to change the user-id you need for this site? This button enables you to do so.."/></dd>
 
-    <dt><label for="mySequenceThisSite">Sequence number</label></dt>
-    <dd><input id="mySequenceThisSite" value="1" placeholder="number"/>
-        <input id="mySequenceThisSiteToggle" type="button" value="Change number" title="Need to change the domain name you need for this site? This button enables you to do so."/>
-        <input id="mySequenceThisSiteInformation" type="button" value="?" title="The sequence number makes it possible to generate a next password for this domain-salt-uid combination. This is mainly useful when the website requires you to change your password."/></dd>
+    <dt><label for="inputSequenceNr">Sequence number</label></dt>
+    <dd><input id="inputSequenceNr" type="number" value="1" placeholder="number"/>
+        <input id="inputSequenceNrToggle" type="button" value="Change number" title="Need to change the domain name you need for this site? This button enables you to do so."/>
+        <input id="inputSequenceNrInformation" type="button" value="?" title="The sequence number makes it possible to generate a next password for this domain-salt-uid combination. This is mainly useful when the website requires you to change your password."/></dd>
 
-    <dt><label for="myMaxPwdCharsThisSite">Maximum number of password characters</label></dt>
-    <dd><select id='myMaxPwdCharsThisSite'>
+    <dt><label for="selectMaxPwdChars">Maximum number of password characters</label></dt>
+    <dd><select id='selectMaxPwdChars'>
         <option value="20">20</option>
         <option value="21">21</option>
         <option value="22">22</option>
@@ -132,15 +131,15 @@
         <option value="119">119</option>
         <option value="120" selected>120</option>
     </select>​
-        <input id="myMaxPwdCharsThisSiteToggle" type="button" value="Change max" title="Change the max number of password characters that is allowed by this site."/></dd>
+        <input id="selectMaxPwdCharsToggle" type="button" value="Change max" title="Change the max number of password characters that is allowed by this site."/></dd>
 
-    <dt><label for="myOnlyPassword">Your only password</label></dt>
-    <dd><input id="myOnlyPassword" value="" placeholder="********" type="password"/>
-        <input id="myOnlyPasswordShow" type="button" value="Show" title="Show the characters. Should only do this if no one is peeping."/>
-        <input id="myOnlyPasswordHide" type="button" value="Hide" title="Hide whatever you type." disabled="disabled"/></dd>
+    <dt><label for="inputAppPassword">Your only password</label></dt>
+    <dd><input id="inputAppPassword" value="" placeholder="********" type="password"/>
+        <input id="inputAppPasswordShow" type="button" value="Show" title="Show the characters. Should only do this if no one is peeping."/>
+        <input id="inputAppPasswordHide" type="button" value="Hide" title="Hide whatever you type." disabled="disabled"/></dd>
 
-    <dt><label for="pwdForThisSiteForThisUid">Your password on this site</label></dt>
-    <dd><input id="pwdForThisSiteForThisUid" value="" placeholder="password"/>
+    <dt><label for="inputSitePassword">Your password on this site</label></dt>
+    <dd><input id="inputSitePassword" value="" placeholder="Generated password"/>
         <input id="loginButton" type="button" value="Generate Your Password"/></dd>
 </dl>
 <section id="data" style="background-color: antiquewhite">
