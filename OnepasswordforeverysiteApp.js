@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             document.getElementById('inputSalt').setAttribute('disabled', "disabled");
                         }
                         if (site._userId != "") {
-                            document.getElementById('inputUserid').setAttribute('value', site._userId);
-                            document.getElementById('inputUserid').setAttribute('disabled', "disabled");
+                            document.getElementById('inputUserId').setAttribute('value', site._userId);
+                            document.getElementById('inputUserId').setAttribute('disabled', "disabled");
                         }
                         if (site._userId != "") {
                             document.getElementById('inputSequenceNr').setAttribute('value', (site._sequenceNr + ""));
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
-    document.getElementById('inputUseridToggle').addEventListener('click', function () {
+    document.getElementById('inputUserIdToggle').addEventListener('click', function () {
         var elementId = this.id.substr(0, this.id.length - 6);
         var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {

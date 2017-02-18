@@ -13,17 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // let sites = [];
     let json = {
         "sites": [//domain, salt, username, sequencenr, maxPwdChars, lastused, remarks
-            new Site("gavelsnipe.com", "koud", "timvans",  1, 120, new Date("20160101"), ""),
+            new Site("gavelsnipe.com", "koud", "timvans", 1, 120, new Date("20160101"), ""),
             new Site("webassessor.com", "koud", "TimvanSteenbergen", 2, 120, new Date("20160101"), ""),//
-            new Site("stackoverflow.com", "koud", "tim@tieka.nl", 1, 120,  new Date( new Date("20160101")), ""),
-            new Site("quora.com", "koud", "tim@tieka.nl", 1, 75,  new Date("20160101"), "Max 75 karakters in het wachtwoord"),
-            new Site("robbshop.com", "koud", "tim@tieka.nl", 1, 120,  new Date("20160101"), ""),
-            new Site("lynda.com", "koud", "tim@tieka.nl", 1, 120,  new Date("20160101"), ""),
-            new Site("nrc.nl", "koud", "elma@tieka.nl", 1, 120,  new Date("20160101"), ""),
-            new Site("ebay.com", "heet", "tivansteenberge_0", 3, 64,  new Date("20160101"), "Max 64 karakters in het wachtwoord"),
-            new Site("ebay.nl", "heet", "tivansteenberge_0", 3, 64,  new Date("20160101"), "Max 64 karakters in het wachtwoord"),
-            new Site("yetanothersite.nl", "koud", "alias24", 1, 120,  new Date("20160101"), ""),
-            new Site("andonemore.nl", "koud", "myusernamehere", 1, 120,  new Date("20160101"), "")
+            new Site("stackoverflow.com", "koud", "tim@tieka.nl", 1, 120, new Date(new Date("20160101")), ""),
+            new Site("quora.com", "koud", "tim@tieka.nl", 1, 75, new Date("20160101"), "Max 75 karakters in het wachtwoord"),
+            new Site("robbshop.com", "koud", "tim@tieka.nl", 1, 120, new Date("20160101"), ""),
+            new Site("lynda.com", "koud", "tim@tieka.nl", 1, 120, new Date("20160101"), ""),
+            new Site("nrc.nl", "koud", "elma@tieka.nl", 1, 120, new Date("20160101"), ""),
+            new Site("ebay.com", "heet", "tivansteenberge_0", 3, 64, new Date("20160101"), "Max 64 karakters in het wachtwoord"),
+            new Site("ebay.nl", "heet", "tivansteenberge_0", 3, 64, new Date("20160101"), "Max 64 karakters in het wachtwoord"),
+            new Site("yetanothersite.nl", "koud", "alias24", 1, 120, new Date("20160101"), ""),
+            new Site("andonemore.nl", "koud", "myusernamehere", 1, 120, new Date("20160101"), "")
         ]
     };
     let sites = json.sites;
@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             document.getElementById('inputSalt').setAttribute('disabled', "disabled");
                         }
                         if (site._userId != "") {
-                            document.getElementById('inputUserid').setAttribute('value', site._userId);
-                            document.getElementById('inputUserid').setAttribute('disabled', "disabled");
+                            document.getElementById('inputUserId').setAttribute('value', site._userId);
+                            document.getElementById('inputUserId').setAttribute('disabled', "disabled");
                         }
                         if (site._userId != "") {
                             document.getElementById('inputSequenceNr').setAttribute('value', (site._sequenceNr + ""));
@@ -80,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             }
-
         });
     }
 
@@ -137,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
-    document.getElementById('inputUseridToggle').addEventListener('click', function () {
+    document.getElementById('inputUserIdToggle').addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 6);
         let elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
@@ -200,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 siteUpserted = true;
             }
         }
-        if (!siteUpserted){
+        if (!siteUpserted) {
             json.sites.push(site);
         }
         localStorage.setItem("sites", JSON.stringify(json));
@@ -227,7 +226,7 @@ interface Site {
     _lastUsed?: Date,
     _remark?: string
 }
-class Site implements Site{
+class Site implements Site {
 
     constructor(public _domain: string = "",
                 public _salt?: string,
@@ -235,8 +234,9 @@ class Site implements Site{
                 public _sequenceNr?: number,
                 public _maxPwdChars?: number,
                 public _lastUsed?: Date,
-                public _remark?: string){
+                public _remark?: string) {
     }
+
     getDomain(): string {
         return this._domain;
     }
