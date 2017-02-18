@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 for (let i = 0; i < sites.length; i++) {
                     let site: Site = sites[i];
                     if (site._domain == domain) {
-                        document.getElementById('domain').setAttribute('disabled', "disabled");
+                        document.getElementById('inputDomain').setAttribute('disabled', "disabled");
                         if (site._salt != "") {
                             document.getElementById('inputSalt').setAttribute('value', site._salt);
                             document.getElementById('inputSalt').setAttribute('disabled', "disabled");
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             document.getElementById('inputUserid').setAttribute('disabled', "disabled");
                         }
                         if (site._userId != "") {
-                            document.getElementById('inputSequenceNr').setAttribute('value', (site._sequenceNr + "");
+                            document.getElementById('inputSequenceNr').setAttribute('value', (site._sequenceNr + ""));
                             document.getElementById('inputSequenceNr').setAttribute('disabled', "disabled");
                         }
                         if (site._maxPwdChars != 120) {
@@ -219,13 +219,13 @@ document.addEventListener('DOMContentLoaded', function () {
  * Created by Tim on 12-2-2017.
  */
 interface Site {
-    domain: string,
-    salt?: string,
-    userId?: string,
-    sequenceNr?: number,
-    maxPwdChars?: number,
-    lastUsed?: Date,
-    remark?: string
+    _domain: string,
+    _salt?: string,
+    _userId?: string,
+    _sequenceNr?: number,
+    _maxPwdChars?: number,
+    _lastUsed?: Date,
+    _remark?: string
 }
 class Site implements Site{
 
@@ -350,10 +350,10 @@ class SiteService implements ISiteService {
      */
     getSitePassword(site: Site, appPassword: string): string {
 
-        const passwordLength: number = site.maxPwdChars; //Between 20 and 120
+        const passwordLength: number = site._maxPwdChars; //Between 20 and 120
 
         //get the SHA512
-        let stringToHash: string = site.domain + site.salt + site.userId + site.sequenceNr + appPassword;
+        let stringToHash: string = site._domain + site._salt + site._userId + site._sequenceNr + appPassword;
         let generatedHash: string = SHA512(stringToHash);
 
         //Now we have got a hexadecimal hash. Let's create our own BASE-64 password character set and

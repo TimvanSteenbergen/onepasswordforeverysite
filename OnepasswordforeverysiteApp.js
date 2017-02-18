@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 for (var i = 0; i < sites.length; i++) {
                     var site = sites[i];
                     if (site._domain == domain) {
-                        document.getElementById('domain').setAttribute('disabled', "disabled");
+                        document.getElementById('inputDomain').setAttribute('disabled', "disabled");
                         if (site._salt != "") {
                             document.getElementById('inputSalt').setAttribute('value', site._salt);
                             document.getElementById('inputSalt').setAttribute('disabled', "disabled");
@@ -297,9 +297,9 @@ var SiteService = (function () {
      * @returns {string}
      */
     SiteService.prototype.getSitePassword = function (site, appPassword) {
-        var passwordLength = site.maxPwdChars; //Between 20 and 120
+        var passwordLength = site._maxPwdChars; //Between 20 and 120
         //get the SHA512
-        var stringToHash = site.domain + site.salt + site.userId + site.sequenceNr + appPassword;
+        var stringToHash = site._domain + site._salt + site._userId + site._sequenceNr + _appPassword;
         var generatedHash = SHA512(stringToHash);
         //Now we have got a hexadecimal hash. Let's create our own BASE-64 password character set and
         // transform the hex to that. There are 86 characters available in passwords:
