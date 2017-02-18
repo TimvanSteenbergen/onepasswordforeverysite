@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var json = {
         "sites": [
             new Site("gavelsnipe.com", "koud", "timvans", 1, 120, new Date("20160101"), ""),
+            new Site("mycloud.com", "hout", "tim@tieka.nl", 30, 1, new Date("20170218"), ""),
             new Site("webassessor.com", "koud", "TimvanSteenbergen", 2, 120, new Date("20160101"), ""),
             new Site("stackoverflow.com", "koud", "tim@tieka.nl", 1, 120, new Date(new Date("20160101")), ""),
             new Site("quora.com", "koud", "tim@tieka.nl", 1, 75, new Date("20160101"), "Max 75 karakters in het wachtwoord"),
