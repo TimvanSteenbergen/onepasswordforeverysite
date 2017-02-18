@@ -1,20 +1,14 @@
 /**
  * Created by Tim van Steenbergen on 21-1-2017.
  */
-
-declare function SHA512(string): string;
-declare function getSitePassword(site: Site,
-                                 pwdUser: string): string;
-declare let chrome: any;
 ///<reference path="chrome/index.d.ts"/>
 console.log('before DOMContentLoaded');
 document.addEventListener('DOMContentLoaded', function () {
-
     // let sites = [];
-    let json = {
-        "sites": [//domain, salt, username, sequencenr, maxPwdChars, lastused, remarks
+    var json = {
+        "sites": [
             new Site("gavelsnipe.com", "koud", "timvans", 1, 120, new Date("20160101"), ""),
-            new Site("webassessor.com", "koud", "TimvanSteenbergen", 2, 120, new Date("20160101"), ""),//
+            new Site("webassessor.com", "koud", "TimvanSteenbergen", 2, 120, new Date("20160101"), ""),
             new Site("stackoverflow.com", "koud", "tim@tieka.nl", 1, 120, new Date(new Date("20160101")), ""),
             new Site("quora.com", "koud", "tim@tieka.nl", 1, 75, new Date("20160101"), "Max 75 karakters in het wachtwoord"),
             new Site("robbshop.com", "koud", "tim@tieka.nl", 1, 120, new Date("20160101"), ""),
@@ -26,39 +20,32 @@ document.addEventListener('DOMContentLoaded', function () {
             new Site("andonemore.nl", "koud", "myusernamehere", 1, 120, new Date("20160101"), "")
         ]
     };
-    let sites = json.sites;
+    var sites = json.sites;
     localStorage.setItem("sites", JSON.stringify(json));
     showTheLocallyStoredData(5);
     setValueForElementDomain();
     function setValueForElementDomain() {
         chrome.tabs.getSelected(null, function (tab) {
             // chrome.tabs.query({active: true, currentWindow: true}, function (tab) {
-            let ourPopup = document;
-            let domain = getDomain(tab.url);
-
-            let domainElement = ourPopup.getElementById('inputDomain');
+            var ourPopup = document;
+            var domain = getDomain(tab.url);
+            var domainElement = ourPopup.getElementById('inputDomain');
             domainElement.setAttribute('value', domain);
-
             setValueForElements(domain);
-
-            function getDomain(url)
-            //This function gets the domainname from the url.
-            //Can't use "window.location.host" because this will return the domain of the popup.html
-            {
+            function getDomain(url) {
                 domain = url.match(/:\/\/(.[^/]+)/)[1];
                 //remove the sub-domain(s)
-                let numberOfDotsInDomain = (domain.match(/\./g) || []).length;
-                for (let dot = 1; dot < numberOfDotsInDomain; dot++) {
+                var numberOfDotsInDomain = (domain.match(/\./g) || []).length;
+                for (var dot = 1; dot < numberOfDotsInDomain; dot++) {
                     domain = domain.substr(domain.indexOf('.') + 1, domain.length);
                 }
                 return domain;
             }
-
             function setValueForElements(domain) {
                 json = JSON.parse(localStorage.getItem("sites"));
                 sites = json.sites;
-                for (let i = 0; i < sites.length; i++) {
-                    let site: Site = sites[i];
+                for (var i = 0; i < sites.length; i++) {
+                    var site = sites[i];
                     if (site._domain == domain) {
                         document.getElementById('inputDomain').setAttribute('disabled', "disabled");
                         if (site._salt != "") {
@@ -82,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
     /**
      * This function retrieves the locally stored sites, changes the popup to:
      * - only show numOfLines of the sites
@@ -92,11 +78,11 @@ document.addEventListener('DOMContentLoaded', function () {
     function showTheLocallyStoredData(numOfLines) {
         json = JSON.parse(localStorage.getItem("sites"));
         sites = json.sites;
-        let dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
+        var dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
         // sites.forEach((dataTableHTML: string, site: Site ): Site => {
-        for (let i = 0; i < sites.length && i < numOfLines; i++) {
-            let site: Site = sites[i];
-            dataTableHTML += '<tr><td>' + site._domain;//  getDomain() + '</td>';
+        for (var i = 0; i < sites.length && i < numOfLines; i++) {
+            var site = sites[i];
+            dataTableHTML += '<tr><td>' + site._domain; //  getDomain() + '</td>';
             dataTableHTML += '<td>' + site._salt + '</td>';
             dataTableHTML += '<td>' + site._userId + '</td>';
             dataTableHTML += '<td>' + site._sequenceNr + '</td>';
@@ -107,93 +93,95 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (sites.length > numOfLines) {
             document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: inline");
-        } else {
+        }
+        else {
             document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: none");
         }
         dataTableHTML += '</table>';
         document.getElementById('locallyStoredUserData').innerHTML = dataTableHTML;
     }
-
     document.getElementById('showAllTheLocallyStoredData').addEventListener('click', function () {
         showTheLocallyStoredData(100000);
     });
-
     document.getElementById('inputDomainToggle').addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
+        var elementId = this.id.substr(0, this.id.length - 6);
+        var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
             elementToToggle.removeAttribute('disabled');
-        } else {
+        }
+        else {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
     document.getElementById('inputSaltToggle').addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
+        var elementId = this.id.substr(0, this.id.length - 6);
+        var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
             elementToToggle.removeAttribute('disabled');
-        } else {
+        }
+        else {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
     document.getElementById('inputUserIdToggle').addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
+        var elementId = this.id.substr(0, this.id.length - 6);
+        var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
             elementToToggle.removeAttribute('disabled');
-        } else {
+        }
+        else {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
     document.getElementById('inputSequenceNrToggle').addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
+        var elementId = this.id.substr(0, this.id.length - 6);
+        var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
             elementToToggle.removeAttribute('disabled');
-        } else {
+        }
+        else {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
     document.getElementById('selectMaxPwdCharsToggle').addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
+        var elementId = this.id.substr(0, this.id.length - 6);
+        var elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
             elementToToggle.removeAttribute('disabled');
-        } else {
+        }
+        else {
             elementToToggle.setAttribute("disabled", "disabled");
         }
     });
     document.getElementById('inputAppPasswordShow').addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 4);
-        let elementToToggle = document.getElementById(elementId);
+        var elementId = this.id.substr(0, this.id.length - 4);
+        var elementToToggle = document.getElementById(elementId);
         elementToToggle.setAttribute('type', 'text');
         document.getElementById('inputAppPasswordShow').setAttribute('disabled', 'DISABLED');
         document.getElementById('inputAppPasswordHide').removeAttribute('disabled');
     });
     document.getElementById('inputAppPasswordHide').addEventListener('click', function () {
-        let elementToToggle = document.getElementById(this.id.substr(0, this.id.length - 4));
+        var elementToToggle = document.getElementById(this.id.substr(0, this.id.length - 4));
         elementToToggle.setAttribute('type', 'password');
         document.getElementById('inputAppPasswordShow').removeAttribute('disabled');
         document.getElementById('inputAppPasswordHide').setAttribute('disabled', 'DISABLED');
     });
-
     /*
      * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence and given password.
      */
     document.getElementById('loginButton').addEventListener('click', function () {
-        let site = new Site;
-        let ourPopup = document;
-        site.setDomain((<HTMLInputElement>ourPopup.getElementById('inputDomain')).value);
-        site.setSalt((<HTMLInputElement>ourPopup.getElementById('inputSalt')).value);
-        site.setUserId((<HTMLInputElement>ourPopup.getElementById('inputUserId')).value);
-        site.setSequenceNr(+(<HTMLInputElement>ourPopup.getElementById('inputSequenceNr')).value);
-        site.setMaxPwdChars((<HTMLSelectElement>ourPopup.getElementById('selectMaxPwdChars')).selectedIndex);
-
-        let inputValueAppPassword = (<HTMLInputElement>ourPopup.getElementById('inputAppPassword')).value;
+        var site = new Site;
+        var ourPopup = document;
+        site.setDomain(ourPopup.getElementById('inputDomain').value);
+        site.setSalt(ourPopup.getElementById('inputSalt').value);
+        site.setUserId(ourPopup.getElementById('inputUserId').value);
+        site.setSequenceNr(+ourPopup.getElementById('inputSequenceNr').value);
+        site.setMaxPwdChars(ourPopup.getElementById('selectMaxPwdChars').selectedIndex);
+        var inputValueAppPassword = ourPopup.getElementById('inputAppPassword').value;
         //save the sites data every time the password gets generated
         // siteService.add(site)
-        let siteUpserted = false;
-        for (let i = 0; i < json.sites.length; i++) {
+        var siteUpserted = false;
+        for (var i = 0; i < json.sites.length; i++) {
             if (json.sites[i][0] == site.getDomain()) {
                 json.sites[i] = site;
                 siteUpserted = true;
@@ -203,143 +191,103 @@ document.addEventListener('DOMContentLoaded', function () {
             json.sites.push(site);
         }
         localStorage.setItem("sites", JSON.stringify(json));
-
-        let siteService = new SiteService(sites);
-        let sitePassword = siteService.getSitePassword(site, inputValueAppPassword);
+        var siteService = new SiteService(sites);
+        var sitePassword = siteService.getSitePassword(site, inputValueAppPassword);
         alert('The password for this site for this user-id is: ' + sitePassword);
-        let passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
+        var passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
         passwordElement.setAttribute("value", sitePassword);
         // Insert the pwdForThisSiteForThisUid in the password-input field in the document
         // insertPwd(pwdForThisSiteForThisUid, passwordElement);
-
     }, false);
 }, false);
-
-/**
- * Created by Tim on 12-2-2017.
- */
-interface Site {
-    _domain: string,
-    _salt?: string,
-    _userId?: string,
-    _sequenceNr?: number,
-    _maxPwdChars?: number,
-    _lastUsed?: Date,
-    _remark?: string
-}
-class Site implements Site {
-
-    constructor(public _domain: string = "",
-                public _salt?: string,
-                public _userId?: string,
-                public _sequenceNr?: number,
-                public _maxPwdChars?: number,
-                public _lastUsed?: Date,
-                public _remark?: string) {
+var Site = (function () {
+    function Site(_domain, _salt, _userId, _sequenceNr, _maxPwdChars, _lastUsed, _remark) {
+        if (_domain === void 0) { _domain = ""; }
+        this._domain = _domain;
+        this._salt = _salt;
+        this._userId = _userId;
+        this._sequenceNr = _sequenceNr;
+        this._maxPwdChars = _maxPwdChars;
+        this._lastUsed = _lastUsed;
+        this._remark = _remark;
     }
-
-    getDomain(): string {
+    Site.prototype.getDomain = function () {
         return this._domain;
-    }
-
-    setDomain(value: string) {
+    };
+    Site.prototype.setDomain = function (value) {
         this._domain = value;
-    }
-
-    getSalt(): string {
+    };
+    Site.prototype.getSalt = function () {
         return this._salt;
-    }
-
-    setSalt(value: string) {
+    };
+    Site.prototype.setSalt = function (value) {
         this._salt = value;
-    }
-
-    getUserId(): string {
+    };
+    Site.prototype.getUserId = function () {
         return this._userId;
-    }
-
-    setUserId(value: string) {
+    };
+    Site.prototype.setUserId = function (value) {
         this._userId = value;
-    }
-
-    getSequenceNr(): number {
+    };
+    Site.prototype.getSequenceNr = function () {
         return this._sequenceNr;
-    }
-
-    setSequenceNr(value: number) {
+    };
+    Site.prototype.setSequenceNr = function (value) {
         this._sequenceNr = value;
-    }
-
-    getMaxPwdChars(): number {
+    };
+    Site.prototype.getMaxPwdChars = function () {
         return this._maxPwdChars;
-    }
-
-    setMaxPwdChars(value: number) {
+    };
+    Site.prototype.setMaxPwdChars = function (value) {
         this._maxPwdChars = value;
-    }
-
-    getLastUsed(): Date {
+    };
+    Site.prototype.getLastUsed = function () {
         return this._lastUsed;
-    }
-
-    setLastUsed(value: Date) {
+    };
+    Site.prototype.setLastUsed = function (value) {
         this._lastUsed = value;
-    }
-
-    getRemark(): string {
+    };
+    Site.prototype.getRemark = function () {
         return this._remark;
-    }
-
-    setRemark(value: string) {
+    };
+    Site.prototype.setRemark = function (value) {
         this._remark = value;
-    }
-}
-/**
- * Created by Tim on 11-2-2017.
- */
-
-declare function SHA512(string): string;
-
-interface ISiteService {
-    add(site: Site): Boolean;
-    getByDomain(domain: string): Site;
-    getAll(): Site[];
-    getSitePassword(site: Site,
-                    pwdUser: string): string;
-}
-
-function getTheLocallyStoredSites(numOfLines: number = 9999): Site[] {
-    let json = JSON.parse(localStorage.getItem("sites"));
-    let sites = json.sites;
+    };
+    return Site;
+}());
+function getTheLocallyStoredSites(numOfLines) {
+    if (numOfLines === void 0) { numOfLines = 9999; }
+    var json = JSON.parse(localStorage.getItem("sites"));
+    var sites = json.sites;
     if (numOfLines == 9999) {
         return sites;
-    } else {
+    }
+    else {
         return sites.slice(0, numOfLines);
     }
 }
-
-class SiteService implements ISiteService {
-    constructor(sites: Site[]) {
+var SiteService = (function () {
+    function SiteService(sites) {
+        var _this = this;
         if (sites) {
-            sites.forEach(site => this.add(site))
+            sites.forEach(function (site) { return _this.add(site); });
         }
     }
-
-    add(site: Site): Boolean {
+    SiteService.prototype.add = function (site) {
         return true;
     };
-
-    getByDomain(domain: string): Site {
-        let site: Site = new Site;
+    ;
+    SiteService.prototype.getByDomain = function (domain) {
+        var site = new Site;
         getTheLocallyStoredSites();
         // site->setDomain()
         return site;
     };
-
-    getAll(): Site[] {
+    ;
+    SiteService.prototype.getAll = function () {
         return getTheLocallyStoredSites();
     };
-
+    ;
     /**
      * This function takes its parameters and returns a hashed password that:
      * - has length of 120 characters (unless you change the constant passwordLength)
@@ -349,62 +297,57 @@ class SiteService implements ISiteService {
      * @param appPassword: string
      * @returns {string}
      */
-    getSitePassword(site: Site, appPassword: string): string {
-        const passwordLength: number = site._maxPwdChars; //Between 20 and 120
-
+    SiteService.prototype.getSitePassword = function (site, appPassword) {
+        var passwordLength = site._maxPwdChars; //Between 20 and 120
         //get the SHA512
-        let stringToHash: string = site._domain + site._salt + site._userId + site._sequenceNr + appPassword;
-        let generatedHash: string = SHA512(stringToHash);
-
+        var stringToHash = site._domain + site._salt + site._userId + site._sequenceNr + appPassword;
+        var generatedHash = SHA512(stringToHash);
         //Now we have got a hexadecimal hash. Let's create our own BASE-64 password character set and
         // transform the hex to that. There are 86 characters available in passwords:
         // a-z A-Z 0-9 and these 24: `'/\~!@#$%^()_+-=.:?[]{}
         //   @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
         //op ebay.nl:  !@#$+*^~-
         // I choose to exclude these: iIjJlLoOqQxXyY`\$[]017 and we are leftover with these 64 possible password characters
-        const lowerCaseCharacters: string[] = ["a", "b", "c", "d", "e", "f", "g", "h", "k", "m", "n", "p", "r", "s", "t", "u", "v", "w", "z"];
-        const upperCaseCharacters: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "K", "M", "N", "P", "R", "S", "T", "U", "V", "W", "Z"];
-        const numberCharacters: string[] = ["2", "3", "4", "5", "6", "8", "9"];
-        const specialCharacters: string[] = ["'", "/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
-        const passwordCharacters: string[] = lowerCaseCharacters.concat(upperCaseCharacters).concat(numberCharacters).concat(specialCharacters);
-        let counterHash: number = 0;
-        let generatedPassword: string = "";
-        for (let counterPwd = 0; counterPwd < (passwordLength / 2); counterPwd++) {
-            let nextHashPart: string = generatedHash.substr(counterHash, 3);
-            let nextDecimal: number = parseInt(nextHashPart, 16);
-            let secondChar: number = nextDecimal % 64;
-            let firstChar: number = ((nextDecimal - secondChar) / 64);
+        var lowerCaseCharacters = ["a", "b", "c", "d", "e", "f", "g", "h", "k", "m", "n", "p", "r", "s", "t", "u", "v", "w", "z"];
+        var upperCaseCharacters = ["A", "B", "C", "D", "E", "F", "G", "H", "K", "M", "N", "P", "R", "S", "T", "U", "V", "W", "Z"];
+        var numberCharacters = ["2", "3", "4", "5", "6", "8", "9"];
+        var specialCharacters = ["'", "/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
+        var passwordCharacters = lowerCaseCharacters.concat(upperCaseCharacters).concat(numberCharacters).concat(specialCharacters);
+        var counterHash = 0;
+        var generatedPassword = "";
+        for (var counterPwd = 0; counterPwd < (passwordLength / 2); counterPwd++) {
+            var nextHashPart = generatedHash.substr(counterHash, 3);
+            var nextDecimal = parseInt(nextHashPart, 16);
+            var secondChar = nextDecimal % 64;
+            var firstChar = ((nextDecimal - secondChar) / 64);
             generatedPassword += passwordCharacters[firstChar] + passwordCharacters[secondChar];
-            counterHash = ((counterHash + 3) > 128) ? 1 : (counterHash + 3);//resetting counterHash to 1 (instead of 0) to get different nextHashParts the second time
+            counterHash = ((counterHash + 3) > 128) ? 1 : (counterHash + 3); //resetting counterHash to 1 (instead of 0) to get different nextHashParts the second time
         }
-
         //Make sure there is at least one uppercase
         if ((/[A-Z]/.test(generatedPassword)) === false) {
-            let chosenUppercaseCharacter: string = upperCaseCharacters[generatedHash.charCodeAt(3) % 19];
+            var chosenUppercaseCharacter = upperCaseCharacters[generatedHash.charCodeAt(3) % 19];
             generatedPassword = chosenUppercaseCharacter + generatedPassword.substr(1, passwordLength - 1);
         }
-
         //Make sure there is at least one lowercase
         if ((/[a-z]/.test(generatedPassword)) === false) {
-            let chosenLowercaseCharacter: string = lowerCaseCharacters[generatedHash.charCodeAt(3) % 19];
-            let chosenPosition: number = generatedHash.charCodeAt(4) % 16 + 1; // = 1 to 16
-            let firstPart: string = generatedPassword.substr(0, chosenPosition);
-            let lastPart: string = generatedPassword.substr(chosenPosition + 1);
+            var chosenLowercaseCharacter = lowerCaseCharacters[generatedHash.charCodeAt(3) % 19];
+            var chosenPosition = generatedHash.charCodeAt(4) % 16 + 1; // = 1 to 16
+            var firstPart = generatedPassword.substr(0, chosenPosition);
+            var lastPart = generatedPassword.substr(chosenPosition + 1);
             generatedPassword = firstPart + chosenLowercaseCharacter + lastPart;
         }
-
         //Make sure there is at least one number
         if ((/[0-9]/.test(generatedPassword)) === false) {
-            let chosenNumberCharacter: string = numberCharacters[generatedHash.charCodeAt(3) % 19];
+            var chosenNumberCharacter = numberCharacters[generatedHash.charCodeAt(3) % 19];
             generatedPassword = generatedPassword.substr(0, passwordLength - 1) + chosenNumberCharacter;
         }
-
         //Make sure there is at least one special character
         if ((/['/~@#%^()_+-=.:?!{}]/.test(generatedPassword)) === false) {
-            let chosenSpecialCharacter: string = specialCharacters[generatedHash.charCodeAt(3) % 19];
+            var chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(3) % 19];
             generatedPassword = generatedPassword.substr(0, passwordLength - 1) + chosenSpecialCharacter;
         }
-
         return generatedPassword;
-    }
-}
+    };
+    return SiteService;
+}());
+//# sourceMappingURL=OnepasswordforeverysiteApp.js.map
