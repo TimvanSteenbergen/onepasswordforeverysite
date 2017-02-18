@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
         site.setSalt((<HTMLInputElement>ourPopup.getElementById('OPFESinputSalt')).value);
         site.setUserId((<HTMLInputElement>ourPopup.getElementById('OPFESinputUserId')).value);
         site.setSequenceNr(+(<HTMLInputElement>ourPopup.getElementById('OPFESinputSequenceNr')).value);
-        site.setMaxPwdChars((<HTMLSelectElement>ourPopup.getElementById('OPFESselectMaxPwdChars')).selectedIndex);
+        site.setMaxPwdChars(+(<HTMLSelectElement>ourPopup.getElementById('OPFESselectMaxPwdChars')).value);
 
         let inputValueAppPassword = (<HTMLInputElement>ourPopup.getElementById('OPFESinputAppPassword')).value;
         //save the sites data every time the password gets generated
