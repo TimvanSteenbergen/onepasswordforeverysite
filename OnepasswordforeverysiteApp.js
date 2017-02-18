@@ -298,7 +298,6 @@ var SiteService = (function () {
      * @returns {string}
      */
     SiteService.prototype.getSitePassword = function (site, appPassword) {
-        alert('s');
         var passwordLength = site._maxPwdChars; //Between 20 and 120
         //get the SHA512
         var stringToHash = site._domain + site._salt + site._userId + site._sequenceNr + appPassword;

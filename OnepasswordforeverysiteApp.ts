@@ -350,7 +350,6 @@ class SiteService implements ISiteService {
      * @returns {string}
      */
     getSitePassword(site: Site, appPassword: string): string {
-alert('s');
         const passwordLength: number = site._maxPwdChars; //Between 20 and 120
 
         //get the SHA512
