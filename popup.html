@@ -10,25 +10,25 @@
 <body style="background-color: lightgray;" >
 <h1>One password only</h1>
 <dl>
-    <dt><label for="inputDomain">website's domain name</label></dt>
-    <dd><input id="inputDomain" value="" placeholder="domain name"/>
-        <input id="inputDomainToggle" type="button" value="Change domain" title="Need to change the domain name you need for this site? This button enables you to do so."/></dd>
+    <dt><label for="OPFESinputDomain">website's domain name</label></dt>
+    <dd><input id="OPFESinputDomain" value="" placeholder="domain name"/>
+        <input id="OPFESinputDomainToggle" type="button" value="Change domain" title="Need to change the domain name you need for this site? This button enables you to do so."/></dd>
 
-    <dt><label for="inputSalt">Your salt on this site</label></dt>
-    <dd><input id="inputSalt" value="zout" placeholder="salt"/>
-        <input id="inputSaltToggle" type="button" value="Change salt" title="Need to change the salt you need for this site? This button enables you to do so."/></dd>
+    <dt><label for="OPFESinputSalt">Your salt on this site</label></dt>
+    <dd><input id="OPFESinputSalt" value="zout" placeholder="salt"/>
+        <input id="OPFESinputSaltToggle" type="button" value="Change salt" title="Need to change the salt you need for this site? This button enables you to do so."/></dd>
 
-    <dt><label for="inputUserId">Your userid on this site</label></dt>
-    <dd><input id="inputUserId" value="" placeholder="user-id"/>
-        <input id="inputUserIdToggle" type="button" value="Change user-id" title="Need to change the user-id you need for this site? This button enables you to do so.."/></dd>
+    <dt><label for="OPFESinputUserId">Your userid on this site</label></dt>
+    <dd><input id="OPFESinputUserId" value="" placeholder="user-id"/>
+        <input id="OPFESinputUserIdToggle" type="button" value="Change user-id" title="Need to change the user-id you need for this site? This button enables you to do so.."/></dd>
 
-    <dt><label for="inputSequenceNr">Sequence number</label></dt>
-    <dd><input id="inputSequenceNr" type="number" value="1" placeholder="number"/>
-        <input id="inputSequenceNrToggle" type="button" value="Change number" title="Need to change the domain name you need for this site? This button enables you to do so."/>
-        <input id="inputSequenceNrInformation" type="button" value="?" title="The sequence number makes it possible to generate a next password for this domain-salt-uid combination. This is mainly useful when the website requires you to change your password."/></dd>
+    <dt><label for="OPFESinputSequenceNr">Sequence number</label></dt>
+    <dd><input id="OPFESinputSequenceNr" type="number" value="1" placeholder="number"/>
+        <input id="OPFESinputSequenceNrToggle" type="button" value="Change number" title="Need to change the domain name you need for this site? This button enables you to do so."/>
+        <input id="OPFESinputSequenceNrInformation" type="button" value="?" title="The sequence number makes it possible to generate a next password for this domain-salt-uid combination. This is mainly useful when the website requires you to change your password."/></dd>
 
-    <dt><label for="selectMaxPwdChars">Maximum number of password characters</label></dt>
-    <dd><select id='selectMaxPwdChars'>
+    <dt><label for="OPFESselectMaxPwdChars">Maximum number of password characters</label></dt>
+    <dd><select id='OPFESselectMaxPwdChars'>
         <option value="20">20</option>
         <option value="21">21</option>
         <option value="22">22</option>
@@ -131,25 +131,25 @@
         <option value="119">119</option>
         <option value="120" selected>120</option>
     </select>​
-        <input id="selectMaxPwdCharsToggle" type="button" value="Change max" title="Change the max number of password characters that is allowed by this site."/></dd>
+        <input id="OPFESselectMaxPwdCharsToggle" type="button" value="Change max" title="Change the max number of password characters that is allowed by this site."/></dd>
 
-    <dt><label for="inputAppPassword">Your only password</label></dt>
-    <dd><input id="inputAppPassword" value="" placeholder="********" type="password"/>
-        <input id="inputAppPasswordShow" type="button" value="Show" title="Show the characters. Should only do this if no one is peeping."/>
-        <input id="inputAppPasswordHide" type="button" value="Hide" title="Hide whatever you type." disabled="disabled"/></dd>
+    <dt><label for="OPFESinputAppPassword">Your only password</label></dt>
+    <dd><input id="OPFESinputAppPassword" value="" placeholder="********" type="password"/>
+        <input id="OPFESinputAppPasswordShow" type="button" value="Show" title="Show the characters. Should only do this if no one is peeping."/>
+        <input id="OPFESinputAppPasswordHide" type="button" value="Hide" title="Hide whatever you type." disabled="disabled"/></dd>
 
-    <dt><label for="inputSitePassword">Your password on this site</label></dt>
-    <dd><input id="inputSitePassword" value="" placeholder="Generated password"/>
-        <input id="loginButton" type="button" value="Generate Your Password"/></dd>
+    <dt><label for="OPFESinputSitePassword">Your password on this site</label></dt>
+    <dd><input id="OPFESinputSitePassword" value="" placeholder="Generated password"/>
+        <input id="OPFESloginButton" type="button" value="Generate Your Password"/></dd>
 </dl>
 <section id="data" style="background-color: antiquewhite">
     <h2>Your locally stored data
-        <input id="exportDataButton" type="button" value="ExportData" title="Not implemented yet. Export data to a local source that you control." />
-        <input id="importDataButton" type="button" value="ImportData" title="Not implemented yet. Import data from a local source that you control." />
+        <input id="OPFESexportDataButton" type="button" value="ExportData" title="Not implemented yet. Export data to a local source that you control." />
+        <input id="OPFESimportDataButton" type="button" value="ImportData" title="Not implemented yet. Import data from a local source that you control." />
     </h2>
     As you can see: no password is stored anywhere.
-    <span id="locallyStoredUserData"></span>
-    <span id="showAllTheLocallyStoredData" style="display: none">...</span>
+    <span id="OPFESlocalyStoredUserData"></span>
+    <span id="OPFESshowAllTheLocallyStoredData" style="display: none">...</span>
 </section>
 
 <h2>Read more...</h2>

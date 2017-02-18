@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let ourPopup = document;
             let domain = getDomain(tab.url);
 
-            let domainElement = ourPopup.getElementById('inputDomain');
+            let domainElement = ourPopup.getElementById('OPFESinputDomain');
             domainElement.setAttribute('value', domain);
 
             setValueForElements(domain);
@@ -106,19 +106,19 @@ document.addEventListener('DOMContentLoaded', function () {
             dataTableHTML += '<td>' + '</td></tr>';
         }
         if (sites.length > numOfLines) {
-            document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: inline");
+            document.getElementById('OPFESshowAllTheLocallyStoredData').setAttribute('style', "display: inline");
         } else {
-            document.getElementById('showAllTheLocallyStoredData').setAttribute('style', "display: none");
+            document.getElementById('OPFESshowAllTheLocallyStoredData').setAttribute('style', "display: none");
         }
         dataTableHTML += '</table>';
-        document.getElementById('locallyStoredUserData').innerHTML = dataTableHTML;
+        document.getElementById('OPFESlocalyStoredUserData').innerHTML = dataTableHTML;
     }
 
-    document.getElementById('showAllTheLocallyStoredData').addEventListener('click', function () {
+    document.getElementById('OPFESshowAllTheLocallyStoredData').addEventListener('click', function () {
         showTheLocallyStoredData(100000);
     });
 
-    document.getElementById('inputDomainToggle').addEventListener('click', function () {
+    function toggleChangability() {
         let elementId = this.id.substr(0, this.id.length - 6);
         let elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
@@ -126,70 +126,50 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             elementToToggle.setAttribute("disabled", "disabled");
         }
+    }
+
+    document.getElementById('OPFESinputDomainToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
     });
-    document.getElementById('inputSaltToggle').addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
-        if (elementToToggle.hasAttribute('disabled')) {
-            elementToToggle.removeAttribute('disabled');
-        } else {
-            elementToToggle.setAttribute("disabled", "disabled");
-        }
+    document.getElementById('OPFESinputSaltToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
     });
-    document.getElementById('inputUserIdToggle').addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
-        if (elementToToggle.hasAttribute('disabled')) {
-            elementToToggle.removeAttribute('disabled');
-        } else {
-            elementToToggle.setAttribute("disabled", "disabled");
-        }
+    document.getElementById('OPFESinputUserIdToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
     });
-    document.getElementById('inputSequenceNrToggle').addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
-        if (elementToToggle.hasAttribute('disabled')) {
-            elementToToggle.removeAttribute('disabled');
-        } else {
-            elementToToggle.setAttribute("disabled", "disabled");
-        }
+    document.getElementById('OPFESinputSequenceNrToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
     });
-    document.getElementById('selectMaxPwdCharsToggle').addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
-        if (elementToToggle.hasAttribute('disabled')) {
-            elementToToggle.removeAttribute('disabled');
-        } else {
-            elementToToggle.setAttribute("disabled", "disabled");
-        }
+    document.getElementById('OPFESselectMaxPwdCharsToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
     });
-    document.getElementById('inputAppPasswordShow').addEventListener('click', function () {
+    document.getElementById('OPFESinputAppPasswordShow').addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 4);
         let elementToToggle = document.getElementById(elementId);
         elementToToggle.setAttribute('type', 'text');
-        document.getElementById('inputAppPasswordShow').setAttribute('disabled', 'DISABLED');
-        document.getElementById('inputAppPasswordHide').removeAttribute('disabled');
+        document.getElementById('OPFESinputAppPasswordShow').setAttribute('disabled', 'disabled');
+        document.getElementById('OPFESinputAppPasswordHide').removeAttribute('disabled');
     });
-    document.getElementById('inputAppPasswordHide').addEventListener('click', function () {
+    document.getElementById('OPFESinputAppPasswordHide').addEventListener('click', function () {
         let elementToToggle = document.getElementById(this.id.substr(0, this.id.length - 4));
         elementToToggle.setAttribute('type', 'password');
-        document.getElementById('inputAppPasswordShow').removeAttribute('disabled');
-        document.getElementById('inputAppPasswordHide').setAttribute('disabled', 'DISABLED');
+        document.getElementById('OPFESinputAppPasswordShow').removeAttribute('disabled');
+        document.getElementById('OPFESinputAppPasswordHide').setAttribute('disabled', 'disabled');
     });
 
     /*
      * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence and given password.
      */
-    document.getElementById('loginButton').addEventListener('click', function () {
+    document.getElementById('OPFESloginButton').addEventListener('click', function () {
         let site = new Site;
         let ourPopup = document;
-        site.setDomain((<HTMLInputElement>ourPopup.getElementById('inputDomain')).value);
-        site.setSalt((<HTMLInputElement>ourPopup.getElementById('inputSalt')).value);
-        site.setUserId((<HTMLInputElement>ourPopup.getElementById('inputUserId')).value);
-        site.setSequenceNr(+(<HTMLInputElement>ourPopup.getElementById('inputSequenceNr')).value);
-        site.setMaxPwdChars((<HTMLSelectElement>ourPopup.getElementById('selectMaxPwdChars')).selectedIndex);
+        site.setDomain((<HTMLInputElement>ourPopup.getElementById('OPFESinputDomain')).value);
+        site.setSalt((<HTMLInputElement>ourPopup.getElementById('OPFESinputSalt')).value);
+        site.setUserId((<HTMLInputElement>ourPopup.getElementById('OPFESinputUserId')).value);
+        site.setSequenceNr(+(<HTMLInputElement>ourPopup.getElementById('OPFESinputSequenceNr')).value);
+        site.setMaxPwdChars((<HTMLSelectElement>ourPopup.getElementById('OPFESselectMaxPwdChars')).selectedIndex);
 
-        let inputValueAppPassword = (<HTMLInputElement>ourPopup.getElementById('inputAppPassword')).value;
+        let inputValueAppPassword = (<HTMLInputElement>ourPopup.getElementById('OPFESinputAppPassword')).value;
         //save the sites data every time the password gets generated
         // siteService.add(site)
         let siteUpserted = false;
@@ -207,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let siteService = new SiteService(sites);
         let sitePassword = siteService.getSitePassword(site, inputValueAppPassword);
         alert('The password for this site for this user-id is: ' + sitePassword);
-        let passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
+        let passwordElement = ourPopup.getElementById('OPFESinputSitePassword');
         passwordElement.setAttribute("value", sitePassword);
         // Insert the pwdForThisSiteForThisUid in the password-input field in the document
         // insertPwd(pwdForThisSiteForThisUid, passwordElement);
