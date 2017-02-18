@@ -191,7 +191,8 @@ document.addEventListener('DOMContentLoaded', function () {
             json.sites.push(site);
         }
         localStorage.setItem("sites", JSON.stringify(json));
-        var sitePassword = getSitePassword(site, inputValueAppPassword);
+        var siteService = new SiteService(sites);
+        var sitePassword = siteService.getSitePassword(site, inputValueAppPassword);
         alert('The password for this site for this user-id is: ' + sitePassword);
         var passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
         passwordElement.setAttribute("value", sitePassword);
@@ -297,9 +298,10 @@ var SiteService = (function () {
      * @returns {string}
      */
     SiteService.prototype.getSitePassword = function (site, appPassword) {
+        alert('s');
         var passwordLength = site._maxPwdChars; //Between 20 and 120
         //get the SHA512
-        var stringToHash = site._domain + site._salt + site._userId + site._sequenceNr + _appPassword;
+        var stringToHash = site._domain + site._salt + site._userId + site._sequenceNr + appPassword;
         var generatedHash = SHA512(stringToHash);
         //Now we have got a hexadecimal hash. Let's create our own BASE-64 password character set and
         // transform the hex to that. There are 86 characters available in passwords:

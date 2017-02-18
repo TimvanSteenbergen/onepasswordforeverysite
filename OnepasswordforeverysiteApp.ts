@@ -204,7 +204,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         localStorage.setItem("sites", JSON.stringify(json));
 
-        let sitePassword = getSitePassword(site, inputValueAppPassword);
+        let siteService = new SiteService(sites);
+        let sitePassword = siteService.getSitePassword(site, inputValueAppPassword);
         alert('The password for this site for this user-id is: ' + sitePassword);
         let passwordElement = ourPopup.getElementById('pwdForThisSiteForThisUid');
         passwordElement.setAttribute("value", sitePassword);
@@ -349,7 +350,7 @@ class SiteService implements ISiteService {
      * @returns {string}
      */
     getSitePassword(site: Site, appPassword: string): string {
-
+alert('s');
         const passwordLength: number = site._maxPwdChars; //Between 20 and 120
 
         //get the SHA512
