@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var json = {
         "sites": [
             new Site("gavelsnipe.com", "koud", "timvans", 1, 120, new Date("20160101"), ""),
-            new Site("mycloud.com", "hout", "tim@tieka.nl", 30, 1, new Date("20170218"), ""),
+            new Site("mycloud.com", "hout", "tim@tieka.nl", 1, 30, new Date("20170218"), ""),
             new Site("webassessor.com", "koud", "TimvanSteenbergen", 2, 120, new Date("20160101"), ""),
             new Site("stackoverflow.com", "koud", "tim@tieka.nl", 1, 120, new Date(new Date("20160101")), ""),
-            new Site("quora.com", "koud", "tim@tieka.nl", 1, 75, new Date("20160101"), "Max 75 karakters in het wachtwoord"),
+            new Site("quora.com", "koud", "tim@tieka.nl", 1, 74, new Date("20160101"), "Max 75 karakters in het wachtwoord"),
             new Site("robbshop.com", "koud", "tim@tieka.nl", 1, 120, new Date("20160101"), ""),
             new Site("lynda.com", "koud", "tim@tieka.nl", 1, 120, new Date("20160101"), ""),
             new Site("nrc.nl", "koud", "elma@tieka.nl", 1, 120, new Date("20160101"), ""),
@@ -48,22 +48,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 for (var i = 0; i < sites.length; i++) {
                     var site = sites[i];
                     if (site._domain == domain) {
-                        document.getElementById('inputDomain').setAttribute('disabled', "disabled");
+                        document.getElementById('OPFESinputDomain').setAttribute('disabled', "disabled");
                         if (site._salt != "") {
-                            document.getElementById('inputSalt').setAttribute('value', site._salt);
-                            document.getElementById('inputSalt').setAttribute('disabled', "disabled");
+                            document.getElementById('OPFESinputSalt').setAttribute('value', site._salt);
+                            document.getElementById('OPFESinputSalt').setAttribute('disabled', "disabled");
                         }
                         if (site._userId != "") {
-                            document.getElementById('inputUserId').setAttribute('value', site._userId);
-                            document.getElementById('inputUserId').setAttribute('disabled', "disabled");
+                            document.getElementById('OPFESinputUserId').setAttribute('value', site._userId);
+                            document.getElementById('OPFESinputUserId').setAttribute('disabled', "disabled");
                         }
                         if (site._userId != "") {
-                            document.getElementById('inputSequenceNr').setAttribute('value', (site._sequenceNr + ""));
-                            document.getElementById('inputSequenceNr').setAttribute('disabled', "disabled");
+                            document.getElementById('OPFESinputSequenceNr').setAttribute('value', (site._sequenceNr + ""));
+                            document.getElementById('OPFESinputSequenceNr').setAttribute('disabled', "disabled");
                         }
                         if (site._maxPwdChars != 120) {
                             // <HTMLSelectElement>(document.getElementById('selectMaxPwdChars')).setAttribute('value', <site._maxPwdChars);
-                            document.getElementById('selectMaxPwdChars').setAttribute('disabled', "disabled");
+                            document.getElementById('OPFESselectMaxPwdChars').setAttribute('disabled', "disabled");
                         }
                     }
                 }
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // siteService.add(site)
         var siteUpserted = false;
         for (var i = 0; i < json.sites.length; i++) {
-            if (json.sites[i][0] == site.getDomain()) {
+            if (json.sites[i]._domain == site._domain) {
                 json.sites[i] = site;
                 siteUpserted = true;
             }
@@ -169,11 +169,11 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem("sites", JSON.stringify(json));
         var siteService = new SiteService(sites);
         var sitePassword = siteService.getSitePassword(site, inputValueAppPassword);
-        alert('The password for this site for this user-id is: ' + sitePassword);
+        window.prompt('The password for this site for this user-id is: ' + sitePassword + ' To copy the password to your clipboard: Ctrl+C, Enter', sitePassword);
         var passwordElement = ourPopup.getElementById('OPFESinputSitePassword');
         passwordElement.setAttribute("value", sitePassword);
-        // Insert the pwdForThisSiteForThisUid in the password-input field in the document
-        // insertPwd(pwdForThisSiteForThisUid, passwordElement);
+        // Insert the sitePassword in the password-input field in the document
+        // insertPwd(sitePassword, passwordElement);
     }, false);
 }, false);
 var Site = (function () {
