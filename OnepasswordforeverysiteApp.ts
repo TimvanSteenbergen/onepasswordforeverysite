@@ -3,7 +3,8 @@
  */
 
 declare function SHA512(string): string;
-declare let chrome: any;
+declare function getSitePassword(site: Site,
+                                 pwdUser: string): string;
 ///<reference path="chrome/index.d.ts"/>
 console.log('before DOMContentLoaded');
 document.addEventListener('DOMContentLoaded', function () {
