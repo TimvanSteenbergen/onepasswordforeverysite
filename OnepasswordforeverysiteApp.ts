@@ -3,15 +3,13 @@
  */
 
 declare function SHA512(string): string;
-declare function getSitePassword(site: Site,
-                                 pwdUser: string): string;
 declare let chrome: any;
 ///<reference path="chrome/index.d.ts"/>
 console.log('before DOMContentLoaded');
 document.addEventListener('DOMContentLoaded', function () {
 
     // let sites = [];
-    let json = {
+    let json:{"sites": Site[]} = {
         "sites": [//domain, salt, username, sequencenr, maxPwdChars, lastused, remarks
             new Site("gavelsnipe.com", "koud", "timvans", 1, 120, new Date("20160101"), ""),
             new Site("mycloud.com", "hout", "tim@tieka.nl", 1, 30, new Date("20170218"), ""),
@@ -56,25 +54,25 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             function setValueForElements(domain) {
-                json = JSON.parse(localStorage.getItem("sites"));
+                json = (JSON.parse(localStorage.getItem("sites")));
                 sites = json.sites;
                 for (let i = 0; i < sites.length; i++) {
                     let site: Site = sites[i];
-                    if (site._domain == domain) {
+                    if (site.getDomain() == domain) {
                         document.getElementById('OPFESinputDomain').setAttribute('disabled', "disabled");
-                        if (site._salt != "") {
-                            document.getElementById('OPFESinputSalt').setAttribute('value', site._salt);
+                        if (site.getSalt() != "") {
+                            document.getElementById('OPFESinputSalt').setAttribute('value', site.getSalt());
                             document.getElementById('OPFESinputSalt').setAttribute('disabled', "disabled");
                         }
-                        if (site._userId != "") {
-                            document.getElementById('OPFESinputUserId').setAttribute('value', site._userId);
+                        if (site.getUserId() != "") {
+                            document.getElementById('OPFESinputUserId').setAttribute('value', site.getUserId());
                             document.getElementById('OPFESinputUserId').setAttribute('disabled', "disabled");
                         }
-                        if (site._userId != "") {
-                            document.getElementById('OPFESinputSequenceNr').setAttribute('value', (site._sequenceNr + ""));
+                        if (site.getSequenceNr() != 0) {
+                            document.getElementById('OPFESinputSequenceNr').setAttribute('value', (site.getSequenceNr() + ""));
                             document.getElementById('OPFESinputSequenceNr').setAttribute('disabled', "disabled");
                         }
-                        if (site._maxPwdChars != 120) {
+                        if (site.getMaxPwdChars()!= 120) {
                             // <HTMLSelectElement>(document.getElementById('selectMaxPwdChars')).setAttribute('value', <site._maxPwdChars);
                             document.getElementById('OPFESselectMaxPwdChars').setAttribute('disabled', "disabled");
                         }
@@ -97,13 +95,13 @@ document.addEventListener('DOMContentLoaded', function () {
         // sites.forEach((dataTableHTML: string, site: Site ): Site => {
         for (let i = 0; i < sites.length && i < numOfLines; i++) {
             let site: Site = sites[i];
-            dataTableHTML += '<tr><td>' + site._domain;//  getDomain() + '</td>';
-            dataTableHTML += '<td>' + site._salt + '</td>';
-            dataTableHTML += '<td>' + site._userId + '</td>';
-            dataTableHTML += '<td>' + site._sequenceNr + '</td>';
-            dataTableHTML += '<td>' + site._maxPwdChars + '</td>';
-            dataTableHTML += '<td>' + site._lastUsed + '</td>';
-            dataTableHTML += '<td>' + site._remark + '</td>';
+            dataTableHTML += '<tr><td>' + site.getDomain();//  getDomain() + '</td>';
+            dataTableHTML += '<td>' + site.getSalt() + '</td>';
+            dataTableHTML += '<td>' + site.getUserId()+ '</td>';
+            dataTableHTML += '<td>' + site.getSequenceNr() + '</td>';
+            dataTableHTML += '<td>' + site.getMaxPwdChars() + '</td>';
+            dataTableHTML += '<td>' + site.getLastUsed() + '</td>';
+            dataTableHTML += '<td>' + site.getRemark() + '</td>';
             dataTableHTML += '<td>' + '</td></tr>';
         }
         if (sites.length > numOfLines) {
@@ -175,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // siteService.add(site)
         let siteUpserted = false;
         for (let i = 0; i < json.sites.length; i++) {
-            if (json.sites[i]._domain == site._domain) {
+            if (json.sites[i].getDomain() == site.getDomain()) {
                 json.sites[i] = site;
                 siteUpserted = true;
             }
@@ -187,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let siteService = new SiteService(sites);
         let sitePassword = siteService.getSitePassword(site, inputValueAppPassword);
-        window.prompt('The password for this site for this user-id is: ' + sitePassword + ' To copy the password to your clipboard: Ctrl+C, Enter', sitePassword);
+        window.prompt('The dddpassword for this site for this user-id is: ' + sitePassword + ' To copy the password to your clipboard: Ctrl+C, Enter', sitePassword);
         let passwordElement = ourPopup.getElementById('OPFESinputSitePassword');
         passwordElement.setAttribute("value", sitePassword);
         // Insert the sitePassword in the password-input field in the document
@@ -199,80 +197,87 @@ document.addEventListener('DOMContentLoaded', function () {
 /**
  * Created by Tim on 12-2-2017.
  */
-interface Site {
-    _domain: string,
-    _salt?: string,
-    _userId?: string,
-    _sequenceNr?: number,
-    _maxPwdChars?: number,
-    _lastUsed?: Date,
-    _remark?: string
+interface ISite {
+    getDomain();
+    setDomain(value: string);
+    getSalt();
+    setSalt(value: string);
+    getUserId();
+    setUserId(value: string);
+    getSequenceNr();
+    setSequenceNr(value: number);
+    getMaxPwdChars();
+    setMaxPwdChars(value: number);
+    getLastUsed();
+    setLastUsed(value: Date);
+    getRemark();
+    setRemark(value: string);
 }
-class Site implements Site {
+class Site implements ISite {
 
-    constructor(public _domain: string = "",
-                public _salt?: string,
-                public _userId?: string,
-                public _sequenceNr?: number,
-                public _maxPwdChars?: number,
-                public _lastUsed?: Date,
-                public _remark?: string) {
+    constructor(private domain: string = "",
+                private salt?: string,
+                private userId?: string,
+                private sequenceNr?: number,
+                private maxPwdChars?: number,
+                private lastUsed?: Date,
+                private remark?: string) {
     }
 
-    getDomain(): string {
-        return this._domain;
+    public getDomain(): string {
+        return this.domain;
     }
 
-    setDomain(value: string) {
-        this._domain = value;
+   public setDomain(value: string) {
+        this.domain = value;
     }
 
-    getSalt(): string {
-        return this._salt;
+   public getSalt(): string {
+        return this.salt;
     }
 
-    setSalt(value: string) {
-        this._salt = value;
+   public setSalt(value: string) {
+        this.salt = value;
     }
 
-    getUserId(): string {
-        return this._userId;
+   public getUserId(): string {
+        return this.userId;
     }
 
-    setUserId(value: string) {
-        this._userId = value;
+   public setUserId(value: string) {
+        this.userId = value;
     }
 
-    getSequenceNr(): number {
-        return this._sequenceNr;
+   public getSequenceNr(): number {
+        return this.sequenceNr;
     }
 
-    setSequenceNr(value: number) {
-        this._sequenceNr = value;
+   public setSequenceNr(value: number) {
+        this.sequenceNr = value;
     }
 
-    getMaxPwdChars(): number {
-        return this._maxPwdChars;
+   public getMaxPwdChars(): number {
+        return this.maxPwdChars;
     }
 
-    setMaxPwdChars(value: number) {
-        this._maxPwdChars = value;
+   public setMaxPwdChars(value: number) {
+        this.maxPwdChars = value;
     }
 
-    getLastUsed(): Date {
-        return this._lastUsed;
+   public getLastUsed(): Date {
+        return this.lastUsed;
     }
 
-    setLastUsed(value: Date) {
-        this._lastUsed = value;
+   public setLastUsed(value: Date) {
+        this.lastUsed = value;
     }
 
-    getRemark(): string {
-        return this._remark;
+   public getRemark(): string {
+        return this.remark;
     }
 
-    setRemark(value: string) {
-        this._remark = value;
+   public setRemark(value: string) {
+        this.remark = value;
     }
 }
 /**
@@ -331,10 +336,10 @@ class SiteService implements ISiteService {
      * @returns {string}
      */
     getSitePassword(site: Site, appPassword: string): string {
-        const passwordLength: number = site._maxPwdChars; //Between 20 and 120
+        const passwordLength: number = site.getMaxPwdChars(); //Between 20 and 120
 
         //get the SHA512
-        let stringToHash: string = site._domain + site._salt + site._userId + site._sequenceNr + appPassword;
+        let stringToHash: string = site.getDomain() + site.getSalt()+ site.getUserId()+ site.getSequenceNr() + appPassword;
         let generatedHash: string = SHA512(stringToHash);
 
         //Now we have got a hexadecimal hash. Let's create our own BASE-64 password character set and
