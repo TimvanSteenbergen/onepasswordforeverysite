@@ -3,12 +3,10 @@
  */
 
 declare function SHA512(string): string;
-declare let chrome: any;
 ///<reference path="chrome/index.d.ts"/>
 console.log('before DOMContentLoaded');
-document.addEventListener('DOMContentLoaded', function () {
 
-    // let sites = [];
+document.addEventListener('DOMContentLoaded', function () {
     let json:{"sites": Site[]} = {
         "sites": [//domain, salt, username, sequencenr, maxPwdChars, lastused, remarks
             new Site("gavelsnipe.com", "koud", "timvans", 1, 120, new Date("20160101"), ""),
@@ -44,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
             //This function gets the domainname from the url.
             //Can't use "window.location.host" because this will return the domain of the popup.html
             {
-                domain = url.match(/:\/\/(.[^/]+)/)[1];
+                let domain = url.match(/:\/\/(.[^/]+)/)[1];
                 //remove the sub-domain(s)
                 let numberOfDotsInDomain = (domain.match(/\./g) || []).length;
                 for (let dot = 1; dot < numberOfDotsInDomain; dot++) {
@@ -57,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 json = (JSON.parse(localStorage.getItem("sites")));
                 sites = json.sites;
                 for (let i = 0; i < sites.length; i++) {
-                    let site: Site = sites[i];
+                    let site: Site = new Site(sites[i]["domain"], sites[i]["salt"], sites[i]["userId"], sites[i]["sequenceNr"], sites[i]["maxPwdChars"], sites[i]["usedAt"], sites[i]["remark"] );
                     if (site.getDomain() == domain) {
                         document.getElementById('OPFESinputDomain').setAttribute('disabled', "disabled");
                         if (site.getSalt() != "") {
@@ -94,8 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
         let dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
         // sites.forEach((dataTableHTML: string, site: Site ): Site => {
         for (let i = 0; i < sites.length && i < numOfLines; i++) {
-            let site: Site = sites[i];
-            dataTableHTML += '<tr><td>' + site.getDomain();//  getDomain() + '</td>';
+            let site: Site = new Site(sites[i]["domain"], sites[i]["salt"], sites[i]["userId"], sites[i]["sequenceNr"], sites[i]["maxPwdChars"], sites[i]["usedAt"], sites[i]["remark"] );
+            dataTableHTML += '<tr><td>' + site.getDomain() + '</td>';
             dataTableHTML += '<td>' + site.getSalt() + '</td>';
             dataTableHTML += '<td>' + site.getUserId()+ '</td>';
             dataTableHTML += '<td>' + site.getSequenceNr() + '</td>';
@@ -160,21 +158,24 @@ document.addEventListener('DOMContentLoaded', function () {
      * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence and given password.
      */
     document.getElementById('OPFESloginButton').addEventListener('click', function () {
-        let site = new Site;
         let ourPopup = document;
-        site.setDomain((<HTMLInputElement>ourPopup.getElementById('OPFESinputDomain')).value);
-        site.setSalt((<HTMLInputElement>ourPopup.getElementById('OPFESinputSalt')).value);
-        site.setUserId((<HTMLInputElement>ourPopup.getElementById('OPFESinputUserId')).value);
-        site.setSequenceNr(+(<HTMLInputElement>ourPopup.getElementById('OPFESinputSequenceNr')).value);
-        site.setMaxPwdChars(+(<HTMLSelectElement>ourPopup.getElementById('OPFESselectMaxPwdChars')).value);
+        let site = new Site(
+            (<HTMLInputElement>ourPopup.getElementById('OPFESinputDomain')).value,
+            (<HTMLInputElement>ourPopup.getElementById('OPFESinputSalt')).value,
+            (<HTMLInputElement>ourPopup.getElementById('OPFESinputUserId')).value,
+            +(<HTMLInputElement>ourPopup.getElementById('OPFESinputSequenceNr')).value,
+            +(<HTMLSelectElement>ourPopup.getElementById('OPFESselectMaxPwdChars')).value,
+            new Date("2016-01-01")
+        );
 
         let inputValueAppPassword = (<HTMLInputElement>ourPopup.getElementById('OPFESinputAppPassword')).value;
         //save the sites data every time the password gets generated
         // siteService.add(site)
         let siteUpserted = false;
         for (let i = 0; i < json.sites.length; i++) {
-            if (json.sites[i].getDomain() == site.getDomain()) {
+            if (json.sites[i]["domain"] == site.getDomain()) {
                 json.sites[i] = site;
+                localStorage.setItem("sites", JSON.stringify(json));
                 siteUpserted = true;
             }
         }
@@ -228,55 +229,55 @@ class Site implements ISite {
         return this.domain;
     }
 
-   public setDomain(value: string) {
+    public setDomain(value: string) {
         this.domain = value;
     }
 
-   public getSalt(): string {
+    public getSalt(): string {
         return this.salt;
     }
 
-   public setSalt(value: string) {
+    public setSalt(value: string) {
         this.salt = value;
     }
 
-   public getUserId(): string {
+    public getUserId(): string {
         return this.userId;
     }
 
-   public setUserId(value: string) {
+    public setUserId(value: string) {
         this.userId = value;
     }
 
-   public getSequenceNr(): number {
+    public getSequenceNr(): number {
         return this.sequenceNr;
     }
 
-   public setSequenceNr(value: number) {
+    public setSequenceNr(value: number) {
         this.sequenceNr = value;
     }
 
-   public getMaxPwdChars(): number {
+    public getMaxPwdChars(): number {
         return this.maxPwdChars;
     }
 
-   public setMaxPwdChars(value: number) {
+    public setMaxPwdChars(value: number) {
         this.maxPwdChars = value;
     }
 
-   public getLastUsed(): Date {
+    public getLastUsed(): Date {
         return this.lastUsed;
     }
 
-   public setLastUsed(value: Date) {
+    public setLastUsed(value: Date) {
         this.lastUsed = value;
     }
 
-   public getRemark(): string {
+    public getRemark(): string {
         return this.remark;
     }
 
-   public setRemark(value: string) {
+    public setRemark(value: string) {
         this.remark = value;
     }
 }

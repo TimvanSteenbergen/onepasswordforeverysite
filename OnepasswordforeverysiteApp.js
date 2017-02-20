@@ -4,7 +4,6 @@
 ///<reference path="chrome/index.d.ts"/>
 console.log('before DOMContentLoaded');
 document.addEventListener('DOMContentLoaded', function () {
-    // let sites = [];
     let json = {
         "sites": [
             new Site("gavelsnipe.com", "koud", "timvans", 1, 120, new Date("20160101"), ""),
@@ -34,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
             domainElement.setAttribute('value', domain);
             setValueForElements(domain);
             function getDomain(url) {
-                domain = url.match(/:\/\/(.[^/]+)/)[1];
+                let domain = url.match(/:\/\/(.[^/]+)/)[1];
                 //remove the sub-domain(s)
                 let numberOfDotsInDomain = (domain.match(/\./g) || []).length;
                 for (let dot = 1; dot < numberOfDotsInDomain; dot++) {
@@ -46,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 json = (JSON.parse(localStorage.getItem("sites")));
                 sites = json.sites;
                 for (let i = 0; i < sites.length; i++) {
-                    let site = sites[i];
+                    let site = new Site(sites[i]["domain"], sites[i]["salt"], sites[i]["userId"], sites[i]["sequenceNr"], sites[i]["maxPwdChars"], sites[i]["usedAt"], sites[i]["remark"]);
                     if (site.getDomain() == domain) {
                         document.getElementById('OPFESinputDomain').setAttribute('disabled', "disabled");
                         if (site.getSalt() != "") {
@@ -82,8 +81,8 @@ document.addEventListener('DOMContentLoaded', function () {
         let dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
         // sites.forEach((dataTableHTML: string, site: Site ): Site => {
         for (let i = 0; i < sites.length && i < numOfLines; i++) {
-            let site = sites[i];
-            dataTableHTML += '<tr><td>' + site.getDomain(); //  getDomain() + '</td>';
+            let site = new Site(sites[i]["domain"], sites[i]["salt"], sites[i]["userId"], sites[i]["sequenceNr"], sites[i]["maxPwdChars"], sites[i]["usedAt"], sites[i]["remark"]);
+            dataTableHTML += '<tr><td>' + site.getDomain() + '</td>';
             dataTableHTML += '<td>' + site.getSalt() + '</td>';
             dataTableHTML += '<td>' + site.getUserId() + '</td>';
             dataTableHTML += '<td>' + site.getSequenceNr() + '</td>';
@@ -146,20 +145,16 @@ document.addEventListener('DOMContentLoaded', function () {
      * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence and given password.
      */
     document.getElementById('OPFESloginButton').addEventListener('click', function () {
-        let site = new Site;
         let ourPopup = document;
-        site.setDomain(ourPopup.getElementById('OPFESinputDomain').value);
-        site.setSalt(ourPopup.getElementById('OPFESinputSalt').value);
-        site.setUserId(ourPopup.getElementById('OPFESinputUserId').value);
-        site.setSequenceNr(+ourPopup.getElementById('OPFESinputSequenceNr').value);
-        site.setMaxPwdChars(+ourPopup.getElementById('OPFESselectMaxPwdChars').value);
+        let site = new Site(ourPopup.getElementById('OPFESinputDomain').value, ourPopup.getElementById('OPFESinputSalt').value, ourPopup.getElementById('OPFESinputUserId').value, +ourPopup.getElementById('OPFESinputSequenceNr').value, +ourPopup.getElementById('OPFESselectMaxPwdChars').value, new Date("2016-01-01"));
         let inputValueAppPassword = ourPopup.getElementById('OPFESinputAppPassword').value;
         //save the sites data every time the password gets generated
         // siteService.add(site)
         let siteUpserted = false;
         for (let i = 0; i < json.sites.length; i++) {
-            if (json.sites[i].getDomain() == site.getDomain()) {
+            if (json.sites[i]["domain"] == site.getDomain()) {
                 json.sites[i] = site;
+                localStorage.setItem("sites", JSON.stringify(json));
                 siteUpserted = true;
             }
         }
