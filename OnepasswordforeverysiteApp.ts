@@ -5,7 +5,6 @@
 declare function SHA512(string): string;
 declare function getSitePassword(site: Site,
                                  pwdUser: string): string;
-declare let chrome: any;
 ///<reference path="chrome/index.d.ts"/>
 console.log('before DOMContentLoaded');
 document.addEventListener('DOMContentLoaded', function () {
