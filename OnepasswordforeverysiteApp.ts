@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             function setValueForElements(domain) {
-                json = (JSON.parse(localStorage.getItem("sites")));
+                json = JSON.parse(localStorage.getItem("sites"));
                 sites = json.sites;
                 for (let i = 0; i < sites.length; i++) {
                     let site: Site = new Site(sites[i]["domain"], sites[i]["salt"], sites[i]["userId"], sites[i]["sequenceNr"], sites[i]["maxPwdChars"], sites[i]["usedAt"], sites[i]["remark"] );
@@ -154,8 +154,18 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('OPFESinputAppPasswordHide').setAttribute('disabled', 'disabled');
     });
 
+    document.getElementById('OPFESinputAppPasswordHide').addEventListener('click', function () {
+        alert('Still to implement using https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js')
+    });
+
+    document.getElementById('OPFESinputAppPasswordHide').addEventListener('click', function () {
+        alert('Still to implement using https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js')
+    });
+
     /*
-     * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence and given password.
+     * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence,
+      * show the password in a popup and save the (changed) domain-data to the LocalStorage,
+      * N.B. of course not saving the password!
      */
     document.getElementById('OPFESloginButton').addEventListener('click', function () {
         let ourPopup = document;
@@ -165,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
             (<HTMLInputElement>ourPopup.getElementById('OPFESinputUserId')).value,
             +(<HTMLInputElement>ourPopup.getElementById('OPFESinputSequenceNr')).value,
             +(<HTMLSelectElement>ourPopup.getElementById('OPFESselectMaxPwdChars')).value,
-            new Date("2016-01-01")
+            new Date(Date.now())
         );
 
         let inputValueAppPassword = (<HTMLInputElement>ourPopup.getElementById('OPFESinputAppPassword')).value;
@@ -175,7 +185,6 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = 0; i < json.sites.length; i++) {
             if (json.sites[i]["domain"] == site.getDomain()) {
                 json.sites[i] = site;
-                localStorage.setItem("sites", JSON.stringify(json));
                 siteUpserted = true;
             }
         }
@@ -186,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let siteService = new SiteService(sites);
         let sitePassword = siteService.getSitePassword(site, inputValueAppPassword);
-        window.prompt('The dddpassword for this site for this user-id is: ' + sitePassword + ' To copy the password to your clipboard: Ctrl+C, Enter', sitePassword);
+        window.prompt('The password for this site for this user-id is: ' + sitePassword + ' To copy the password to your clipboard: Ctrl+C, Enter', sitePassword);
         let passwordElement = ourPopup.getElementById('OPFESinputSitePassword');
         passwordElement.setAttribute("value", sitePassword);
         // Insert the sitePassword in the password-input field in the document
