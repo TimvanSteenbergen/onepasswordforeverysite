@@ -5,6 +5,7 @@
     <title>One password for every site</title>
     <link type="text/css" rel="stylesheet" href="popup.css"/>
     <script src="OnepasswordforeverysiteApp.js"></script>
+    <script src="FileSaver.js"></script>
     <script src="SHA512.js"></script>
 </head>
 <body style="background-color: lightgray;" >
@@ -48,8 +49,8 @@
         <option value="26">26</option>
         <option value="27">27</option>
         <option value="28">28</option>
-        <option value="29">29</option>1
-        <o1tion value="30">30</option>
+        <option value="29">29</option>
+        <option value="30">30</option>
         <option value="31">31</option>
         <option value="32">32</option>
         <option value="33">33</option>
@@ -154,6 +155,10 @@
 </dl>
 <section id="data" style="background-color: antiquewhite">
     <h2>Your locally stored data
+        <form id="text-options">
+            <label>Filename: <input type="text" class="filename" id="text-filename" placeholder="a plain document"/>.txt</label>
+            <input type="submit" value="Save"/>
+        </form>
         <input id="OPFESexportDataButton" type="button" value="ExportData" title="Not implemented yet. Export data to a local source that you control." />
         <input id="OPFESimportDataButton" type="button" value="ImportData" title="Not implemented yet. Import data from a local source that you control." />
     </h2>
