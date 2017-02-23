@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * This function retrieves the locally stored sites, changes the popup to:
      * - only show numOfLines of the sites
      * - show the "..." if some sites are not shown
-     * @param numOfLines Number of lines to show in the popup.html
+     * @param numOfLines Number of lines to show in the OnepasswordforeverysiteApp.html
      */
     function showTheLocallyStoredData(numOfLines) {
         json = JSON.parse(localStorage.getItem("sites"));
@@ -141,16 +141,12 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('OPFESinputAppPasswordShow').removeAttribute('disabled');
         document.getElementById('OPFESinputAppPasswordHide').setAttribute('disabled', 'disabled');
     });
-    document.getElementById('sssOPFESexportDataButton').addEventListener('click', function () {
-        alert('Still to implement using https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js');
-    });
-    document.getElementById('OPFESimportDataButton').addEventListener('click', function () {
-        alert('Still to implement using https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js');
-    });
+    /* The functions for the buttons to Copy LocalStorage to disk and back again, (OPFESCopyLocalStorageToDiskButton and
+      * OPFESCopyDiskToLocalStorageButton) are defined in their own files. */
     /*
      * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence,
-      * show the password in a popup and save the (changed) domain-data to the LocalStorage,
-      * N.B. of course not saving the password!
+     * show the password in a popup and save the (changed) domain-data to the LocalStorage,
+     * N.B. of course not saving the password!
      */
     document.getElementById('OPFESloginButton').addEventListener('click', function () {
         let ourPopup = document;
@@ -178,59 +174,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // insertPwd(sitePassword, passwordElement);
     }, false);
 }, false);
-class Site {
-    constructor(domain = "", salt, userId, sequenceNr, maxPwdChars, lastUsed, remark) {
-        this.domain = domain;
-        this.salt = salt;
-        this.userId = userId;
-        this.sequenceNr = sequenceNr;
-        this.maxPwdChars = maxPwdChars;
-        this.lastUsed = lastUsed;
-        this.remark = remark;
-    }
-    getDomain() {
-        return this.domain;
-    }
-    setDomain(value) {
-        this.domain = value;
-    }
-    getSalt() {
-        return this.salt;
-    }
-    setSalt(value) {
-        this.salt = value;
-    }
-    getUserId() {
-        return this.userId;
-    }
-    setUserId(value) {
-        this.userId = value;
-    }
-    getSequenceNr() {
-        return this.sequenceNr;
-    }
-    setSequenceNr(value) {
-        this.sequenceNr = value;
-    }
-    getMaxPwdChars() {
-        return this.maxPwdChars;
-    }
-    setMaxPwdChars(value) {
-        this.maxPwdChars = value;
-    }
-    getLastUsed() {
-        return this.lastUsed;
-    }
-    setLastUsed(value) {
-        this.lastUsed = value;
-    }
-    getRemark() {
-        return this.remark;
-    }
-    setRemark(value) {
-        this.remark = value;
-    }
-}
 function getTheLocallyStoredSites(numOfLines = 9999) {
     let json = JSON.parse(localStorage.getItem("sites"));
     let sites = json.sites;

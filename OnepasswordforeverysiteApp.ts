@@ -7,7 +7,7 @@ declare function SHA512(string): string;
 console.log('before DOMContentLoaded');
 
 document.addEventListener('DOMContentLoaded', function () {
-    let json:{"sites": Site[]} = {
+    let json: {"sites": Site[]} = {
         "sites": [//domain, salt, username, sequencenr, maxPwdChars, lastused, remarks
             new Site("gavelsnipe.com", "koud", "timvans", 1, 120, new Date("20160101"), ""),
             new Site("mycloud.com", "hout", "tim@tieka.nl", 1, 30, new Date("20170218"), ""),
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             function getDomain(url)
             //This function gets the domainname from the url.
-            //Can't use "window.location.host" because this will return the domain of the popup.html
+            //Can't use "window.location.host" because this will return the domain of the OnepasswordforeverysiteApp.html
             {
                 let domain = url.match(/:\/\/(.[^/]+)/)[1];
                 //remove the sub-domain(s)
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 json = JSON.parse(localStorage.getItem("sites"));
                 sites = json.sites;
                 for (let i = 0; i < sites.length; i++) {
-                    let site: Site = new Site(sites[i]["domain"], sites[i]["salt"], sites[i]["userId"], sites[i]["sequenceNr"], sites[i]["maxPwdChars"], sites[i]["usedAt"], sites[i]["remark"] );
+                    let site: Site = new Site(sites[i]["domain"], sites[i]["salt"], sites[i]["userId"], sites[i]["sequenceNr"], sites[i]["maxPwdChars"], sites[i]["usedAt"], sites[i]["remark"]);
                     if (site.getDomain() == domain) {
                         document.getElementById('OPFESinputDomain').setAttribute('disabled', "disabled");
                         if (site.getSalt() != "") {
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             document.getElementById('OPFESinputSequenceNr').setAttribute('value', (site.getSequenceNr() + ""));
                             document.getElementById('OPFESinputSequenceNr').setAttribute('disabled', "disabled");
                         }
-                        if (site.getMaxPwdChars()!= 120) {
+                        if (site.getMaxPwdChars() != 120) {
                             // <HTMLSelectElement>(document.getElementById('selectMaxPwdChars')).setAttribute('value', <site._maxPwdChars);
                             document.getElementById('OPFESselectMaxPwdChars').setAttribute('disabled', "disabled");
                         }
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * This function retrieves the locally stored sites, changes the popup to:
      * - only show numOfLines of the sites
      * - show the "..." if some sites are not shown
-     * @param numOfLines Number of lines to show in the popup.html
+     * @param numOfLines Number of lines to show in the OnepasswordforeverysiteApp.html
      */
     function showTheLocallyStoredData(numOfLines) {
         json = JSON.parse(localStorage.getItem("sites"));
@@ -92,10 +92,10 @@ document.addEventListener('DOMContentLoaded', function () {
         let dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
         // sites.forEach((dataTableHTML: string, site: Site ): Site => {
         for (let i = 0; i < sites.length && i < numOfLines; i++) {
-            let site: Site = new Site(sites[i]["domain"], sites[i]["salt"], sites[i]["userId"], sites[i]["sequenceNr"], sites[i]["maxPwdChars"], sites[i]["usedAt"], sites[i]["remark"] );
+            let site: Site = new Site(sites[i]["domain"], sites[i]["salt"], sites[i]["userId"], sites[i]["sequenceNr"], sites[i]["maxPwdChars"], sites[i]["usedAt"], sites[i]["remark"]);
             dataTableHTML += '<tr><td>' + site.getDomain() + '</td>';
             dataTableHTML += '<td>' + site.getSalt() + '</td>';
-            dataTableHTML += '<td>' + site.getUserId()+ '</td>';
+            dataTableHTML += '<td>' + site.getUserId() + '</td>';
             dataTableHTML += '<td>' + site.getSequenceNr() + '</td>';
             dataTableHTML += '<td>' + site.getMaxPwdChars() + '</td>';
             dataTableHTML += '<td>' + site.getLastUsed() + '</td>';
@@ -153,19 +153,13 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('OPFESinputAppPasswordShow').removeAttribute('disabled');
         document.getElementById('OPFESinputAppPasswordHide').setAttribute('disabled', 'disabled');
     });
-
-    document.getElementById('sssOPFESexportDataButton').addEventListener('click', function () {
-        alert('Still to implement using https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js')
-    });
-
-    document.getElementById('OPFESimportDataButton').addEventListener('click', function () {
-        alert('Still to implement using https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js')
-    });
+    /* The functions for the buttons to Copy LocalStorage to disk and back again, (OPFESCopyLocalStorageToDiskButton and
+      * OPFESCopyDiskToLocalStorageButton) are defined in their own files. */
 
     /*
      * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence,
-      * show the password in a popup and save the (changed) domain-data to the LocalStorage,
-      * N.B. of course not saving the password!
+     * show the password in a popup and save the (changed) domain-data to the LocalStorage,
+     * N.B. of course not saving the password!
      */
     document.getElementById('OPFESloginButton').addEventListener('click', function () {
         let ourPopup = document;
@@ -204,92 +198,92 @@ document.addEventListener('DOMContentLoaded', function () {
     }, false);
 }, false);
 
-/**
- * Created by Tim on 12-2-2017.
- */
-interface ISite {
-    getDomain();
-    setDomain(value: string);
-    getSalt();
-    setSalt(value: string);
-    getUserId();
-    setUserId(value: string);
-    getSequenceNr();
-    setSequenceNr(value: number);
-    getMaxPwdChars();
-    setMaxPwdChars(value: number);
-    getLastUsed();
-    setLastUsed(value: Date);
-    getRemark();
-    setRemark(value: string);
-}
-class Site implements ISite {
-
-    constructor(private domain: string = "",
-                private salt?: string,
-                private userId?: string,
-                private sequenceNr?: number,
-                private maxPwdChars?: number,
-                private lastUsed?: Date,
-                private remark?: string) {
-    }
-
-    public getDomain(): string {
-        return this.domain;
-    }
-
-    public setDomain(value: string) {
-        this.domain = value;
-    }
-
-    public getSalt(): string {
-        return this.salt;
-    }
-
-    public setSalt(value: string) {
-        this.salt = value;
-    }
-
-    public getUserId(): string {
-        return this.userId;
-    }
-
-    public setUserId(value: string) {
-        this.userId = value;
-    }
-
-    public getSequenceNr(): number {
-        return this.sequenceNr;
-    }
-
-    public setSequenceNr(value: number) {
-        this.sequenceNr = value;
-    }
-
-    public getMaxPwdChars(): number {
-        return this.maxPwdChars;
-    }
-
-    public setMaxPwdChars(value: number) {
-        this.maxPwdChars = value;
-    }
-
-    public getLastUsed(): Date {
-        return this.lastUsed;
-    }
-
-    public setLastUsed(value: Date) {
-        this.lastUsed = value;
-    }
-
-    public getRemark(): string {
-        return this.remark;
-    }
-
-    public setRemark(value: string) {
-        this.remark = value;
-    }
-}
+// /**
+//  * Created by Tim on 12-2-2017.
+//  */
+// interface ISite {
+//     getDomain();
+//     setDomain(value: string);
+//     getSalt();
+//     setSalt(value: string);
+//     getUserId();
+//     setUserId(value: string);
+//     getSequenceNr();
+//     setSequenceNr(value: number);
+//     getMaxPwdChars();
+//     setMaxPwdChars(value: number);
+//     getLastUsed();
+//     setLastUsed(value: Date);
+//     getRemark();
+//     setRemark(value: string);
+// }
+// class Site implements ISite {
+//
+//     constructor(private domain: string = "",
+//                 private salt?: string,
+//                 private userId?: string,
+//                 private sequenceNr?: number,
+//                 private maxPwdChars?: number,
+//                 private lastUsed?: Date,
+//                 private remark?: string) {
+//     }
+//
+//     public getDomain(): string {
+//         return this.domain;
+//     }
+//
+//     public setDomain(value: string) {
+//         this.domain = value;
+//     }
+//
+//     public getSalt(): string {
+//         return this.salt;
+//     }
+//
+//     public setSalt(value: string) {
+//         this.salt = value;
+//     }
+//
+//     public getUserId(): string {
+//         return this.userId;
+//     }
+//
+//     public setUserId(value: string) {
+//         this.userId = value;
+//     }
+//
+//     public getSequenceNr(): number {
+//         return this.sequenceNr;
+//     }
+//
+//     public setSequenceNr(value: number) {
+//         this.sequenceNr = value;
+//     }
+//
+//     public getMaxPwdChars(): number {
+//         return this.maxPwdChars;
+//     }
+//
+//     public setMaxPwdChars(value: number) {
+//         this.maxPwdChars = value;
+//     }
+//
+//     public getLastUsed(): Date {
+//         return this.lastUsed;
+//     }
+//
+//     public setLastUsed(value: Date) {
+//         this.lastUsed = value;
+//     }
+//
+//     public getRemark(): string {
+//         return this.remark;
+//     }
+//
+//     public setRemark(value: string) {
+//         this.remark = value;
+//     }
+// }
 /**
  * Created by Tim on 11-2-2017.
  */
