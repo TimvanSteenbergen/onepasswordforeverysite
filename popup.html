@@ -5,7 +5,6 @@
     <title>One password for every site</title>
     <link type="text/css" rel="stylesheet" href="popup.css"/>
     <script src="OnepasswordforeverysiteApp.js"></script>
-    <script src="FileSaver.js"></script>
     <script src="SHA512.js"></script>
 </head>
 <body style="background-color: lightgray;" >
@@ -155,11 +154,11 @@
 </dl>
 <section id="data" style="background-color: antiquewhite">
     <h2>Your locally stored data
-        <form id="text-options">
-            <label>Filename: <input type="text" class="filename" id="text-filename" placeholder="a plain document"/>.txt</label>
-            <input type="submit" value="Save"/>
-        </form>
-        <input id="OPFESexportDataButton" type="button" value="ExportData" title="Not implemented yet. Export data to a local source that you control." />
+
+        <section id="text-demo">
+            <textarea class="input" id="text" placeholder="Once upon a time."></textarea>
+                <input id="OPFESexportDataButton" title="Export all locally stored data to a file" type="button" value="ExportData"/>
+        </section>
         <input id="OPFESimportDataButton" type="button" value="ImportData" title="Not implemented yet. Import data from a local source that you control." />
     </h2>
     As you can see: no password is stored anywhere.
@@ -188,5 +187,8 @@ For more detailed information about One-password-for-every-site app, visit <a hr
     Without the salt it would be possible to take the generated password for this site-you-are-trying-to-login-to and
     find out what your-only-password is. Either by bruteforcing or via rainbowtables.<br/>
     The salt is unknown to the site-you-re-trying-to-login-to and thus makes that impossible.</p>
+    <script src="Blob.js"></script>
+    <script src="FileSaver.min.js"></script>
+    <script src="demo.js"></script>
 </body>
 </html>

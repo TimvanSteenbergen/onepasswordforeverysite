@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('OPFESinputAppPasswordHide').setAttribute('disabled', 'disabled');
     });
 
-    document.getElementById('OPFESexportDataButton').addEventListener('click', function () {
+    document.getElementById('sssOPFESexportDataButton').addEventListener('click', function () {
         alert('Still to implement using https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js')
     });
 
@@ -349,7 +349,7 @@ class SiteService implements ISiteService {
         const passwordLength: number = site.getMaxPwdChars(); //Between 20 and 120
 
         //get the SHA512
-        let stringToHash: string = site.getDomain() + site.getSalt()+ site.getUserId()+ site.getSequenceNr() + appPassword;
+        let stringToHash: string = site.getDomain() + site.getSalt() + site.getUserId() + site.getSequenceNr() + appPassword;
         let generatedHash: string = SHA512(stringToHash);
 
         //Now we have got a hexadecimal hash. Let's create our own BASE-64 password character set and

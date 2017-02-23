@@ -13,7 +13,7 @@
 
 /*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
 
-let saveAs = saveAs || (function(view) {
+let saveAs = (function(view) {
         "use strict";
         // IE <10 is explicitly unsupported
         if (typeof view === "undefined" || typeof navigator !== "undefined" && /MSIE [1-9]\./.test(navigator.userAgent)) {
@@ -84,7 +84,7 @@ let saveAs = saveAs || (function(view) {
                     , force = type === force_saveable_type
                     , object_url
                     , dispatch_all = function() {
-                        dispatch(filesaver, "writestart progress write writeend".split(" "));
+                        dispatch(filesaver, ["writestart", "progress", "write", "writeend"], '');
                     }
                     // on any filesys errors revert to saving with object URLs
                     , fs_error = function() {
@@ -179,10 +179,10 @@ let saveAs = saveAs || (function(view) {
 // while `this` is nsIContentFrameMessageManager
 // with an attribute `content` that corresponds to the window
 
-if (typeof module !== "undefined" && module.exports) {
-    module.exports.saveAs = saveAs;
-} else if ((typeof define !== "undefined" && define !== null) && (define.amd !== null)) {
-    define("FileSaver.js", function() {
-        return saveAs;
-    });
-}
+// if (typeof module !== "undefined" && module.exports) {
+//     module.exports.saveAs = saveAs;
+// } else if ((typeof define !== "undefined" && define !== null) && (define.amd !== null)) {
+//     define("FileSaver.js", function() {
+//         return saveAs;
+//     });
+// }

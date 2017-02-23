@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('OPFESinputAppPasswordShow').removeAttribute('disabled');
         document.getElementById('OPFESinputAppPasswordHide').setAttribute('disabled', 'disabled');
     });
-    document.getElementById('OPFESexportDataButton').addEventListener('click', function () {
+    document.getElementById('sssOPFESexportDataButton').addEventListener('click', function () {
         alert('Still to implement using https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js');
     });
     document.getElementById('OPFESimportDataButton').addEventListener('click', function () {
