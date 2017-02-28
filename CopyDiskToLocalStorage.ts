@@ -3,28 +3,35 @@
     let document = view.document;
     document.getElementById("OPFESCopyDiskToLocalStorageButton").addEventListener("change", function (evt) {
         evt.preventDefault();
-        let file = (<HTMLInputElement>this).files[0];
+        let file: File = (<HTMLInputElement>this).files[0];
 
         let reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             // todo cast e.target to its type: let data = (<FileReader>e.target).result;
-            let dataString:string = (<FileReader>e.target).result;
-            let dataObject:{"sites": [Site]} = JSON.parse(dataString);
+            let dataString: string = (<FileReader>e.target).result;
+            let dataObject: {"sites": [Site]} = JSON.parse(dataString);
+            // let dataObject:{"sites": [Site]} = JSON.parse(dataString, Site.revive());
             //todo, sanitize the input
             // let sites = new ObjectArray<Site>();
             // sites = dataObject.sites;
-            let sites:[Site] = dataObject.sites;
+
+            let sites: [Site] = dataObject.sites;
             //todo Replace this list of sites with the content of the uploaded file
             let dataHTML = '<table>';
-            for (let site of sites) {
+            for (let siteString of sites) {
+
+                let site = new Site(
+                    siteString.domain, siteString.salt, siteString.userId, siteString.sequenceNr,
+                    siteString.maxPwdChars, siteString.lastUsed);
+
                 dataHTML += `<tr>
-<td>${site.domain}</td>
-<td>${site.salt}</td>
-<td>${site.userId}</td>
-<td>${site.sequenceNr}</td>
-<td>${site.maxPwdChars}</td>
-<td>${site.lastUsed}</td>
-<td>${site.remark}</td>
+<td>${site.getDomain()}</td>
+<td>${site.getSalt()}</td>
+<td>${site.getUserId()}</td>
+<td>${site.getSequenceNr()}</td>
+<td>${site.getMaxPwdChars()}</td>
+<td>${site.getLastUsed()}</td>
+<td>${site.getRemark()}</td>
 </tr>`;
             }
             dataHTML += '</table>';

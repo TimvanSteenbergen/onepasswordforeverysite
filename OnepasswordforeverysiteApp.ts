@@ -403,4 +403,16 @@ class SiteService implements ISiteService {
 
         return generatedPassword;
     }
+
+    public static revive(k,v):Site{
+        let site = new Site(
+            (<HTMLInputElement>document.getElementById('OPFESinputDomain')).value,
+            (<HTMLInputElement>document.getElementById('OPFESinputSalt')).value,
+            (<HTMLInputElement>document.getElementById('OPFESinputUserId')).value,
+            +(<HTMLInputElement>document.getElementById('OPFESinputSequenceNr')).value,
+            +(<HTMLSelectElement>document.getElementById('OPFESselectMaxPwdChars')).value,
+            new Date(Date.now())
+        );
+        return site;
+    }
 }

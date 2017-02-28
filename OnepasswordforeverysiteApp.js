@@ -271,5 +271,9 @@ class SiteService {
         }
         return generatedPassword;
     }
+    static revive(k, v) {
+        let site = new Site(document.getElementById('OPFESinputDomain').value, document.getElementById('OPFESinputSalt').value, document.getElementById('OPFESinputUserId').value, +document.getElementById('OPFESinputSequenceNr').value, +document.getElementById('OPFESselectMaxPwdChars').value, new Date(Date.now()));
+        return site;
+    }
 }
 //# sourceMappingURL=OnepasswordforeverysiteApp.js.map
