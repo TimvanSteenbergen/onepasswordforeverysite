@@ -225,11 +225,11 @@ class SiteService {
         //   @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
         //op ebay.nl:  !@#$+*^~-
         // I choose to exclude these: iIjJlLoOqQxXyY`\$[]017 and we are leftover with these 64 possible password characters
-        const lowerCaseCharacters = ["a", "b", "c", "d", "e", "f", "g", "h", "k", "m", "n", "p", "r", "s", "t", "u", "v", "w", "z"];
-        const upperCaseCharacters = ["A", "B", "C", "D", "E", "F", "G", "H", "K", "M", "N", "P", "R", "S", "T", "U", "V", "W", "Z"];
+        const lowercaseCharacters = ["a", "b", "c", "d", "e", "f", "g", "h", "k", "m", "n", "p", "r", "s", "t", "u", "v", "w", "z"];
+        const uppercaseCharacters = ["A", "B", "C", "D", "E", "F", "G", "H", "K", "M", "N", "P", "R", "S", "T", "U", "V", "W", "Z"];
         const numberCharacters = ["2", "3", "4", "5", "6", "8", "9"];
         const specialCharacters = ["'", "/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
-        const passwordCharacters = lowerCaseCharacters.concat(upperCaseCharacters).concat(numberCharacters).concat(specialCharacters);
+        const passwordCharacters = lowercaseCharacters.concat(uppercaseCharacters).concat(numberCharacters).concat(specialCharacters);
         let counterHash = 0;
         let generatedPassword = "";
         for (let counterPwd = 0; counterPwd < (passwordLength / 2); counterPwd++) {
@@ -242,26 +242,32 @@ class SiteService {
         }
         //Make sure there is at least one uppercase
         if ((/[A-Z]/.test(generatedPassword)) === false) {
-            let chosenUppercaseCharacter = upperCaseCharacters[generatedHash.charCodeAt(3) % 19];
+            //.. then replace the first character by one of the chosen 16 uppwercaseCharacters
+            let chosenUppercaseCharacter = uppercaseCharacters[generatedHash.charCodeAt(3) % 19];
             generatedPassword = chosenUppercaseCharacter + generatedPassword.substr(1, passwordLength - 1);
         }
         //Make sure there is at least one lowercase
         if ((/[a-z]/.test(generatedPassword)) === false) {
-            let chosenLowercaseCharacter = lowerCaseCharacters[generatedHash.charCodeAt(3) % 19];
-            let chosenPosition = generatedHash.charCodeAt(4) % 16 + 1; // = 1 to 16
+            //.. then replace one character by one of the chosen 16 lowercaseCharacters
+            let chosenLowercaseCharacter = lowercaseCharacters[generatedHash.charCodeAt(3) % 19];
+            let chosenPosition = generatedHash.charCodeAt(4) % (passwordLength - 3) + 2; // = 1 to 16
             let firstPart = generatedPassword.substr(0, chosenPosition);
             let lastPart = generatedPassword.substr(chosenPosition + 1);
             generatedPassword = firstPart + chosenLowercaseCharacter + lastPart;
         }
-        //Make sure there is at least one number
+        //Make sure there is at least one number,
         if ((/[0-9]/.test(generatedPassword)) === false) {
-            let chosenNumberCharacter = numberCharacters[generatedHash.charCodeAt(3) % 19];
+            //.. then replace the last character by one of the chosen 7 numbers in numberCharacters
+            let chosenNumberCharacter = numberCharacters[generatedHash.charCodeAt(3) % 7];
             generatedPassword = generatedPassword.substr(0, passwordLength - 1) + chosenNumberCharacter;
         }
         //Make sure there is at least one special character
         if ((/['/~@#%^()_+-=.:?!{}]/.test(generatedPassword)) === false) {
+            //.. then replace the second character by one of the chosen 19 specialCharacters
             let chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(3) % 19];
-            generatedPassword = generatedPassword.substr(0, passwordLength - 1) + chosenSpecialCharacter;
+            let firstPart = generatedPassword.substr(0, 1);
+            let lastPart = generatedPassword.substr(2, passwordLength - 2);
+            generatedPassword = firstPart + chosenSpecialCharacter + lastPart;
         }
         return generatedPassword;
     }
