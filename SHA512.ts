@@ -11,12 +11,12 @@ function SHA512(str) {
         this.lowOrder = lsint_32;
     }
 
-    var H = [new Int64(0x6a09e667, 0xf3bcc908), new Int64(0xbb67ae85, 0x84caa73b),
+    let H = [new Int64(0x6a09e667, 0xf3bcc908), new Int64(0xbb67ae85, 0x84caa73b),
         new Int64(0x3c6ef372, 0xfe94f82b), new Int64(0xa54ff53a, 0x5f1d36f1),
         new Int64(0x510e527f, 0xade682d1), new Int64(0x9b05688c, 0x2b3e6c1f),
         new Int64(0x1f83d9ab, 0xfb41bd6b), new Int64(0x5be0cd19, 0x137e2179)];
 
-    var K = [new Int64(0x428a2f98, 0xd728ae22), new Int64(0x71374491, 0x23ef65cd),
+    let K = [new Int64(0x428a2f98, 0xd728ae22), new Int64(0x71374491, 0x23ef65cd),
         new Int64(0xb5c0fbcf, 0xec4d3b2f), new Int64(0xe9b5dba5, 0x8189dbbc),
         new Int64(0x3956c25b, 0xf348b538), new Int64(0x59f111f1, 0xb605d019),
         new Int64(0x923f82a4, 0xaf194f9b), new Int64(0xab1c5ed5, 0xda6d8118),
@@ -57,21 +57,21 @@ function SHA512(str) {
         new Int64(0x4cc5d4be, 0xcb3e42b6), new Int64(0x597f299c, 0xfc657e2a),
         new Int64(0x5fcb6fab, 0x3ad6faec), new Int64(0x6c44198c, 0x4a475817)];
 
-    var W = new Array(64);
-    var a, b, c, d, e, f, g, h, i, j;
-    var T1, T2;
-    var charsize = 8;
+    let W = new Array(64);
+    let a, b, c, d, e, f, g, h, i, j;
+    let T1, T2;
+    let charsize = 8;
 
     function utf8_encode(str) {
         return unescape(encodeURIComponent(str));
     }
 
     function str2binb(str) {
-        var bin = [];
-        var mask = (1 << charsize) - 1;
-        var len = str.length * charsize;
+        let bin = [];
+        let mask = (1 << charsize) - 1;
+        let len = str.length * charsize;
 
-        for (var i = 0; i < len; i += charsize) {
+        for (let i = 0; i < len; i += charsize) {
             bin[i >> 5] |= (str.charCodeAt(i / charsize) & mask) << (32 - charsize - (i % 32));
         }
 
@@ -79,12 +79,12 @@ function SHA512(str) {
     }
 
     function binb2hex(binarray) {
-        var hex_tab = "0123456789abcdef";
-        var str = "";
-        var length = binarray.length * 4;
-        var srcByte;
+        let hex_tab = "0123456789abcdef";
+        let str = "";
+        let length = binarray.length * 4;
+        let srcByte;
 
-        for (var i = 0; i < length; i += 1) {
+        for (let i = 0; i < length; i += 1) {
             srcByte = binarray[i >> 2] >> ((3 - (i % 4)) * 8);
             str += hex_tab.charAt((srcByte >> 4) & 0xF) + hex_tab.charAt(srcByte & 0xF);
         }
@@ -93,7 +93,7 @@ function SHA512(str) {
     }
 
     function safe_add_2(x, y) {
-        var lsw, msw, lowOrder, highOrder;
+        let lsw, msw, lowOrder, highOrder;
 
         lsw = (x.lowOrder & 0xFFFF) + (y.lowOrder & 0xFFFF);
         msw = (x.lowOrder >>> 16) + (y.lowOrder >>> 16) + (lsw >>> 16);
@@ -107,7 +107,7 @@ function SHA512(str) {
     }
 
     function safe_add_4(a, b, c, d) {
-        var lsw, msw, lowOrder, highOrder;
+        let lsw, msw, lowOrder, highOrder;
 
         lsw = (a.lowOrder & 0xFFFF) + (b.lowOrder & 0xFFFF) + (c.lowOrder & 0xFFFF) + (d.lowOrder & 0xFFFF);
         msw = (a.lowOrder >>> 16) + (b.lowOrder >>> 16) + (c.lowOrder >>> 16) + (d.lowOrder >>> 16) + (lsw >>> 16);
@@ -121,7 +121,7 @@ function SHA512(str) {
     }
 
     function safe_add_5(a, b, c, d, e) {
-        var lsw, msw, lowOrder, highOrder;
+        let lsw, msw, lowOrder, highOrder;
 
         lsw = (a.lowOrder & 0xFFFF) + (b.lowOrder & 0xFFFF) + (c.lowOrder & 0xFFFF) + (d.lowOrder & 0xFFFF) + (e.lowOrder & 0xFFFF);
         msw = (a.lowOrder >>> 16) + (b.lowOrder >>> 16) + (c.lowOrder >>> 16) + (d.lowOrder >>> 16) + (e.lowOrder >>> 16) + (lsw >>> 16);
@@ -163,9 +163,9 @@ function SHA512(str) {
     }
 
     function sigma0(x) {
-        var rotr28 = rotr(x, 28);
-        var rotr34 = rotr(x, 34);
-        var rotr39 = rotr(x, 39);
+        let rotr28 = rotr(x, 28);
+        let rotr34 = rotr(x, 34);
+        let rotr39 = rotr(x, 39);
 
         return new Int64(
             rotr28.highOrder ^ rotr34.highOrder ^ rotr39.highOrder,
@@ -174,9 +174,9 @@ function SHA512(str) {
     }
 
     function sigma1(x) {
-        var rotr14 = rotr(x, 14);
-        var rotr18 = rotr(x, 18);
-        var rotr41 = rotr(x, 41);
+        let rotr14 = rotr(x, 14);
+        let rotr18 = rotr(x, 18);
+        let rotr41 = rotr(x, 41);
 
         return new Int64(
             rotr14.highOrder ^ rotr18.highOrder ^ rotr41.highOrder,
@@ -185,7 +185,7 @@ function SHA512(str) {
     }
 
     function gamma0(x) {
-        var rotr1 = rotr(x, 1), rotr8 = rotr(x, 8), shr7 = shr(x, 7);
+        let rotr1 = rotr(x, 1), rotr8 = rotr(x, 8), shr7 = shr(x, 7);
 
         return new Int64(
             rotr1.highOrder ^ rotr8.highOrder ^ shr7.highOrder,
@@ -194,9 +194,9 @@ function SHA512(str) {
     }
 
     function gamma1(x) {
-        var rotr19 = rotr(x, 19);
-        var rotr61 = rotr(x, 61);
-        var shr6 = shr(x, 6);
+        let rotr19 = rotr(x, 19);
+        let rotr61 = rotr(x, 61);
+        let shr6 = shr(x, 6);
 
         return new Int64(
             rotr19.highOrder ^ rotr61.highOrder ^ shr6.highOrder,
@@ -219,11 +219,11 @@ function SHA512(str) {
     }
 
     str = utf8_encode(str);
-    strlen = str.length * charsize;
+    let stringLength = str.length * charsize;
     str = str2binb(str);
 
-    str[strlen >> 5] |= 0x80 << (24 - strlen % 32);
-    str[(((strlen + 128) >> 10) << 5) + 31] = strlen;
+    str[stringLength >> 5] |= 0x80 << (24 - stringLength % 32);
+    str[(((stringLength + 128) >> 10) << 5) + 31] = stringLength;
 
     for (i = 0; i < str.length; i += 32) {
         a = H[0];
@@ -264,10 +264,10 @@ function SHA512(str) {
         H[7] = safe_add_2(h, H[7]);
     }
 
-    var binarray = [];
+    let binArray = [];
     for (i = 0; i < H.length; i++) {
-        binarray.push(H[i].highOrder);
-        binarray.push(H[i].lowOrder);
+        binArray.push(H[i].highOrder);
+        binArray.push(H[i].lowOrder);
     }
-    return binb2hex(binarray);
+    return binb2hex(binArray);
 }

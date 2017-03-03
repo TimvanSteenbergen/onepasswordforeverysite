@@ -53,6 +53,6 @@ This data is stored in the webappsstore.sqlite file in the profile folder of you
   <li>click on "Load extracted extensions"</li>
   <li>select the directory where you have placed the downloaded code and click "OK"</li>
  </ul>
- The onePasswordForEverySite-extension should now be added to the top of your list of extensions.<br/>
+ The OnePasswordForEverySite-extension should now be added to the top of your list of extensions.<br/>
  The icon for this extension should show up at your extension-icons tray, usually next to your url-bar.
 </p> 

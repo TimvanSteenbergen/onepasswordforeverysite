@@ -17,11 +17,11 @@ interface ISite {
     getRemark();
     setRemark(value: string);
 }
-class ObjectArray<Object> extends Array<Object> {
-    add(element: Object) {
-        this.push(element);
-    }
-}
+// class ObjectArray<Object> extends Array<Object> {
+//     add(element: Object) {
+//         this.push(element);
+//     }
+// }
 class Site implements ISite {
     constructor(private domain: string = "",
                 private salt?: string,

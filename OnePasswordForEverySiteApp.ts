@@ -2,29 +2,28 @@
  * Created by Tim van Steenbergen on 21-1-2017.
  */
 
-declare function SHA512(string): string;
-///<reference path="chrome/index.d.ts"/>
+// declare function SHA512(string): string;
 console.log('before DOMContentLoaded');
+///<reference path="chrome/index.d.ts"/>
 
 document.addEventListener('DOMContentLoaded', function () {
-    let json: {"sites": Site[]} = {
-        "sites": [//domain, salt, username, sequencenr, maxPwdChars, lastused, remarks
-            new Site("gavelsnipe.com", "koud", "timvans", 1, 120, new Date("20160101"), ""),
-            new Site("mycloud.com", "hout", "tim@tieka.nl", 1, 30, new Date("20170218"), ""),
-            new Site("webassessor.com", "koud", "TimvanSteenbergen", 2, 120, new Date("20160101"), ""),//
-            new Site("stackoverflow.com", "koud", "tim@tieka.nl", 1, 120, new Date(new Date("20160101")), ""),
-            new Site("quora.com", "koud", "tim@tieka.nl", 1, 74, new Date("20160101"), "Max 75 karakters in het wachtwoord"),
-            new Site("robbshop.com", "koud", "tim@tieka.nl", 1, 120, new Date("20160101"), ""),
-            new Site("lynda.com", "koud", "tim@tieka.nl", 1, 120, new Date("20160101"), ""),
-            new Site("nrc.nl", "koud", "elma@tieka.nl", 1, 120, new Date("20160101"), ""),
-            new Site("ebay.com", "heet", "tivansteenberge_0", 3, 64, new Date("20160101"), "Max 64 karakters in het wachtwoord"),
-            new Site("ebay.nl", "heet", "tivansteenberge_0", 3, 64, new Date("20160101"), "Max 64 karakters in het wachtwoord"),
-            new Site("yetanothersite.nl", "koud", "alias24", 1, 120, new Date("20160101"), ""),
-            new Site("andonemore.nl", "koud", "myusernamehere", 1, 120, new Date("20160101"), "")
+    let userData: UserData = new UserData(
+        [//domain, salt, username, sequencenr, maxPwdChars, lastused, remarks
+            new Site("gavelsnipe.com", "koud", "timvans", 1, 120, new Date(2016, 1, 1), ""),
+            // new Site("mycloud.com", "hout", "tim@tieka.nl", 1, 30, new Date(2017,2,18), ""),
+            // new Site("webassessor.com", "koud", "TimvanSteenbergen", 2, 120, new Date(2016,1,1), ""),//
+            // new Site("stackoverflow.com", "koud", "tim@tieka.nl", 1, 120, new Date(2016,1,1), ""),
+            // new Site("quora.com", "koud", "tim@tieka.nl", 1, 74, new Date(2016,1,1), "Max 75 karakters in het wachtwoord"),
+            // new Site("robbshop.com", "koud", "tim@tieka.nl", 1, 120, new Date(2016,1,1), ""),
+            // new Site("lynda.com", "koud", "tim@tieka.nl", 1, 120, new Date(2016,1,1), ""),
+            // new Site("nrc.nl", "koud", "elma@tieka.nl", 1, 120, new Date(2016,1,1), ""),
+            new Site("ebay.com", "heet", "tivansteenberge_0", 3, 64, new Date(2016, 1, 1), "Max 64 karakters in het wachtwoord"),
+            // new Site("ebay.nl", "heet", "tivansteenberge_0", 3, 64, new Date(2016,1,1), "Max 64 karakters in het wachtwoord"),
+            // new Site("yetAnotherSite.nl", "koud", "alias24", 1, 120, new Date(2016,1,1), ""),
+            // new Site("andOneMore.nl", "koud", "myusernamehere", 1, 120, new Date(2016,1,1), "")
         ]
-    };
-    let sites = json.sites;
-    localStorage.setItem("sites", JSON.stringify(json));
+    );
+    let sites = userData.sites;
     showTheLocallyStoredData(5);
     setValueForElementDomain();
     function setValueForElementDomain() {
@@ -33,14 +32,14 @@ document.addEventListener('DOMContentLoaded', function () {
             let ourPopup = document;
             let domain = getDomain(tab.url);
 
-            let domainElement = ourPopup.getElementById('OPFESinputDomain');
+            let domainElement = ourPopup.getElementById('OPFESInputDomain');
             domainElement.setAttribute('value', domain);
 
             setValueForElements(domain);
 
             function getDomain(url)
             //This function gets the domainname from the url.
-            //Can't use "window.location.host" because this will return the domain of the OnepasswordforeverysiteApp.html
+            //Can't use "window.location.host" because this will return the domain of the OnePasswordForEverySiteApp.html
             {
                 let domain = url.match(/:\/\/(.[^/]+)/)[1];
                 //remove the sub-domain(s)
@@ -52,27 +51,26 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             function setValueForElements(domain) {
-                json = JSON.parse(localStorage.getItem("sites"));
-                sites = json.sites;
-                for (let i = 0; i < sites.length; i++) {
-                    let site: Site = new Site(sites[i]["domain"], sites[i]["salt"], sites[i]["userId"], sites[i]["sequenceNr"], sites[i]["maxPwdChars"], sites[i]["usedAt"], sites[i]["remark"]);
+                let userData = UserData.retrieve();
+                let sites = userData.getAll;
+                for (let site of sites) {
                     if (site.getDomain() == domain) {
-                        document.getElementById('OPFESinputDomain').setAttribute('disabled', "disabled");
+                        document.getElementById('OPFESInputDomain').setAttribute('disabled', "disabled");
                         if (site.getSalt() != "") {
-                            document.getElementById('OPFESinputSalt').setAttribute('value', site.getSalt());
-                            document.getElementById('OPFESinputSalt').setAttribute('disabled', "disabled");
+                            document.getElementById('OPFESInputSalt').setAttribute('value', site.getSalt());
+                            document.getElementById('OPFESInputSalt').setAttribute('disabled', "disabled");
                         }
                         if (site.getUserId() != "") {
-                            document.getElementById('OPFESinputUserId').setAttribute('value', site.getUserId());
-                            document.getElementById('OPFESinputUserId').setAttribute('disabled', "disabled");
+                            document.getElementById('OPFESInputUserId').setAttribute('value', site.getUserId());
+                            document.getElementById('OPFESInputUserId').setAttribute('disabled', "disabled");
                         }
                         if (site.getSequenceNr() != 0) {
-                            document.getElementById('OPFESinputSequenceNr').setAttribute('value', (site.getSequenceNr() + ""));
-                            document.getElementById('OPFESinputSequenceNr').setAttribute('disabled', "disabled");
+                            document.getElementById('OPFESInputSequenceNr').setAttribute('value', (site.getSequenceNr() + ""));
+                            document.getElementById('OPFESInputSequenceNr').setAttribute('disabled', "disabled");
                         }
                         if (site.getMaxPwdChars() != 120) {
                             // <HTMLSelectElement>(document.getElementById('selectMaxPwdChars')).setAttribute('value', <site._maxPwdChars);
-                            document.getElementById('OPFESselectMaxPwdChars').setAttribute('disabled', "disabled");
+                            document.getElementById('OPFESSelectMaxPwdChars').setAttribute('disabled', "disabled");
                         }
                     }
                 }
@@ -84,34 +82,32 @@ document.addEventListener('DOMContentLoaded', function () {
      * This function retrieves the locally stored sites, changes the popup to:
      * - only show numOfLines of the sites
      * - show the "..." if some sites are not shown
-     * @param numOfLines Number of lines to show in the OnepasswordforeverysiteApp.html
+     * @param numOfLines Number of lines to show in the OnePasswordForEverySiteApp.html
      */
-    function showTheLocallyStoredData(numOfLines) {
-        json = JSON.parse(localStorage.getItem("sites"));
-        sites = json.sites;
-        let dataTableHTML = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
-        // sites.forEach((dataTableHTML: string, site: Site ): Site => {
-        for (let i = 0; i < sites.length && i < numOfLines; i++) {
-            let site: Site = new Site(sites[i]["domain"], sites[i]["salt"], sites[i]["userId"], sites[i]["sequenceNr"], sites[i]["maxPwdChars"], sites[i]["usedAt"], sites[i]["remark"]);
-            dataTableHTML += '<tr><td>' + site.getDomain() + '</td>';
-            dataTableHTML += '<td>' + site.getSalt() + '</td>';
-            dataTableHTML += '<td>' + site.getUserId() + '</td>';
-            dataTableHTML += '<td>' + site.getSequenceNr() + '</td>';
-            dataTableHTML += '<td>' + site.getMaxPwdChars() + '</td>';
-            dataTableHTML += '<td>' + site.getLastUsed() + '</td>';
-            dataTableHTML += '<td>' + site.getRemark() + '</td>';
-            dataTableHTML += '<td>' + '</td></tr>';
+    function showTheLocallyStoredData(numOfLines: number) {
+        let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
+        let sites: Site[] = userData.sites;
+        let dataTableHTML: string = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
+        for (let site of sites) {
+            dataTableHTML += `<tr><td>${site.getDomain()}</td>
+                                 <td>${site.getSalt()}</td>
+                                 <td>${site.getUserId()}</td>
+                                 <td>${site.getSequenceNr()}</td>
+                                 <td>${site.getMaxPwdChars()}</td>
+                                 <td>${site.getLastUsed()}</td>
+                                 <td>${site.getRemark()}</td>
+                             </tr>`;
         }
         if (sites.length > numOfLines) {
-            document.getElementById('OPFESshowAllTheLocallyStoredData').setAttribute('style', "display: inline");
+            document.getElementById('OPFESShowAllTheLocallyStoredData').setAttribute('style', "display: inline");
         } else {
-            document.getElementById('OPFESshowAllTheLocallyStoredData').setAttribute('style', "display: none");
+            document.getElementById('OPFESShowAllTheLocallyStoredData').setAttribute('style', "display: none");
         }
         dataTableHTML += '</table>';
-        document.getElementById('OPFESlocalyStoredUserData').innerHTML = dataTableHTML;
+        document.getElementById('OPFES_localStoredUserData').innerHTML = dataTableHTML;
     }
 
-    document.getElementById('OPFESshowAllTheLocallyStoredData').addEventListener('click', function () {
+    document.getElementById('OPFESShowAllTheLocallyStoredData').addEventListener('click', function () {
         showTheLocallyStoredData(100000);
     });
 
@@ -125,78 +121,96 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    document.getElementById('OPFESinputDomainToggle').addEventListener('click', function () {
+    document.getElementById('OPFESInputDomainToggle').addEventListener('click', function () {
         toggleChangability.call(this);
     });
-    document.getElementById('OPFESinputSaltToggle').addEventListener('click', function () {
+    document.getElementById('OPFESInputSaltToggle').addEventListener('click', function () {
         toggleChangability.call(this);
     });
-    document.getElementById('OPFESinputUserIdToggle').addEventListener('click', function () {
+    document.getElementById('OPFESInputUserIdToggle').addEventListener('click', function () {
         toggleChangability.call(this);
     });
-    document.getElementById('OPFESinputSequenceNrToggle').addEventListener('click', function () {
+    document.getElementById('OPFESInputSequenceNrToggle').addEventListener('click', function () {
         toggleChangability.call(this);
     });
-    document.getElementById('OPFESselectMaxPwdCharsToggle').addEventListener('click', function () {
+    document.getElementById('OPFESSelectMaxPwdCharsToggle').addEventListener('click', function () {
         toggleChangability.call(this);
     });
-    document.getElementById('OPFESinputAppPasswordShow').addEventListener('click', function () {
+    document.getElementById('OPFESInputAppPasswordShow').addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 4);
         let elementToToggle = document.getElementById(elementId);
         elementToToggle.setAttribute('type', 'text');
-        document.getElementById('OPFESinputAppPasswordShow').setAttribute('disabled', 'disabled');
-        document.getElementById('OPFESinputAppPasswordHide').removeAttribute('disabled');
+        document.getElementById('OPFESInputAppPasswordShow').setAttribute('disabled', 'disabled');
+        document.getElementById('OPFESInputAppPasswordHide').removeAttribute('disabled');
     });
-    document.getElementById('OPFESinputAppPasswordHide').addEventListener('click', function () {
+    document.getElementById('OPFESInputAppPasswordHide').addEventListener('click', function () {
         let elementToToggle = document.getElementById(this.id.substr(0, this.id.length - 4));
         elementToToggle.setAttribute('type', 'password');
-        document.getElementById('OPFESinputAppPasswordShow').removeAttribute('disabled');
-        document.getElementById('OPFESinputAppPasswordHide').setAttribute('disabled', 'disabled');
+        document.getElementById('OPFESInputAppPasswordShow').removeAttribute('disabled');
+        document.getElementById('OPFESInputAppPasswordHide').setAttribute('disabled', 'disabled');
     });
     /* The functions for the buttons to Copy LocalStorage to disk and back again, (OPFESCopyLocalStorageToDiskButton and
-      * OPFESCopyDiskToLocalStorageButton) are defined in their own files. */
+     * OPFESCopyDiskToLocalStorageButton) are defined in their own files. */
 
     /*
-     * Upon clicking the loginButton, generate the password for this site, salt, uid, sequence,
+     * Upon clicking the loginButton, generate the password using the domain-name, salt, userId and sequenceNr,
      * show the password in a popup and save the (changed) domain-data to the LocalStorage,
      * N.B. of course not saving the password!
      */
-    document.getElementById('OPFESloginButton').addEventListener('click', function () {
+    document.getElementById('OPFESLoginButton').addEventListener('click', function () {
         let ourPopup = document;
         let site = new Site(
-            (<HTMLInputElement>ourPopup.getElementById('OPFESinputDomain')).value,
-            (<HTMLInputElement>ourPopup.getElementById('OPFESinputSalt')).value,
-            (<HTMLInputElement>ourPopup.getElementById('OPFESinputUserId')).value,
-            +(<HTMLInputElement>ourPopup.getElementById('OPFESinputSequenceNr')).value,
-            +(<HTMLSelectElement>ourPopup.getElementById('OPFESselectMaxPwdChars')).value,
-            new Date(Date.now())
+            (<HTMLInputElement>ourPopup.getElementById('OPFESInputDomain')).value,
+            (<HTMLInputElement>ourPopup.getElementById('OPFESInputSalt')).value,
+            (<HTMLInputElement>ourPopup.getElementById('OPFESInputUserId')).value,
+            +(<HTMLInputElement>ourPopup.getElementById('OPFESInputSequenceNr')).value,
+            +(<HTMLSelectElement>ourPopup.getElementById('OPFESSelectMaxPwdChars')).value,
+            new Date(Date.now()),
+            '' //remark
         );
 
-        let inputValueAppPassword = (<HTMLInputElement>ourPopup.getElementById('OPFESinputAppPassword')).value;
+        let inputValueAppPassword = (<HTMLInputElement>ourPopup.getElementById('OPFESInputAppPassword')).value;
         //save the sites data every time the password gets generated
         // siteService.add(site)
-        let siteUpserted = false;
-        for (let i = 0; i < json.sites.length; i++) {
-            if (json.sites[i]["domain"] == site.getDomain()) {
-                json.sites[i] = site;
+        let siteUpserted: boolean = false;
+        for (let key in userData.sites) {
+            if (userData.sites[key]["domain"] == site.getDomain()) {
+                userData.sites[key] = site;
                 siteUpserted = true;
             }
         }
         if (!siteUpserted) {
-            json.sites.push(site);
+            userData.sites.push(site);
         }
-        localStorage.setItem("sites", JSON.stringify(json));
+        userData.persist();
 
         let siteService = new SiteService(sites);
         let sitePassword = siteService.getSitePassword(site, inputValueAppPassword);
         window.prompt('The password for this site for this user-id is: ' + sitePassword + ' To copy the password to your clipboard: Ctrl+C, Enter', sitePassword);
-        let passwordElement = ourPopup.getElementById('OPFESinputSitePassword');
+        let passwordElement = ourPopup.getElementById('OPFESInputSitePassword');
         passwordElement.setAttribute("value", sitePassword);
         // Insert the sitePassword in the password-input field in the document
         // insertPwd(sitePassword, passwordElement);
 
     }, false);
-}, false);
+
+    /**
+     * This links the UserData-download function to the export button
+     */
+    document.getElementById("OPFESCopyLocalStorageToDiskButton").addEventListener("click", function (event) {
+        event.preventDefault();
+        UserData.download();
+    }, false);
+
+    /**
+     * This links the UserData-download function to the export button
+     */
+    document.getElementById("OPFESCopyDiskToLocalStorageButton").addEventListener("change", function (event) {
+        event.preventDefault();
+        UserData.upload();
+    }, false);
+
+});
 
 // /**
 //  * Created by Tim on 12-2-2017.
@@ -299,7 +313,7 @@ interface ISiteService {
 }
 
 function getTheLocallyStoredSites(numOfLines: number = 9999): Site[] {
-    let json = JSON.parse(localStorage.getItem("sites"));
+    let json = JSON.parse(localStorage.getItem("OPFES_UserData"));
     let sites = json.sites;
     if (numOfLines == 9999) {
         return sites;
@@ -317,18 +331,18 @@ class SiteService implements ISiteService {
 
     add(site: Site): Boolean {
         return true;
-    };
+    }
 
     getByDomain(domain: string): Site {
         let site: Site = new Site;
         getTheLocallyStoredSites();
         // site->setDomain()
         return site;
-    };
+    }
 
     getAll(): Site[] {
         return getTheLocallyStoredSites();
-    };
+    }
 
     /**
      * This function takes its parameters and returns a hashed password that:
@@ -370,7 +384,7 @@ class SiteService implements ISiteService {
 
         //Make sure there is at least one uppercase
         if ((/[A-Z]/.test(generatedPassword)) === false) {//If there is not yet a uppercase in the generated password..
-            //.. then replace the first character by one of the chosen 16 uppwercaseCharacters
+            //.. then replace the first character by one of the chosen 16 uppercaseCharacters
             let chosenUppercaseCharacter: string = uppercaseCharacters[generatedHash.charCodeAt(3) % 19];
             generatedPassword = chosenUppercaseCharacter + generatedPassword.substr(1, passwordLength - 1);
         }
@@ -379,7 +393,7 @@ class SiteService implements ISiteService {
         if ((/[a-z]/.test(generatedPassword)) === false) {//If there is not yet a lowercase in the generated password..
             //.. then replace one character by one of the chosen 16 lowercaseCharacters
             let chosenLowercaseCharacter: string = lowercaseCharacters[generatedHash.charCodeAt(3) % 19];
-            let chosenPosition: number = generatedHash.charCodeAt(4) % (passwordLength - 3) + 2; // = 1 to 16
+            let chosenPosition: number = generatedHash.charCodeAt(4) % (passwordLength - 3) + 2; // will get a position in the range: 3 to 16
             let firstPart: string = generatedPassword.substr(0, chosenPosition);
             let lastPart: string = generatedPassword.substr(chosenPosition + 1);
             generatedPassword = firstPart + chosenLowercaseCharacter + lastPart;
@@ -398,21 +412,10 @@ class SiteService implements ISiteService {
             let chosenSpecialCharacter: string = specialCharacters[generatedHash.charCodeAt(3) % 19];
             let firstPart: string = generatedPassword.substr(0, 1);
             let lastPart: string = generatedPassword.substr(2, passwordLength - 2);
-            generatedPassword =  firstPart + chosenSpecialCharacter  + lastPart;
+            generatedPassword = firstPart + chosenSpecialCharacter + lastPart;
         }
 
         return generatedPassword;
     }
-
-    public static revive(k,v):Site{
-        let site = new Site(
-            (<HTMLInputElement>document.getElementById('OPFESinputDomain')).value,
-            (<HTMLInputElement>document.getElementById('OPFESinputSalt')).value,
-            (<HTMLInputElement>document.getElementById('OPFESinputUserId')).value,
-            +(<HTMLInputElement>document.getElementById('OPFESinputSequenceNr')).value,
-            +(<HTMLSelectElement>document.getElementById('OPFESselectMaxPwdChars')).value,
-            new Date(Date.now())
-        );
-        return site;
-    }
 }
+
