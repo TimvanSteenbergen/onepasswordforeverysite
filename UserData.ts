@@ -96,19 +96,16 @@ class UserData implements IUserData {
     /**
      * This function uploads the UserData from your local pc into memory
      */
-    static upload() {
+    static upload(file: File) {
         (function (view) {
             "use strict";
-            let document = view.document;
-            // event.preventDefault();
-            let file: File = (<HTMLInputElement>this).files[0];
 
             let reader = new FileReader();
             reader.onload = function (e) {
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
                 let dataString: string = (<FileReader>e.target).result;
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);
-                let sites: Site[] = userData.sites;
+                let sites: Site[] = userData._sites;
 
                 let dataTableHTML: string = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
                 for (let site of sites) {

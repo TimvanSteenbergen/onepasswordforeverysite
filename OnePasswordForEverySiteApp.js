@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     document.getElementById("OPFESCopyDiskToLocalStorageButton").addEventListener("change", function (event) {
         event.preventDefault();
-        UserData.upload();
+        UserData.upload(this.files[0]);
     }, false);
 });
 function getTheLocallyStoredSites(numOfLines = 9999) {

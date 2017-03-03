@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     document.getElementById("OPFESCopyDiskToLocalStorageButton").addEventListener("change", function (event) {
         event.preventDefault();
-        UserData.upload();
+        UserData.upload((<HTMLInputElement>this).files[0]);
     }, false);
 
 });
