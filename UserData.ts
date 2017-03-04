@@ -67,6 +67,40 @@ class UserData implements IUserData {
     }
 
     /**
+     * This function uploads the UserData from your local pc into memory
+     */
+    static upload(file: File) {
+        (function (view) {
+            "use strict";
+
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                // todo cast e.target to its type: let data = (<FileReader>e.target).result;
+                let dataString: string = (<FileReader>e.target).result;
+                let userData: UserData = JSON.parse(dataString, UserData.reviver);
+                let sites: Site[] = userData.sites;
+
+                let dataTableHTML: string = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
+                for (let site of sites) {
+                    dataTableHTML += `<tr><td>${site.getDomain()}</td>
+                                      <td>${site.getSalt()}</td>
+                                      <td>${site.getUserId()}</td>
+                                      <td>${site.getSequenceNr()}</td>
+                                      <td>${site.getMaxPwdChars()}</td>
+                                      <td>${site.getLastUsed()}</td>
+                                      <td>${site.getRemark()}</td>
+                                   </tr>`;
+                }
+                dataTableHTML += '</table>';
+                let localStoredUserDataElement = document.getElementById('OPFES_localStoredUserData');
+                localStoredUserDataElement.innerHTML = dataTableHTML;
+                userData.persist();
+            };
+            reader.readAsText(file);//attempts to read the file in question.
+        }(self));
+    }
+
+    /**
      * This function downloads the UserData to your local pc
      */
     static download() {
@@ -93,37 +127,31 @@ class UserData implements IUserData {
         }(self));
     }
 
+
     /**
-     * This function uploads the UserData from your local pc into memory
+     * This function downloads the UserData to your local pc
      */
-    static upload(file: File) {
+    static downloadPasswords() {
         (function (view) {
             "use strict";
+            let document = view.document
+                // only get URL when necessary in case Blob.js hasn't defined it yet
+                , get_blob = function () {
+                    return view.Blob;
+                };
 
-            let reader = new FileReader();
-            reader.onload = function (e) {
-                // todo cast e.target to its type: let data = (<FileReader>e.target).result;
-                let dataString: string = (<FileReader>e.target).result;
-                let userData: UserData = JSON.parse(dataString, UserData.reviver);
-                let sites: Site[] = userData._sites;
-
-                let dataTableHTML: string = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
-                for (let site of sites) {
-                    dataTableHTML += `<tr><td>${site.getDomain()}</td>
-                                      <td>${site.getSalt()}</td>
-                                      <td>${site.getUserId()}</td>
-                                      <td>${site.getSequenceNr()}</td>
-                                      <td>${site.getMaxPwdChars()}</td>
-                                      <td>${site.getLastUsed()}</td>
-                                      <td>${site.getRemark()}</td>
-                                   </tr>`;
-                }
-                dataTableHTML += '</table>';
-                let localStoredUserDataElement = document.getElementById('OPFES_localStoredUserData');
-                localStoredUserDataElement.innerHTML = dataTableHTML;
-                userData.persist();
-            };
-            reader.readAsText(file);//attempts to read the file in question.
+            let userData = UserData.retrieve();
+            let exportData = JSON.stringify(userData);
+            //@todo encrypt this exportData
+            if (confirm('This will copy the sites and their related properties to a file for you to store on your local drive.')) {
+                let BB = get_blob();
+                saveAs(
+                    new BB([exportData], {type: "text/plain;charset=" + document.characterSet}),
+                    "yourWebsiteLoginData.txt",
+                    true
+                );
+            }
+            // });
         }(self));
     }
 }
