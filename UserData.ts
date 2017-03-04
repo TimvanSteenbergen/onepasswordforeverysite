@@ -15,21 +15,21 @@ class UserData implements IUserData {
         this._sites = value;
     }
 
-    constructor(public _sites: Site[]) {
+    constructor(private _sites: Site[]) {
     }
 
     /**
-     * This function gets called with every key/value pair in the object as it’s being JSON.parsed
-     * This function turns the given string into a UserData object having valid Site objects instead of string-values
+     * This function gets called for every key/value pair in the object's result-string after it’s been JSON.parsed
+     * This function turns the given result-string into a UserData object having valid Site objects instead of string-values
      *
      * @param key
      * @param value if this contains a stringified UserData-instance, a UserData-instance will get returned
      * @returns {any}
      */
     static reviver(key, value): any {
-        if (key !== "") {//Even better: create a sanitizer for value that checks if the value has the format needed for reviving a UserData Object
+        if (key !== "") {
             return value;
-        }
+        }//Even better: create a sanitizer for value that checks if the value has the format needed for reviving a UserData Object
         let sites: Site[] = []; //the target array of sites
         let sitesArray: String[] = value._sites; //the source array of sites
         for (let key in sitesArray) {
@@ -46,6 +46,10 @@ class UserData implements IUserData {
             sites.push(site);
         }
         return new UserData(sites);
+        // } else {
+        //
+        // }
+
         // TODO, when we start using this for apps as well, change this to:
         // return new UserData(sites, apps);
     }
@@ -127,7 +131,6 @@ class UserData implements IUserData {
         }(self));
     }
 
-
     /**
      * This function downloads the UserData to your local pc
      */
@@ -140,17 +143,35 @@ class UserData implements IUserData {
                     return view.Blob;
                 };
 
-            let userData = UserData.retrieve();
-            let exportData = JSON.stringify(userData);
-            //@todo encrypt this exportData
-            if (confirm('This will copy the sites and their related properties to a file for you to store on your local drive.')) {
+            let userData: UserData = UserData.retrieve();
+            let sites: Site[] = userData.sites;
+            let sitePassword: string;
+            let passwordData: {site: Site, sitePassword: string}[] = [];
+            let yourOnlyPassword = (<HTMLInputElement>view.document.getElementById('OPFES_InputAppPassword')).value;
+            if(!yourOnlyPassword){
+                alert('First enter your password in the field "Your only password".');
+                return;
+            }
+            if (confirm(
+                    'This will give you a file containing your user-id and password for the sites that you have visited. ' +
+                    'This is useful for your own peace of mind and if you need your password without having OPFES helping you. ' +
+                    'On the other hand: downloading this file is a security-risc. ' +
+                    'Anyone stealing this file can use your user-id\'s and passwords on your sites.')
+            ) {
                 let BB = get_blob();
+                for (let site of sites) {
+                    sitePassword = SiteService.getSitePassword(site, yourOnlyPassword);
+                    passwordData.push({site, sitePassword});
+                }
+                let exportData: string = JSON.stringify(passwordData);
                 saveAs(
                     new BB([exportData], {type: "text/plain;charset=" + document.characterSet}),
                     "yourWebsiteLoginData.txt",
                     true
                 );
+                alert('This site is in your hands now, containing your user-id\'s and passwords\'. Keep it safe.')
             }
+            //@todo encrypt this exportData
             // });
         }(self));
     }

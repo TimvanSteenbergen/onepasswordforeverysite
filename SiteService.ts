@@ -8,8 +8,8 @@ interface ISiteService {
     add(site: Site): Boolean;
     getByDomain(domain: string): Site;
     getAll(): Site[];
-    getSitePassword(site: Site,
-                    pwdUser: string): string;
+    // getSitePassword(site: Site,
+    //                 pwdUser: string): string;
 }
 
 function getTheLocallyStoredSites(numOfLines: number = 9999): Site[] {
@@ -53,7 +53,7 @@ class SiteService implements ISiteService {
      * @param appPassword: string
      * @returns {string}
      */
-    getSitePassword(site: Site, appPassword: string): string {
+    static getSitePassword(site: Site, appPassword: string): string {
         const passwordLength: number = site.getMaxPwdChars(); //Between 20 and 120
 
         //get the SHA512
