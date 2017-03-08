@@ -6,15 +6,15 @@
   "version": "1.0",
 
   "browser_action": {
-    "default_icon": "icon_opfes_19.png",
+    "default_icon": "icons\/opfes_19.png",
     "default_popup": "OnePasswordForEverySiteApp.html",
     "default_title": "Hi, I'm OPFES.\nI will help you log in everywhere.\nYou will only need one password!\nI will not store any of your passwords anywhere!"
   },
   "icons": {
-    "19": "icon_opfes_19.png",
-    "32": "icon_opfes_32.png",
-    "48": "icon_opfes_48.png",
-    "96": "icon_opfes_96.png"
+    "19": "icons\/opfes_19.png",
+    "32": "icons\/opfes_32.png",
+    "48": "icons\/opfes_48.png",
+    "96": "icons\/opfes_96.png"
   },
   "permissions": [
     "activeTab",
