@@ -191,4 +191,4 @@ document.addEventListener('DOMContentLoaded', function () {
         UserData.downloadPasswords();
     }, false);
 });
-//# sourceMappingURL=OnepasswordforeverysiteApp.js.map
+//# sourceMappingURL=OnePasswordForEverySiteApp.js.map

@@ -3,26 +3,23 @@
  */
 // Google's bad word filter:
 // https://gist.githubusercontent.com/jamiew/1112488/raw/7ca9b1669e1c24b27c66174762cb04e14cf05aa7/google_twunter_lol
-let badWords = "w3schools|david|walsh|jquery.....".split('|'); // loool
 
-// Runs getPasswordInputElements on the document title
+// Runs getPasswordInputElements on the document
 function getPasswordInputElements():HTMLInputElement[]{
     let result = [];
     let inputs = document.getElementsByTagName("input");
     for (let i = 0; i < inputs.length; i++) {
         if (inputs[i].type.toLowerCase() === "password") {
-            result.push(inputs[i]);
+            alert(`found password inputfield on ${i}-th input-field`);
+            // let decoratedElement = new HTMLDivElement();
+            let decoratedElement = document.createElement('div');
+            decoratedElement.innerHTML = `${inputs[i]}`;
+            decoratedElement.id = `OPFES_password_${i}`;
+            inputs[i].parentNode.replaceChild(decoratedElement, inputs[i]);
+            alert('found & replaced password');
         }
     }
     return result;
-}
-
-function helpUserToLogon(elements:HTMLInputElement[]):void{
-    for (let element of elements){
-        let decoratedElement: HTMLDivElement = new HTMLDivElement;
-        decoratedElement.innerHTML = `${element}`;
-        decoratedElement.id = `OPFES_password_1`;
-    }
 }
 
 // Set up a mutation observer to listen for title changes
@@ -49,5 +46,5 @@ createObserver();
 // Kick off initial page load check
 let passwordInputElements = getPasswordInputElements;
 if (passwordInputElements().length >= 1){
-    helpUserToLogon(passwordInputElements);
+    // nowWhat;
 }
