@@ -1,14 +1,22 @@
 {
   "manifest_version": 2,
-
   "name": "OnePasswordForEverySite Plugin",
-  "description": "This extension will enable you to log in to every site with one (1, yes only one) password.",
+  "description": "Hi, I'm Opfes, helping you to log in to every site with one password. Without storing any of your passwords at all!",
   "version": "1.0",
-
-  "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "OnePasswordForEverySiteApp.html",
-    "default_title": "Enter any site with only one password!"
+//  "browser_action": {
+//    "default_icon": "icons\/opfes_19.png",
+//    "default_popup": "OnePasswordForEverySiteApp.html",
+//    "default_title": "Hi, I'm OPFES.\nI will help you log in everywhere.\nYou will only need one password!\nI will not store any of your passwords anywhere!"
+//  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["filter.js"]
+  }],
+  "icons": {
+    "19": "icons\/opfes_19.png",
+    "32": "icons\/opfes_32.png",
+    "48": "icons\/opfes_48.png",
+    "96": "icons\/opfes_96.png"
   },
   "permissions": [
     "activeTab",
