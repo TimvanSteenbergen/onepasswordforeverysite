@@ -11,15 +11,15 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
         if (inputs[i].type.toLowerCase() === `password`
             && inputs[i].id.substring(0, 5) !== `OPFES`) {
             pwdCounter++;
-            let OPFES_PasswordInputElement: string = `<input id="OPFES_password${pwdCounter}" type="password"/>`;
+            let OPFES_PasswordInputElement: string = `<input id="OPFES_password_${pwdCounter}_input" type="password" style="border:1px solid brown";/>`;
             let myImage: string = browser.extension.getURL("icons\/opfes_19.png");
             let OPFES_MyImage: string = `<img name="OPFES_myImage" src="${myImage}"/>`;
 
             // let decoratedElement = new HTMLDivElement();
             let decoratedElement = document.createElement(`div`);
-            decoratedElement.innerHTML = inputs[i].outerHTML + OPFES_PasswordInputElement + OPFES_MyImage;
-            decoratedElement.id = `OPFES_password_${i}`;
-            inputs[i].parentNode.replaceChild(decoratedElement, inputs[i]);
+            decoratedElement.innerHTML = OPFES_PasswordInputElement + OPFES_MyImage;
+            decoratedElement.id = `OPFES_password_${pwdCounter}_div`;
+            inputs[i].parentNode.appendChild(decoratedElement);
         }
     }
     return result;
