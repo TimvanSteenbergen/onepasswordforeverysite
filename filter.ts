@@ -8,11 +8,17 @@
 function decoratePasswordInputElements():HTMLInputElement[]{
     let result = [];
     let inputs = document.getElementsByTagName("input");
+    let pwdCounter:number = 0;
     for (let i = 0; i < inputs.length; i++) {
         if (inputs[i].type.toLowerCase() === "password") {
+            pwdCounter++;
+            let OPFES_PasswordInputElement:string = `<input id="OPFES_password${pwdCounter}" type="text"/>`;
+            let myImage:string = browser.extension.getURL("icons\/opfes_19.png");
+            let OPFES_MyImage:string = `<img name="OPFES_myImage" src="${myImage}"/>`;
+
             // let decoratedElement = new HTMLDivElement();
             let decoratedElement = document.createElement('div');
-            decoratedElement.innerHTML = inputs[i].outerHTML;
+            decoratedElement.innerHTML = inputs[i].outerHTML + OPFES_PasswordInputElement + OPFES_MyImage;
             decoratedElement.id = `OPFES_password_${i}`;
             inputs[i].parentNode.replaceChild(decoratedElement, inputs[i]);
         }
@@ -40,6 +46,7 @@ let createObserver = function() {
     )
 };
 createObserver();
+// browser.extension.getURL('icons\/opfes_19.png');
 
 // Kick off initial page load check
 let passwordInputElements = decoratePasswordInputElements;

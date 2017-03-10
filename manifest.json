@@ -19,8 +19,12 @@
     "48": "icons\/opfes_48.png",
     "96": "icons\/opfes_96.png"
   },
+  "web_accessible_resources": [
+    "icons\/opfes_19.png"
+  ],
   "permissions": [
     "activeTab",
+    "notifications",
     "storage"
   ]
 }
