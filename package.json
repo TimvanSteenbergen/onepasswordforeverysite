@@ -1,7 +1,10 @@
 {
-  "name": "application-name",
+  "name": "one-password-for-every-site",
   "version": "0.0.1",
   "devDependencies": {
     "@types/chrome": "0.0.40"
+  },
+  "dependencies": {
+    "otp-generator": "^1.1.0"
   }
 }

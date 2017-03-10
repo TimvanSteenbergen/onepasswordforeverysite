@@ -25,7 +25,7 @@ This results in extra security because fully opensource code can get monitored b
     one gets any bit of information about your one-and-only password.</p>
 
 <h2>What does gets stored? And where?</h2>
-This extension can store per domainname: your userid, a <a href="#" title="A salt can be used for extra security. Using a salt prevents the hased value to get found in some rainbowtable">salt</a> and a sequencenumber. These are all optional.</br>
+This extension can store per domainname: your userid, a <a href="#" title="A salt can be used for extra security. Using a salt prevents the hased value to get found in some rainbowtable">salt</a>, a sequencenumber and a remark. These are all optional.</br>
 Also per domain these informational fields: used at, a remark.</br>
 This data is stored in the webappsstore.sqlite file in the profile folder of your browser. Usually this file only
  available with administrator rights, which is why it is also showed in the extension itself

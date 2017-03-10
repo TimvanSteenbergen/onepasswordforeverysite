@@ -8,8 +8,6 @@ interface ISiteService {
     add(site: Site): Boolean;
     getByDomain(domain: string): Site;
     getAll(): Site[];
-    // getSitePassword(site: Site,
-    //                 pwdUser: string): string;
 }
 
 function getTheLocallyStoredSites(numOfLines: number = 9999): Site[] {
