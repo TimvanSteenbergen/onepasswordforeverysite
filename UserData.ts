@@ -31,7 +31,7 @@ class UserData implements IUserData {
             return value;
         }//Even better: create a sanitizer for value that checks if the value has the format needed for reviving a UserData Object
         let sites: Site[] = []; //the target array of sites
-        let sitesArray: String[] = value._sites; //the source array of sites
+        let sitesArray: String[] = value.sites; //the source array of sites
         for (let key in sitesArray) {
             // let remark: string = (sitesArray[key]["remark"]) ? sitesArray[key]["remark"] : "asdf";
             let site: Site = new Site(
