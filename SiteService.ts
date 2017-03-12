@@ -52,7 +52,7 @@ class SiteService implements ISiteService {
      * @returns {string}
      */
     static getSitePassword(site: Site, appPassword: string): string {
-        const passwordLength: number = site.getMaxPwdChars(); //Between 20 and 120
+        const passwordLength: number = site.getMaxPwdChars(); //Between 0 and 120
 
         //get the SHA512
         let stringToHash: string = site.getDomain() + site.getSalt() + site.getUserId() + site.getSequenceNr() + appPassword;
