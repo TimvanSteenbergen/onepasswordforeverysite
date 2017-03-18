@@ -33,6 +33,9 @@ class UserData implements IUserData {
         let sites: Site[] = []; //the target array of sites
         if (value !== '' && value !== null) {
             let sitesArray: String[] = value._sites; //the source array of sites
+            if (sitesArray == undefined) {
+                sitesArray = value.sites
+            } //the source array of sites
             for (let key in sitesArray) {
                 // let remark: string = (sitesArray[key]["remark"]) ? sitesArray[key]["remark"] : "asdf";
                 let site: Site = new Site(

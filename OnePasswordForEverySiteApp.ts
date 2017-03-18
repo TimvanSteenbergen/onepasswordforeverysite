@@ -55,6 +55,30 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('OPFES_InputAppPasswordShow').removeAttribute('disabled');
         document.getElementById('OPFES_InputAppPasswordHide').setAttribute('disabled', 'disabled');
     });
+
+    /**
+     * This links the UserData-download function to the export button
+     */
+    document.getElementById("OPFES_CopyDiskToLocalStorageButton").addEventListener("change", function (event) {
+        event.preventDefault();
+        UserData.upload((<HTMLInputElement>this).files[0]);
+    }, false);
+
+    /**
+     * This links the UserData-download function to the export button
+     */
+    document.getElementById("OPFES_CopyLocalStorageToDiskButton").addEventListener("click", function (event) {
+        event.preventDefault();
+        UserData.download();
+    }, false);
+
+    /**
+     * This links the Password-download function to the export button
+     */
+    document.getElementById("OPFES_CopyPasswordsToDiskButton").addEventListener("click", function (event) {
+        event.preventDefault();
+        UserData.downloadPasswords();
+    }, false);
 }, false);
 
 let OPFES_WorkWithUserData = function (userData: UserData) {
@@ -196,26 +220,5 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
         // Insert the sitePassword in the password-input field in the document
         // insertPwd(sitePassword, passwordElement);
 
-    }, false);
-
-    /**
-     * This links the UserData-download function to the export button
-     */
-    document.getElementById("OPFES_CopyDiskToLocalStorageButton").addEventListener("change", function () {
-        UserData.upload((<HTMLInputElement>this).files[0]);
-    }, false);
-
-    /**
-     * This links the UserData-download function to the export button
-     */
-    document.getElementById("OPFES_CopyLocalStorageToDiskButton").addEventListener("click", function () {
-        UserData.download();
-    }, false);
-
-    /**
-     * This links the Password-download function to the export button
-     */
-    document.getElementById("OPFES_CopyPasswordsToDiskButton").addEventListener("click", function () {
-        UserData.downloadPasswords();
     }, false);
 };
