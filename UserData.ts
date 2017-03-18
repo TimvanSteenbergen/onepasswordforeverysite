@@ -31,7 +31,7 @@ class UserData implements IUserData {
             return value;
         }//Even better: create a sanitizer for value that checks if the value has the format needed for reviving a UserData Object
         let sites: Site[] = []; //the target array of sites
-        let sitesArray: String[] = value.sites; //the source array of sites
+        let sitesArray: String[] = value._sites; //the source array of sites
         for (let key in sitesArray) {
             // let remark: string = (sitesArray[key]["remark"]) ? sitesArray[key]["remark"] : "asdf";
             let site: Site = new Site(
@@ -46,9 +46,6 @@ class UserData implements IUserData {
             sites.push(site);
         }
         return new UserData(sites);
-        // } else {
-        //
-        // }
 
         // TODO, when we start using this for apps as well, change this to:
         // return new UserData(sites, apps);
@@ -60,6 +57,7 @@ class UserData implements IUserData {
      * @returns {any} if the stored value can get revived, a UserData instance is returned, otherwise the value itself is returned
      */
     static retrieve() {
+        console.log('Your localData is now retrieved from your browser\'s memory into Opfes\' memory.');
         return JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
     }
 
@@ -67,7 +65,10 @@ class UserData implements IUserData {
      * Store the userData to the LocalStorage
      */
     persist() {
-        localStorage.setItem("OPFES_UserData", JSON.stringify(this));
+        if(confirm('Do you want to overwrite localData with the current userData?')){
+            localStorage.setItem("OPFES_UserData", JSON.stringify(this));
+            console.log('Your localData is now updated.');
+        }
     }
 
     /**
@@ -76,9 +77,9 @@ class UserData implements IUserData {
     static upload(file: File) {
         (function (view) {
             "use strict";
-
             let reader = new FileReader();
             reader.onload = function (e) {
+                console.log('Loading the file. Event is: ' + e);
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
                 let dataString: string = (<FileReader>e.target).result;
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);
@@ -101,6 +102,7 @@ class UserData implements IUserData {
                 userData.persist();
             };
             reader.readAsText(file);//attempts to read the file in question.
+            // console.log('The File ' + file.name + ' is now uploaded to your localData');
         }(self));
     }
 
@@ -126,6 +128,7 @@ class UserData implements IUserData {
                     "yourWebsiteLoginData.txt",
                     true
                 );
+                console.log('You have downloaded the userdata containing your user-id\'s but not your passwords\'.')
             }
             // });
         }(self));
@@ -137,12 +140,12 @@ class UserData implements IUserData {
     static downloadPasswords() {
         (function (view) {
             "use strict";
+
             let document = view.document
                 // only get URL when necessary in case Blob.js hasn't defined it yet
                 , get_blob = function () {
                     return view.Blob;
                 };
-
             let userData: UserData = UserData.retrieve();
             let sites: Site[] = userData.sites;
             let sitePassword: string;
@@ -170,6 +173,7 @@ class UserData implements IUserData {
                     true
                 );
                 alert('This site is in your hands now, containing your user-id\'s and passwords\'. Keep it safe.')
+                console.log('You have downloaded the userdata containing your user-id\'s and passwords\'.')
             }
             //@todo encrypt this exportData
             // });
