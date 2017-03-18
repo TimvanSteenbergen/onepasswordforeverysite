@@ -31,19 +31,21 @@ class UserData implements IUserData {
             return value;
         }//Even better: create a sanitizer for value that checks if the value has the format needed for reviving a UserData Object
         let sites: Site[] = []; //the target array of sites
-        let sitesArray: String[] = value._sites; //the source array of sites
-        for (let key in sitesArray) {
-            // let remark: string = (sitesArray[key]["remark"]) ? sitesArray[key]["remark"] : "asdf";
-            let site: Site = new Site(
-                sitesArray[key]["domain"],
-                sitesArray[key]["salt"],
-                sitesArray[key]["userId"],
-                sitesArray[key]["sequenceNr"],
-                sitesArray[key]["maxPwdChars"],
-                new Date(sitesArray[key]["lastUsed"]),
-                sitesArray[key]["remark"]
-            );
-            sites.push(site);
+        if (value !== '' && value !== null) {
+            let sitesArray: String[] = value._sites; //the source array of sites
+            for (let key in sitesArray) {
+                // let remark: string = (sitesArray[key]["remark"]) ? sitesArray[key]["remark"] : "asdf";
+                let site: Site = new Site(
+                    sitesArray[key]["domain"],
+                    sitesArray[key]["salt"],
+                    sitesArray[key]["userId"],
+                    sitesArray[key]["sequenceNr"],
+                    sitesArray[key]["maxPwdChars"],
+                    new Date(sitesArray[key]["lastUsed"]),
+                    sitesArray[key]["remark"]
+                );
+                sites.push(site);
+            }
         }
         return new UserData(sites);
 
@@ -65,7 +67,7 @@ class UserData implements IUserData {
      * Store the userData to the LocalStorage
      */
     persist() {
-        if(confirm('Do you want to overwrite localData with the current userData?')){
+        if (confirm('Do you want to overwrite localData with the current userData?')) {
             localStorage.setItem("OPFES_UserData", JSON.stringify(this));
             console.log('Your localData is now updated.');
         }
@@ -151,7 +153,7 @@ class UserData implements IUserData {
             let sitePassword: string;
             let passwordData: {site: Site, sitePassword: string}[] = [];
             let yourOnlyPassword = (<HTMLInputElement>view.document.getElementById('OPFES_InputAppPassword')).value;
-            if(!yourOnlyPassword){
+            if (!yourOnlyPassword) {
                 alert('First enter your password in the field "Your only password".');
                 return;
             }

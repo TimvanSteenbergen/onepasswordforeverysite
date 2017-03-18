@@ -65,11 +65,11 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
     function setValueForElementDomain() {
         let customerBrowser = get_browser();
         let myBrowser;
-        if (customerBrowser.name === 'Chrome') {
-            myBrowser = chrome;
-        } else {
-            myBrowser = browser;
-        }
+        // if (customerBrowser.name === 'Chrome') {
+        //     myBrowser = chrome;
+        // } else {
+        //     myBrowser = browser;
+        // }
         // myBrowser.tabs.getSelected(null, function (tab) { //Firefox works with this version.
         chrome.tabs.query({active: true}, function (tabs) {
             let ourPopup = document;
@@ -124,6 +124,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
      * This function retrieves the locally stored sites, changes the popup to:
      * - only show numOfLines of the sites
      * - show the "..." if some sites are not shown
+     * @param userData
      * @param numOfSitesToShow Number of sites to show in the OnePasswordForEverySiteApp.html
      */
     function showTheLocallyStoredData(userData: UserData, numOfSitesToShow: number = 999999) {
@@ -200,24 +201,21 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
     /**
      * This links the UserData-download function to the export button
      */
-    document.getElementById("OPFES_CopyDiskToLocalStorageButton").addEventListener("change", function (event) {
+    document.getElementById("OPFES_CopyDiskToLocalStorageButton").addEventListener("change", function () {
         UserData.upload((<HTMLInputElement>this).files[0]);
     }, false);
 
     /**
      * This links the UserData-download function to the export button
      */
-    document.getElementById("OPFES_CopyLocalStorageToDiskButton").addEventListener("click", function (event) {
+    document.getElementById("OPFES_CopyLocalStorageToDiskButton").addEventListener("click", function () {
         UserData.download();
     }, false);
 
     /**
      * This links the Password-download function to the export button
      */
-    document.getElementById("OPFES_CopyPasswordsToDiskButton").addEventListener("click", function (event) {
+    document.getElementById("OPFES_CopyPasswordsToDiskButton").addEventListener("click", function () {
         UserData.downloadPasswords();
     }, false);
-
-}
-)
-;
+};
