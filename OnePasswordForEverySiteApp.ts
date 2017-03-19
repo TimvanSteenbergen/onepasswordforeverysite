@@ -87,8 +87,8 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
     showTheLocallyStoredData(userData, 5);
     setValueForElementDomain();
     function setValueForElementDomain() {
-        let customerBrowser = get_browser();
-        let myBrowser;
+        // let customerBrowser = get_browser();
+        // let myBrowser;
         // if (customerBrowser.name === 'Chrome') {
         //     myBrowser = chrome;
         // } else {
@@ -153,7 +153,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
      */
     function showTheLocallyStoredData(userData: UserData, numOfSitesToShow: number = 999999) {
         let sites: Site[] = userData.sites;
-        let dataTableHTML: string = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>used at</td></ts><td>remark</td></thead>";
+        let dataTableHTML: string = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>used at</td></ts><td>remark</td></thead>";
         let sitesToShow = sites.slice(0, numOfSitesToShow);
         for (let site of sitesToShow) {
             dataTableHTML += `<tr><td>${site.getDomain()}</td>
@@ -161,7 +161,8 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                                  <td>${site.getUserId()}</td>
                                  <td>${site.getSequenceNr()}</td>
                                  <td>${site.getMaxPwdChars()}</td>
-                                 <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth()}-${site.getLastUsed().getDay()}</td>                                 <td>${site.getRemark()}</td>
+                                 <td>${site.getLastUsed().getFullYear()} ${site.getLastUsed().getMonth()} ${site.getLastUsed().getDate()}</td>
+                                 <td>${site.getRemark()}</td>
                              </tr>`;
         }
         if (sites.length > numOfSitesToShow) {
