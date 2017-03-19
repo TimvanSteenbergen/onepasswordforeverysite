@@ -97,7 +97,7 @@ class UserData implements IUserData {
                                       <td>${site.getUserId()}</td>
                                       <td>${site.getSequenceNr()}</td>
                                       <td>${site.getMaxPwdChars()}</td>
-                                      <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth()}-${site.getLastUsed().getUTCDay()}</td>
+                                      <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth()}-${site.getLastUsed().getDate()}</td>
                                       <td>${site.getRemark()}</td>
                                    </tr>`;
                 }
