@@ -1,0 +1,13 @@
+{
+  "_sites": [
+    {
+      "domain": "gavelsnipe.com",
+      "salt": "koud",
+      "userId": "timvans",
+      "sequenceNr": 1,
+      "maxPwdChars": 120,
+      "lastUsed": "2017-03-05T10:53:28.293Z",
+      "remark": "A regular Buying Machine!"
+    }
+  ]
+}

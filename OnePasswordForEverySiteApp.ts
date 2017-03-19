@@ -87,8 +87,8 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
     showTheLocallyStoredData(userData, 5);
     setValueForElementDomain();
     function setValueForElementDomain() {
-        let customerBrowser = get_browser();
-        let myBrowser;
+        // let customerBrowser = get_browser();
+        // let myBrowser;
         // if (customerBrowser.name === 'Chrome') {
         //     myBrowser = chrome;
         // } else {
@@ -96,11 +96,12 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
         // }
         // myBrowser.tabs.getSelected(null, function (tab) { //Firefox works with this version.
         chrome.tabs.query({active: true}, function (tabs) {
+            console.log('Active tab is ' + tabs[0].url);
             let ourPopup = document;
             let domain = getDomain(tabs[0].url);
             let domainElement = ourPopup.getElementById('OPFES_InputDomain');
             domainElement.setAttribute('value', domain);
-
+console.log('domain is ' + domain);
             setValueForElements(domain);
 
             function getDomain(url)
@@ -118,7 +119,9 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
 
             function setValueForElements(domain) {
                 let userData = UserData.retrieve();
-                let sites = userData.getAll;
+                console.log(userData);
+                let sites = userData.sites;
+                console.log('sites: ' + sites);
                 for (let site of sites) {
                     if (site.getDomain() == domain) {
                         document.getElementById('OPFES_InputDomain').setAttribute('disabled', "disabled");
@@ -135,7 +138,8 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                             document.getElementById('OPFES_InputSequenceNr').setAttribute('disabled', "disabled");
                         }
                         if (site.getMaxPwdChars() != 120) {
-                            // <HTMLSelectElement>(document.getElementById('selectMaxPwdChars')).setAttribute('value', <site._maxPwdChars);
+                            console.log('set max number of characters to: ' + site.getMaxPwdChars());
+                            (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdChars')).selectedIndex = site.getMaxPwdChars();
                             document.getElementById('OPFES_SelectMaxPwdChars').setAttribute('disabled', "disabled");
                         }
                     }
@@ -153,7 +157,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
      */
     function showTheLocallyStoredData(userData: UserData, numOfSitesToShow: number = 999999) {
         let sites: Site[] = userData.sites;
-        let dataTableHTML: string = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
+        let dataTableHTML: string = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>used at</td></ts><td>remark</td></thead>";
         let sitesToShow = sites.slice(0, numOfSitesToShow);
         for (let site of sitesToShow) {
             dataTableHTML += `<tr><td>${site.getDomain()}</td>
@@ -161,7 +165,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                                  <td>${site.getUserId()}</td>
                                  <td>${site.getSequenceNr()}</td>
                                  <td>${site.getMaxPwdChars()}</td>
-                                 <td>${site.getLastUsed()}</td>
+                                 <td>${site.getLastUsed().getFullYear()} ${site.getLastUsed().getMonth()} ${site.getLastUsed().getDate()}</td>
                                  <td>${site.getRemark()}</td>
                              </tr>`;
         }

@@ -90,14 +90,14 @@ class UserData implements IUserData {
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);
                 let sites: Site[] = userData.sites;
 
-                let dataTableHTML: string = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
+                let dataTableHTML: string = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>used at</td></ts><td>remark</td></thead>";
                 for (let site of sites) {
                     dataTableHTML += `<tr><td>${site.getDomain()}</td>
                                       <td>${site.getSalt()}</td>
                                       <td>${site.getUserId()}</td>
                                       <td>${site.getSequenceNr()}</td>
                                       <td>${site.getMaxPwdChars()}</td>
-                                      <td>${site.getLastUsed()}</td>
+                                      <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth()}-${site.getLastUsed().getDate()}</td>
                                       <td>${site.getRemark()}</td>
                                    </tr>`;
                 }
