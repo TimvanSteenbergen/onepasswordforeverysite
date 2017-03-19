@@ -63,19 +63,19 @@ function SHA512(str) {
     let W = new Array(64);
     let a, b, c, d, e, f, g, h, i, j;
     let T1, T2;
-    let charsize = 8;
+    let charSize = 8;
 
     function utf8_encode(str) {
-        return unescape(encodeURIComponent(str));
+        return decodeURI(encodeURIComponent(str));
     }
 
     function str2binb(str) {
         let bin = [];
-        let mask = (1 << charsize) - 1;
-        let len = str.length * charsize;
+        let mask = (1 << charSize) - 1;
+        let len = str.length * charSize;
 
-        for (let i = 0; i < len; i += charsize) {
-            bin[i >> 5] |= (str.charCodeAt(i / charsize) & mask) << (32 - charsize - (i % 32));
+        for (let i = 0; i < len; i += charSize) {
+            bin[i >> 5] |= (str.charCodeAt(i / charSize) & mask) << (32 - charSize - (i % 32));
         }
 
         return bin;
@@ -222,7 +222,7 @@ function SHA512(str) {
     }
 
     str = utf8_encode(str);
-    let stringLength = str.length * charsize;
+    let stringLength = str.length * charSize;
     str = str2binb(str);
 
     str[stringLength >> 5] |= 0x80 << (24 - stringLength % 32);

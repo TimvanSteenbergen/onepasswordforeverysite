@@ -12,7 +12,13 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
             && inputs[i].id.substring(0, 5) !== `OPFES`) {
             pwdCounter++;
             let OPFES_PasswordInputElement: string = `<input id="OPFES_password_${pwdCounter}_input" type="password" style="border:1px solid brown";/>`;
-            let myImage: string = browser.extension.getURL("icons\/opfes_19.png");
+            let customerBrowser = get_browser();
+            let myImage: string = chrome.extension.getURL("icons\/opfes_19.png");
+            if (customerBrowser.name === 'Chrome') {
+                myImage = chrome.extension.getURL("icons\/opfes_19.png");
+            } else {
+                myImage = browser.extension.getURL("icons\/opfes_19.png");
+            }
             let OPFES_MyImage: string = `<img name="OPFES_myImage" src="${myImage}"/>`;
 
             // let decoratedElement = new HTMLDivElement();
@@ -51,4 +57,6 @@ createObserver();
 let passwordInputElements = decoratePasswordInputElements;
 if (passwordInputElements().length >= 1) {
     // nowWhat;
-}
+}/**
+ * Created by Tim on 2017-03-18.
+ */

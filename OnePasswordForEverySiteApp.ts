@@ -1,38 +1,103 @@
 /**
  * Created by Tim van Steenbergen on 21-1-2017.
  */
-
 // declare function SHA512(string): string;
-console.log('before DOMContentLoaded');
+let a: number = 1;
 ///<reference path="chrome/index.d.ts"/>
 
 document.addEventListener('DOMContentLoaded', function () {
-    let userData: UserData = new UserData(
-        [//domain, salt, username, sequencenr, maxPwdChars, lastused, remarks
-            new Site("gavelsnipe.com", "koud", "timvans", 1, 120, new Date(2016, 1, 1), ""),
-            // new Site("mycloud.com", "hout", "tim@tieka.nl", 1, 30, new Date(2017,2,18), ""),
-            // new Site("webassessor.com", "koud", "TimvanSteenbergen", 2, 120, new Date(2016,1,1), ""),//
-            // new Site("stackoverflow.com", "koud", "tim@tieka.nl", 1, 120, new Date(2016,1,1), ""),
-            // new Site("quora.com", "koud", "tim@tieka.nl", 1, 74, new Date(2016,1,1), "Max 75 karakters in het wachtwoord"),
-            // new Site("robbshop.com", "koud", "tim@tieka.nl", 1, 120, new Date(2016,1,1), ""),
-            // new Site("lynda.com", "koud", "tim@tieka.nl", 1, 120, new Date(2016,1,1), ""),
-            // new Site("nrc.nl", "koud", "elma@tieka.nl", 1, 120, new Date(2016,1,1), ""),
-            new Site("ebay.com", "heet", "tivansteenberge_0", 3, 64, new Date(2016, 1, 1), "Max 64 karakters in het wachtwoord"),
-            // new Site("ebay.nl", "heet", "tivansteenberge_0", 3, 64, new Date(2016,1,1), "Max 64 karakters in het wachtwoord"),
-            // new Site("yetAnotherSite.nl", "koud", "alias24", 1, 120, new Date(2016,1,1), ""),
-            // new Site("andOneMore.nl", "koud", "myusernamehere", 1, 120, new Date(2016,1,1), "")
-        ]
-    );
-    // let sites = userData.sites;
-    localStorage.setItem('OPFES_UserData', JSON.stringify(userData));
-    showTheLocallyStoredData(5);
+    let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
+    if (userData.sites.length === 0) { //then show the Upload-button
+        console.log('Ik heb nog geen data gevonden.');
+    } else { //then show the userData in the popup screen
+        console.log('Ik heb data gevonden.');
+        // document.getElementById('OPFES_InputGetUserData').hidden;
+        OPFES_WorkWithUserData(userData);
+    }
+
+    function toggleChangability() {
+        // showTheLocallyStoredData(userData);
+        let elementId = this.id.substr(0, this.id.length - 6);
+        let elementToToggle = document.getElementById(elementId);
+        if (elementToToggle.hasAttribute('disabled')) {
+            elementToToggle.removeAttribute('disabled');
+        } else {
+            elementToToggle.setAttribute("disabled", "disabled");
+        }
+    }
+
+    document.getElementById('OPFES_InputDomainToggle').addEventListener('click', function () {
+        // showTheLocallyStoredData(userData);
+        toggleChangability.call(this);
+    });
+    document.getElementById('OPFES_InputSaltToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
+    });
+    document.getElementById('OPFES_InputUserIdToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
+    });
+    document.getElementById('OPFES_InputSequenceNrToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
+    });
+    document.getElementById('OPFES_SelectMaxPwdCharsToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
+    });
+    document.getElementById('OPFES_InputAppPasswordShow').addEventListener('click', function () {
+        let elementId = this.id.substr(0, this.id.length - 4);
+        let elementToToggle = document.getElementById(elementId);
+        elementToToggle.setAttribute('type', 'text');
+        document.getElementById('OPFES_InputAppPasswordShow').setAttribute('disabled', 'disabled');
+        document.getElementById('OPFES_InputAppPasswordHide').removeAttribute('disabled');
+    });
+    document.getElementById('OPFES_InputAppPasswordHide').addEventListener('click', function () {
+        let elementToToggle = document.getElementById(this.id.substr(0, this.id.length - 4));
+        elementToToggle.setAttribute('type', 'password');
+        document.getElementById('OPFES_InputAppPasswordShow').removeAttribute('disabled');
+        document.getElementById('OPFES_InputAppPasswordHide').setAttribute('disabled', 'disabled');
+    });
+
+    /**
+     * This links the UserData-download function to the export button
+     */
+    document.getElementById("OPFES_CopyDiskToLocalStorageButton").addEventListener("change", function (event) {
+        event.preventDefault();
+        UserData.upload((<HTMLInputElement>this).files[0]);
+    }, false);
+
+    /**
+     * This links the UserData-download function to the export button
+     */
+    document.getElementById("OPFES_CopyLocalStorageToDiskButton").addEventListener("click", function (event) {
+        event.preventDefault();
+        UserData.download();
+    }, false);
+
+    /**
+     * This links the Password-download function to the export button
+     */
+    document.getElementById("OPFES_CopyPasswordsToDiskButton").addEventListener("click", function (event) {
+        event.preventDefault();
+        UserData.downloadPasswords();
+    }, false);
+}, false);
+
+let OPFES_WorkWithUserData = function (userData: UserData) {
+    console.log('addEventListener gestart en zo, userdata\'s eerste domein is ' + userData.sites[0].getDomain());
+
+    showTheLocallyStoredData(userData, 5);
     setValueForElementDomain();
     function setValueForElementDomain() {
-        chrome.tabs.getSelected(null, function (tab) {
-            // chrome.tabs.query({active: true, currentWindow: true}, function (tab) {
+        let customerBrowser = get_browser();
+        let myBrowser;
+        // if (customerBrowser.name === 'Chrome') {
+        //     myBrowser = chrome;
+        // } else {
+        //     myBrowser = browser;
+        // }
+        // myBrowser.tabs.getSelected(null, function (tab) { //Firefox works with this version.
+        chrome.tabs.query({active: true}, function (tabs) {
             let ourPopup = document;
-            let domain = getDomain(tab.url);
-
+            let domain = getDomain(tabs[0].url);
             let domainElement = ourPopup.getElementById('OPFES_InputDomain');
             domainElement.setAttribute('value', domain);
 
@@ -79,28 +144,17 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function toggleChangability() {
-        showTheLocallyStoredData();
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
-        if (elementToToggle.hasAttribute('disabled')) {
-            elementToToggle.removeAttribute('disabled');
-        } else {
-            elementToToggle.setAttribute("disabled", "disabled");
-        }
-    }
-
     /**
      * This function retrieves the locally stored sites, changes the popup to:
      * - only show numOfLines of the sites
      * - show the "..." if some sites are not shown
+     * @param userData
      * @param numOfSitesToShow Number of sites to show in the OnePasswordForEverySiteApp.html
      */
-    function showTheLocallyStoredData(numOfSitesToShow: number = 999999) {
-        let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
+    function showTheLocallyStoredData(userData: UserData, numOfSitesToShow: number = 999999) {
         let sites: Site[] = userData.sites;
         let dataTableHTML: string = "<table id='locallyStoredUserData'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>maxPwdChars</td><td>used at</td></ts><td>remark</td></thead>";
-        let sitesToShow  = sites.slice(0, numOfSitesToShow);
+        let sitesToShow = sites.slice(0, numOfSitesToShow);
         for (let site of sitesToShow) {
             dataTableHTML += `<tr><td>${site.getDomain()}</td>
                                  <td>${site.getSalt()}</td>
@@ -121,38 +175,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('OPFES_ShowAllTheLocallyStoredData').addEventListener('click', function () {
-        showTheLocallyStoredData(100000);
+        showTheLocallyStoredData(userData, 100000);
     });
 
-    document.getElementById('OPFES_InputDomainToggle').addEventListener('click', function () {
-        showTheLocallyStoredData();
-        toggleChangability.call(this);
-    });
-    document.getElementById('OPFES_InputSaltToggle').addEventListener('click', function () {
-        toggleChangability.call(this);
-    });
-    document.getElementById('OPFES_InputUserIdToggle').addEventListener('click', function () {
-        toggleChangability.call(this);
-    });
-    document.getElementById('OPFES_InputSequenceNrToggle').addEventListener('click', function () {
-        toggleChangability.call(this);
-    });
-    document.getElementById('OPFES_SelectMaxPwdCharsToggle').addEventListener('click', function () {
-        toggleChangability.call(this);
-    });
-    document.getElementById('OPFES_InputAppPasswordShow').addEventListener('click', function () {
-        let elementId = this.id.substr(0, this.id.length - 4);
-        let elementToToggle = document.getElementById(elementId);
-        elementToToggle.setAttribute('type', 'text');
-        document.getElementById('OPFES_InputAppPasswordShow').setAttribute('disabled', 'disabled');
-        document.getElementById('OPFES_InputAppPasswordHide').removeAttribute('disabled');
-    });
-    document.getElementById('OPFES_InputAppPasswordHide').addEventListener('click', function () {
-        let elementToToggle = document.getElementById(this.id.substr(0, this.id.length - 4));
-        elementToToggle.setAttribute('type', 'password');
-        document.getElementById('OPFES_InputAppPasswordShow').removeAttribute('disabled');
-        document.getElementById('OPFES_InputAppPasswordHide').setAttribute('disabled', 'disabled');
-    });
     /* The functions for the buttons to Copy LocalStorage to disk and back again, (OPFES_CopyLocalStorageToDiskButton and
      * OPFES_CopyDiskToLocalStorageButton) are defined in their own files. */
 
@@ -196,29 +221,4 @@ document.addEventListener('DOMContentLoaded', function () {
         // insertPwd(sitePassword, passwordElement);
 
     }, false);
-
-    /**
-     * This links the UserData-download function to the export button
-     */
-    document.getElementById("OPFES_CopyDiskToLocalStorageButton").addEventListener("change", function (event) {
-        event.preventDefault();
-        UserData.upload((<HTMLInputElement>this).files[0]);
-    }, false);
-
-    /**
-     * This links the UserData-download function to the export button
-     */
-    document.getElementById("OPFES_CopyLocalStorageToDiskButton").addEventListener("click", function (event) {
-        event.preventDefault();
-        UserData.download();
-    }, false);
-
-    /**
-     * This links the Password-download function to the export button
-     */
-    document.getElementById("OPFES_CopyPasswordsToDiskButton").addEventListener("click", function (event) {
-        event.preventDefault();
-        UserData.downloadPasswords();
-    }, false);
-
-});
+};
