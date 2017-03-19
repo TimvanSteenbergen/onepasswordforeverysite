@@ -96,11 +96,12 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
         // }
         // myBrowser.tabs.getSelected(null, function (tab) { //Firefox works with this version.
         chrome.tabs.query({active: true}, function (tabs) {
+            console.log('Active tab is ' + tabs[0].url);
             let ourPopup = document;
             let domain = getDomain(tabs[0].url);
             let domainElement = ourPopup.getElementById('OPFES_InputDomain');
             domainElement.setAttribute('value', domain);
-
+console.log('domain is ' + domain);
             setValueForElements(domain);
 
             function getDomain(url)
@@ -118,7 +119,9 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
 
             function setValueForElements(domain) {
                 let userData = UserData.retrieve();
-                let sites = userData.getAll;
+                console.log(userData);
+                let sites = userData.sites;
+                console.log('sites: ' + sites);
                 for (let site of sites) {
                     if (site.getDomain() == domain) {
                         document.getElementById('OPFES_InputDomain').setAttribute('disabled', "disabled");
@@ -135,7 +138,8 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                             document.getElementById('OPFES_InputSequenceNr').setAttribute('disabled', "disabled");
                         }
                         if (site.getMaxPwdChars() != 120) {
-                            // <HTMLSelectElement>(document.getElementById('selectMaxPwdChars')).setAttribute('value', <site._maxPwdChars);
+                            console.log('set max number of characters to: ' + site.getMaxPwdChars());
+                            (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdChars')).selectedIndex = site.getMaxPwdChars();
                             document.getElementById('OPFES_SelectMaxPwdChars').setAttribute('disabled', "disabled");
                         }
                     }
