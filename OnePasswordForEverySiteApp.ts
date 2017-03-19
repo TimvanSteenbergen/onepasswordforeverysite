@@ -96,14 +96,13 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
         // }
         // myBrowser.tabs.getSelected(null, function (tab) { //Firefox works with this version.
         chrome.tabs.query({active: true}, function (tabs) {
-            console.log('Active tab is ' + tabs[0].url);
             let ourPopup = document;
             let domain = getDomain(tabs[0].url);
             let domainElement = ourPopup.getElementById('OPFES_InputDomain');
             domainElement.setAttribute('value', domain);
-console.log('domain is ' + domain);
             setValueForElements(domain);
 
+            //This function will abstract the domain-part from the url
             function getDomain(url)
             //This function gets the domainname from the url.
             //Can't use "window.location.host" because this will return the domain of the OnePasswordForEverySiteApp.html
@@ -124,6 +123,7 @@ console.log('domain is ' + domain);
                 console.log('sites: ' + sites);
                 for (let site of sites) {
                     if (site.getDomain() == domain) {
+                        //Set the values of the other input-fields on the popup-screen
                         document.getElementById('OPFES_InputDomain').setAttribute('disabled', "disabled");
                         if (site.getSalt() != "") {
                             document.getElementById('OPFES_InputSalt').setAttribute('value', site.getSalt());
@@ -137,11 +137,8 @@ console.log('domain is ' + domain);
                             document.getElementById('OPFES_InputSequenceNr').setAttribute('value', (site.getSequenceNr() + ""));
                             document.getElementById('OPFES_InputSequenceNr').setAttribute('disabled', "disabled");
                         }
-                        if (site.getMaxPwdChars() != 120) {
-                            console.log('set max number of characters to: ' + site.getMaxPwdChars());
-                            (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdChars')).selectedIndex = site.getMaxPwdChars();
-                            document.getElementById('OPFES_SelectMaxPwdChars').setAttribute('disabled', "disabled");
-                        }
+                        (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdChars')).selectedIndex = site.getMaxPwdChars();
+                        document.getElementById('OPFES_SelectMaxPwdChars').setAttribute('disabled', "disabled");
                     }
                 }
             }

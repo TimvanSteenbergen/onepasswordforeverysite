@@ -2,7 +2,9 @@
  * Created by tvansteenbergen on 2017-03-09.
  */
 
-// Runs decoratePasswordInputElements on the document
+/* This decorates (rather: 'appends to its parent') every InputElement of type password, with a extra inputElement called
+ * OPFES_password_x_input
+ */
 function decoratePasswordInputElements(): HTMLInputElement[] {
     let result = [];
     let inputs = document.getElementsByTagName("input");
@@ -11,7 +13,14 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
         if (inputs[i].type.toLowerCase() === `password`
             && inputs[i].id.substring(0, 5) !== `OPFES`) {
             pwdCounter++;
-            let OPFES_PasswordInputElement: string = `<input id="OPFES_password_${pwdCounter}_input" type="password" style="border:1px solid brown";/>`;
+
+            // Create the OPFES password input element
+            let OPFES_PasswordInputElement: HTMLInputElement = <HTMLInputElement>document.createElement(`input`);
+            OPFES_PasswordInputElement.id= `OPFES_password_${pwdCounter}_input`;
+            OPFES_PasswordInputElement.type=`password`;
+            OPFES_PasswordInputElement.border = `border:1px solid brown`;
+
+            // Copy the OPFES image from the extension's images to the variable myImage
             let customerBrowser = get_browser();
             let myImage: string = chrome.extension.getURL("icons\/opfes_19.png");
             if (customerBrowser.name === 'Chrome') {
@@ -19,39 +28,22 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
             } else {
                 myImage = browser.extension.getURL("icons\/opfes_19.png");
             }
-            let OPFES_MyImage: string = `<img name="OPFES_myImage" src="${myImage}"/>`;
 
-            // let decoratedElement = new HTMLDivElement();
-            let decoratedElement = document.createElement(`div`);
-            decoratedElement.innerHTML = OPFES_PasswordInputElement + OPFES_MyImage;
+            // Create the OPFES image element
+            let OPFES_MyImage:HTMLImageElement = <HTMLImageElement>document.createElement(`img`);
+            OPFES_MyImage.name = `OPFES_myImage`;
+            OPFES_MyImage.src = `${myImage}`;
+            OPFES_MyImage.title = `Enter your OPFES password and I will generate your password, and try and log you in.`;
+
+            // Add the new OPFES elements close to the original password element
+            let decoratedElement: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
+            decoratedElement.innerHTML = OPFES_PasswordInputElement.outerHTML + OPFES_MyImage.outerHTML;
             decoratedElement.id = `OPFES_password_${pwdCounter}_div`;
             inputs[i].parentNode.appendChild(decoratedElement);
         }
     }
     return result;
 }
-
-// Set up a mutation observer to listen for title changes
-// Will fire if framework AJAX stuff switches page title
-let createObserver = function () {
-    let observer = new MutationObserver((mutations) => {
-        // Disconnect the MO so there isn't an infinite title update loop
-        // Run title decoratePasswordInputElements again
-        // Create a new MO to listen for more changes
-        console.log(`Mutations!`, mutations);
-        observer.disconnect();
-        observer = null;
-        decoratePasswordInputElements;
-        createObserver()
-    });
-
-    observer.observe(
-        document.querySelector(`title`),
-        {subtree: true, characterData: true, childList: true}
-    )
-};
-createObserver();
-// browser.extension.getURL(`icons\/opfes_19.png`);
 
 // Kick off initial page load check
 let passwordInputElements = decoratePasswordInputElements;
