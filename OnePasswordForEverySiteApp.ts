@@ -42,6 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('OPFES_SelectMaxPwdCharsToggle').addEventListener('click', function () {
         toggleChangability.call(this);
     });
+    document.getElementById('OPFES_InputRemarkToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
+    });
     document.getElementById('OPFES_InputAppPasswordShow').addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 4);
         let elementToToggle = document.getElementById(elementId);
@@ -118,9 +121,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
 
             function setValueForElements(domain) {
                 let userData = UserData.retrieve();
-                console.log(userData);
                 let sites = userData.sites;
-                console.log('sites: ' + sites);
                 for (let site of sites) {
                     if (site.getDomain() == domain) {
                         //Set the values of the other input-fields on the popup-screen
@@ -139,6 +140,10 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                         }
                         (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdChars')).selectedIndex = site.getMaxPwdChars();
                         document.getElementById('OPFES_SelectMaxPwdChars').setAttribute('disabled', "disabled");
+                        if (site.getRemark() != "") {
+                            document.getElementById('OPFES_InputRemark').setAttribute('value', site.getRemark());
+                            document.getElementById('OPFES_InputRemark').setAttribute('disabled', "disabled");
+                        }
                     }
                 }
             }
@@ -196,7 +201,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
             +(<HTMLInputElement>ourPopup.getElementById('OPFES_InputSequenceNr')).value,
             +(<HTMLSelectElement>ourPopup.getElementById('OPFES_SelectMaxPwdChars')).value,
             new Date(Date.now()),
-            '' //remark
+            (<HTMLInputElement>ourPopup.getElementById('OPFES_InputRemark')).value
         );
 
         let inputValueAppPassword = (<HTMLInputElement>ourPopup.getElementById('OPFES_InputAppPassword')).value;
