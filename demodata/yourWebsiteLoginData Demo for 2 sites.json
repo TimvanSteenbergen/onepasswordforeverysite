@@ -1,22 +1,22 @@
 {
   "_sites": [
     {
-      "domain": "facebook.com",
-      "salt": "salt",
-      "userId": "tim.vansteenbergen.9",
+      "domain": "gavelsnipe.com",
+      "salt": "demo",
+      "userId": "demo@opfes.com",
       "sequenceNr": 1,
       "maxPwdChars": 120,
-      "lastUsed": "2017-03-05T14:36:28.530Z",
-      "remark": ""
+      "lastUsed": "2017-03-20T11:47:58.859Z",
+      "remark": "Demo-account"
     },
     {
-      "domain": "twitter.com",
-      "salt": "salt",
-      "userId": "timvsteenbergen",
+      "domain": "spelletjes.nl",
+      "salt": "demo",
+      "userId": "opfes",
       "sequenceNr": 1,
-      "maxPwdChars": 120,
-      "lastUsed": "2017-03-05T15:10:17.759Z",
-      "remark": ""
+      "maxPwdChars": 20,
+      "lastUsed": "2017-03-20T11:56:55.070Z",
+      "remark": "Dutch site for games."
     }
   ]
 }
