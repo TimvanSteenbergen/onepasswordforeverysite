@@ -26,6 +26,33 @@
       "maxPwdChars": 20,
       "lastUsed": "2017-03-05T13:29:55.026Z",
       "remark": "For all my clothes"
+    },
+    {
+      "domain": "nike.com",
+      "salt": "demo",
+      "userId": "demo@opfes.com",
+      "sequenceNr": 1,
+      "maxPwdChars": 36,
+      "lastUsed": "2017-03-20T23:29:55.026Z",
+      "remark": "For all my running shoes"
+    },
+    {
+      "domain": "eversource.com",
+      "salt": "Can be any text",
+      "userId": "opfesdemo",
+      "sequenceNr": 1,
+      "maxPwdChars": 25,
+      "lastUsed": "2017-03-20T21:06:14.920Z",
+      "remark": "Looks like a nice site"
+    },
+    {
+      "domain": "amazon.co.uk",
+      "salt": "demo",
+      "userId": "Opfes",
+      "sequenceNr": 1,
+      "maxPwdChars": 120,
+      "lastUsed": "2017-03-20T21:58:18.410Z",
+      "remark": "Remark"
     }
   ]
 }

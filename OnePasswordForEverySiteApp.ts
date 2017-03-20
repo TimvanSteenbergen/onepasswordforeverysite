@@ -167,7 +167,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                                  <td>${site.getUserId()}</td>
                                  <td>${site.getSequenceNr()}</td>
                                  <td>${site.getMaxPwdChars()}</td>
-                                 <td>${site.getLastUsed().getFullYear()} ${site.getLastUsed().getMonth()} ${site.getLastUsed().getDate()}</td>
+                                 <td>${site.getLastUsed().getFullYear()} ${site.getLastUsed().getMonth() + 1} ${site.getLastUsed().getDate()}</td>
                                  <td>${site.getRemark()}</td>
                              </tr>`;
         }

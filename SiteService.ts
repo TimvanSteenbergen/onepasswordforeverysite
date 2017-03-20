@@ -75,7 +75,10 @@ class SiteService implements ISiteService {
             let nextDecimal: number = parseInt(nextHashPart, 16);
             let secondChar: number = nextDecimal % 64;
             let firstChar: number = ((nextDecimal - secondChar) / 64);
-            generatedPassword += passwordCharacters[firstChar] + passwordCharacters[secondChar];
+            generatedPassword += passwordCharacters[firstChar];
+            if ((counterPwd + 1) < (passwordLength / 2)) {
+                generatedPassword += passwordCharacters[secondChar];
+            }
             counterHash = ((counterHash + 3) > 128) ? 1 : (counterHash + 3);//resetting counterHash to 1 (instead of 0) to get different nextHashParts the second time
         }
 
