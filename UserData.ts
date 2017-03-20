@@ -70,10 +70,11 @@ class UserData implements IUserData {
      * Store the userData to the LocalStorage
      */
     persist() {
-        if (confirm('Do you want to overwrite localData with the current userData?')) {
-            localStorage.setItem("OPFES_UserData", JSON.stringify(this));
-            console.log('Your localData is now updated.');
-        }
+        // if (confirm('Do you want to overwrite localData with the current userData?')) {
+        let stringifiedUserData: string = JSON.stringify(this);
+            localStorage.setItem("OPFES_UserData", stringifiedUserData);
+            console.log(`Your localData is now updated to #{stringifiedUserData}.`);
+        // }
     }
 
     /**
@@ -84,7 +85,7 @@ class UserData implements IUserData {
             "use strict";
             let reader = new FileReader();
             reader.onload = function (e) {
-                console.log('Loading the file. Event is: ' + e);
+                console.log(`Loading the file. Event is: #{e}`);
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
                 let dataString: string = (<FileReader>e.target).result;
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);
