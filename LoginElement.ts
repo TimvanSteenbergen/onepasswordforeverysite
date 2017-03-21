@@ -43,9 +43,23 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
 
             // Look for the userid and password in your localStorage
             console.log('sendMessage');
-            chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
-                console.log('received response: ' + response.farewell);
-            });
+            chrome.runtime.onMessage.addListener(
+                function(request, sender, sendResponse) {
+                    console.log(sender.tab ?
+                        "from a content script:" + sender.tab.url :
+                        "from the extension");
+                    if (request.greeting == "hello")
+                        sendResponse({farewell: "goodbye"});
+
+                    alert('I, the contentscript, heared something!!!!!')
+                });
+            // chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+            //     if(response){
+            //         console.log(`received response: #{response.farewell}`);
+            //     } else {
+            //         console.log(`received response: No response recieved`);
+            //     }
+            // });
 
             // let userData: UserData = UserData.retrieve();
             // let sites: Site[] = userData.sites;
