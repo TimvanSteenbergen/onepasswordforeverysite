@@ -90,15 +90,15 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
     showTheLocallyStoredData(userData, 5);
     setValueForElementDomain();
     function setValueForElementDomain() {
-        // let customerBrowser = get_browser();
-        // let myBrowser;
-        // if (customerBrowser.name === 'Chrome') {
-        //     myBrowser = chrome;
-        // } else {
-        //     myBrowser = browser;
-        // }
+        let customerBrowser = get_browser();
+        let myBrowser;
+        if (customerBrowser.name === 'Chrome') {
+            myBrowser = chrome;
+        } else {
+            myBrowser = browser;
+        }
         // myBrowser.tabs.getSelected(null, function (tab) { //Firefox works with this version.
-        chrome.tabs.query({active: true}, function (tabs) {
+        myBrowser.tabs.query({active: true}, function (tabs) {
             let ourPopup = document;
             let domain = getDomain(tabs[0].url);
             let domainElement = ourPopup.getElementById('OPFES_InputDomain');
