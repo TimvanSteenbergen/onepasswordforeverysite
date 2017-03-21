@@ -40,6 +40,19 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
             decoratedElement.innerHTML = OPFES_PasswordInputElement.outerHTML + OPFES_MyImage.outerHTML;
             decoratedElement.id = `OPFES_password_${pwdCounter}_div`;
             inputs[i].parentNode.appendChild(decoratedElement);
+
+            // Look for the userid and password in your localStorage
+            console.log('sendMessage');
+            chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+                console.log('received response: ' + response.farewell);
+            });
+
+            // let userData: UserData = UserData.retrieve();
+            // let sites: Site[] = userData.sites;
+            // console.log(localStorage.getItem("OPFES_UserData"));
+            // chrome.runtime.sendMessage({method: "getLocalStorage", key: "_sites"}, function(response) {
+            //     console.log(response.data);
+            // });
         }
     }
     return result;

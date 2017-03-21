@@ -5,7 +5,23 @@
 let a: number = 1;
 ///<reference path="chrome/index.d.ts"/>
 
+//See https://developer.chrome.com/extensions/messaging
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        console.log(sender.tab ?
+            "from a content script:" + sender.tab.url :
+            "from the extension");
+        if (request.greeting == "hello")
+            sendResponse({farewell: "goodbye"});
+    });
+// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+//     chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function(response) {
+//         console.log('sending response:' + response.farewell);
+//     });
+// });
+
 document.addEventListener('DOMContentLoaded', function () {
+
     let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
     if (userData.sites.length === 0) { //then show the Upload-button
         console.log('Ik heb nog geen data gevonden.');
@@ -97,7 +113,6 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
         } else {
             myBrowser = browser;
         }
-        // myBrowser.tabs.getSelected(null, function (tab) { //Firefox works with this version.
         myBrowser.tabs.query({active: true}, function (tabs) {
             let ourPopup = document;
             let domain = getDomain(tabs[0].url);
@@ -109,6 +124,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
             function getDomain(url)
             //This function gets the domainname from the url.
             //Can't use "window.location.host" because this will return the domain of the OnePasswordForEverySiteApp.html
+            //@todo: solve issue #27, www.amazon.co.uk -> now co.uk instead of amazon.co.uk
             {
                 let domain = url.match(/:\/\/(.[^/]+)/)[1];
                 //remove the sub-domain(s)
@@ -228,3 +244,16 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
 
     }, false);
 };
+
+// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+//     alert('Listener toegevoegd!');
+//     console.log('listening');
+//     if (request.method == "getLocalStorage") {
+//         console.log('getting localStorage');
+//         sendResponse({data: localStorage[request.key]});
+//         console.log('sending it back including data');
+//     } else {
+//         console.log('snubbing...');
+//         sendResponse({}); // snub them.
+//     }
+// });

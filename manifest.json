@@ -6,7 +6,7 @@
   "browser_action": {
     "default_icon": "icons\/opfes_19.png",
     "default_popup": "OnePasswordForEverySiteApp.html",
-    "default_title": "Hi, I'm OPFES.\nI will help you log in everywhere.\nYou will only need one password!\nI will not store any of your passwords anywhere!"
+    "default_title": "abcdHi, I'm OPFES.\nI will help you log in everywhere.\nYou will only need one password!\nI will not store any of your passwords anywhere!"
   },
   "content_scripts": [{
     "matches": ["<all_urls>"],

@@ -124,8 +124,8 @@ class UserData implements IUserData {
                     return view.Blob;
                 };
 
-            let userData = UserData.retrieve();
-            let exportData = JSON.stringify(userData);
+            let userData: UserData = UserData.retrieve();
+            let exportData: string = JSON.stringify(userData);
             //@todo encrypt this exportData
             if (confirm('This will copy the sites and their related properties to a file for you to store on your local drive.')) {
                 let BB = get_blob();
