@@ -63,6 +63,7 @@ class UserData implements IUserData {
      */
     static retrieve() {
         console.log('Your localData is now retrieved from your browser\'s memory into Opfes\' memory.');
+        chrome.storage.local.get("_sites",function(){});
         return JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
     }
 
@@ -70,11 +71,10 @@ class UserData implements IUserData {
      * Store the userData to the LocalStorage
      */
     persist() {
-        // if (confirm('Do you want to overwrite localData with the current userData?')) {
+        chrome.storage.local.set(this);
         let stringifiedUserData: string = JSON.stringify(this);
-            localStorage.setItem("OPFES_UserData", stringifiedUserData);
-            console.log(`Your localData is now updated to #{stringifiedUserData}.`);
-        // }
+        localStorage.setItem("OPFES_UserData", stringifiedUserData);
+        console.log(`Your localData is now updated to #{stringifiedUserData}.`);
     }
 
     /**
