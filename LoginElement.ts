@@ -33,37 +33,39 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
             let OPFES_MyImage: HTMLImageElement = <HTMLImageElement>document.createElement(`img`);
             OPFES_MyImage.name = `OPFES_myImage`;
             OPFES_MyImage.src = `${myImage}`;
-            OPFES_MyImage.title = `dEnter your OPFES password and I will generate your password, and try and log you in.`;
+            OPFES_MyImage.title = `Enter your OPFES password and I will generate your password, and try and log you in.`;
+            OPFES_MyImage.id = `OPFES_LoginImage`;
 
             // Add the new OPFES elements close to the original password element
             let decoratedElement: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
             decoratedElement.innerHTML = OPFES_PasswordInputElement.outerHTML + OPFES_MyImage.outerHTML;
             decoratedElement.id = `OPFES_password_${pwdCounter}_div`;
             inputs[i].parentNode.appendChild(decoratedElement);
-            document.getElementById(decoratedElement.id).addEventListener(`click`, function (){
+            document.getElementById(`OPFES_LoginImage`).addEventListener(`click`, function (){
+                // Check with the extension for the password for this domain
                 console.log(`Attempting to get a respone...`);
-                chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+                chrome.runtime.sendMessage({"pleaseGiveMe": "thePassword", "password": "qwer"}, function(response) {
                     if(response){
-                        console.log(`received response: #{response.farewell}`);
+                        // Todo: put this response into the password-field and logon;
+                        console.log(`received response: ${response.itIs}`);
+                        // let passwordInput:HTMLInputElement = (<HTMLInputElement>document.getElementById(OPFES_PasswordInputElement.id));
+                        // passwordInput.value = response.itIs;
                     } else {
                         console.log(`received response: No response recieved`);
                     }
                 });
             });
 
-            // Look for the userid and password in your localStorage
+            // Check with the extension if there is a userid for this domain
             console.log('sendMessage');
-            chrome.runtime.onMessage.addListener(
-                function (request, sender, sendResponse) {
-                    console.log(sender.tab ?
-                        "from a content script:" + sender.tab.url :
-                        "from the extension");
-                    if (request.greeting == "hello")
-                        sendResponse({farewell: "goodbye"});
-
-                    alert('I, the contentscript, heared something!!!!!')
+            chrome.runtime.sendMessage({"pleaseGiveMe": "theUserid"}, function(response) {
+                if(response){
+                    // Todo: put this response into the login-field.
+                    console.log(`received response: ${response.itIs}`);
+                } else {
+                    console.log(`received response: No response recieved`);
                 }
-            );
+            });
         }
     }
     return result;
