@@ -16,8 +16,8 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
 
             // Create the OPFES password input element
             let OPFES_PasswordInputElement: HTMLInputElement = <HTMLInputElement>document.createElement(`input`);
-            OPFES_PasswordInputElement.id= `OPFES_password_${pwdCounter}_input`;
-            OPFES_PasswordInputElement.type=`password`;
+            OPFES_PasswordInputElement.id = `OPFES_password_${pwdCounter}_input`;
+            OPFES_PasswordInputElement.type = `password`;
             OPFES_PasswordInputElement.border = `border:1px solid brown`;
 
             // Copy the OPFES image from the extension's images to the variable myImage
@@ -30,21 +30,31 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
             }
 
             // Create the OPFES image element
-            let OPFES_MyImage:HTMLImageElement = <HTMLImageElement>document.createElement(`img`);
+            let OPFES_MyImage: HTMLImageElement = <HTMLImageElement>document.createElement(`img`);
             OPFES_MyImage.name = `OPFES_myImage`;
             OPFES_MyImage.src = `${myImage}`;
-            OPFES_MyImage.title = `Enter your OPFES password and I will generate your password, and try and log you in.`;
+            OPFES_MyImage.title = `dEnter your OPFES password and I will generate your password, and try and log you in.`;
 
             // Add the new OPFES elements close to the original password element
             let decoratedElement: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
             decoratedElement.innerHTML = OPFES_PasswordInputElement.outerHTML + OPFES_MyImage.outerHTML;
             decoratedElement.id = `OPFES_password_${pwdCounter}_div`;
             inputs[i].parentNode.appendChild(decoratedElement);
+            document.getElementById(decoratedElement.id).addEventListener(`click`, function (){
+                console.log(`Attempting to get a respone...`);
+                chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+                    if(response){
+                        console.log(`received response: #{response.farewell}`);
+                    } else {
+                        console.log(`received response: No response recieved`);
+                    }
+                });
+            });
 
             // Look for the userid and password in your localStorage
             console.log('sendMessage');
             chrome.runtime.onMessage.addListener(
-                function(request, sender, sendResponse) {
+                function (request, sender, sendResponse) {
                     console.log(sender.tab ?
                         "from a content script:" + sender.tab.url :
                         "from the extension");
@@ -52,21 +62,8 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
                         sendResponse({farewell: "goodbye"});
 
                     alert('I, the contentscript, heared something!!!!!')
-                });
-            // chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
-            //     if(response){
-            //         console.log(`received response: #{response.farewell}`);
-            //     } else {
-            //         console.log(`received response: No response recieved`);
-            //     }
-            // });
-
-            // let userData: UserData = UserData.retrieve();
-            // let sites: Site[] = userData.sites;
-            // console.log(localStorage.getItem("OPFES_UserData"));
-            // chrome.runtime.sendMessage({method: "getLocalStorage", key: "_sites"}, function(response) {
-            //     console.log(response.data);
-            // });
+                }
+            );
         }
     }
     return result;
@@ -76,6 +73,7 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
 let passwordInputElements = decoratePasswordInputElements;
 if (passwordInputElements().length >= 1) {
     // nowWhat;
-}/**
+}
+/**
  * Created by Tim on 2017-03-18.
  */
