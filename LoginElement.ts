@@ -7,7 +7,6 @@
  * - and I put your userid, that you have used before on this site, in the user-id's inputfield
  */
 (function () {
-    let result = [];
     let inputs = document.getElementsByTagName("input");
     let pwdCounter: number = 0;
     for (let i = 0; i < inputs.length; i++) {
@@ -38,10 +37,10 @@
             OPFES_MyImage.id = `OPFES_LoginImage`;
 
             // I add the new OPFES elements close to the original password element
-            let decoratedElement: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
-            decoratedElement.innerHTML = OPFES_PasswordInputElement.outerHTML + OPFES_MyImage.outerHTML;
-            decoratedElement.id = `OPFES_password_${pwdCounter}_div`;
-            inputs[i].parentNode.appendChild(decoratedElement);
+            let OPFES_PasswordDiv: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
+            OPFES_PasswordDiv.innerHTML = OPFES_PasswordInputElement.outerHTML + OPFES_MyImage.outerHTML;
+            OPFES_PasswordDiv.id = `OPFES_password_${pwdCounter}_div`;
+            inputs[i].parentNode.appendChild(OPFES_PasswordDiv);
             document.getElementById(`OPFES_LoginImage`).addEventListener(`click`, function () {
                 // Check with the extension for the password for this domain
                 console.log(`Attempting to get a respone...`);
@@ -70,17 +69,29 @@
                 //todo: Make Finding the username-inputfield as smart as possible
                 //... and put it in the user-id inputfield
                 if (userNameInputValue !== '') {
-                    let userNameInput = <HTMLInputElement>document.querySelector('#username');
-                    if (userNameInput) {
+                    //find the input-field for the user-id in the DOM
+                    let siblingsOfOpfesPasswordDiv = document.querySelector('#OPFES_password_1_div').parentNode.childNodes;
+                    let userNameInputIsFound: boolean = false;
+                    let userNameInput: HTMLInputElement;
+                    for (let sibling of siblingsOfOpfesPasswordDiv) {
+                        userNameInput = <HTMLInputElement>sibling;
+                        if (userNameInput
+                            && userNameInput.type === "text"
+                            && (userNameInput.id.indexOf('user') >= 0 || userNameInput.name.indexOf('user') >= 0)) {
+                            userNameInputIsFound = true;
+                            break;
+                        }
+                    }
+                    //
+                    if (userNameInputIsFound) {
                         userNameInput.value = userNameInputValue;
                     } else {
                         alert(`You have logged in to this site before and you used user-id ${userNameInputValue}.
-                     \nPlease enter ${userNameInputValue} in the username input-field.
-                     \nThen enter your password in my password-field and click on my icon next to it.`);
+                                \nPlease enter ${userNameInputValue} in the username input-field.
+                                \nThen enter your password in my password-field and click on my icon next to it.`);
                     }
                 }
             });
         }
     }
-    return result;
 })();
