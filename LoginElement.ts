@@ -59,8 +59,8 @@
             // I check your userData: have you logged in here before? And if so:
             // I get your userid for this domain and put it in the user-id's inputfield.
             chrome.storage.local.get("_sites", function (response) {
-                // Look for the user-id ...
-                let userNameInputValue: string;
+                // Look for the user-id in the userData...
+                let userNameInputValue: string = '';
                 for (let site of response._sites) {
                     if (window.location.href.indexOf(site.domain) >= 0) {
                         userNameInputValue = site.userId;
@@ -68,22 +68,15 @@
                 }
                 //todo: Make Finding the username-inputfield as smart as possible
                 //... and put it in the user-id inputfield
+                let userNameInput: HTMLInputElement = <HTMLInputElement>document.querySelector('form input[type="text"][id*=user]');
+                if(!userNameInput){
+                    userNameInput = <HTMLInputElement>document.querySelector('form input[type="text"][id*=User]');
+                }else if(!userNameInput){
+                    userNameInput = <HTMLInputElement>document.querySelector('form input[type="text"][id*=id]');
+                }else if(!userNameInput){
+                    userNameInput = <HTMLInputElement>document.querySelector('form input[type="text"][id*=Id]');
+                }
                 if (userNameInputValue !== '') {
-                    //find the input-field for the user-id in the DOM
-                    // let siblingsOfOpfesPasswordDiv = document.querySelector('#OPFES_password_1_div').parentNode.childNodes;
-                    // let userNameInputIsFound: boolean = false;
-                    // let userNameInput: HTMLInputElement;
-                    // for (let sibling of siblingsOfOpfesPasswordDiv) {
-                    //     userNameInput = <HTMLInputElement>sibling;
-                    //     if (userNameInput
-                    //         && userNameInput.type === "text"
-                    //         && (userNameInput.id.indexOf('user') >= 0 || userNameInput.name.indexOf('user') >= 0)) {
-                    //         userNameInputIsFound = true;
-                    //         break;
-                    //     }
-                    // }
-                    let userNameInput = document.querySelector('form input[type="text"][id*=user]');
-                    //
                     if (userNameInput) {
                         userNameInput.value = userNameInputValue;
                     } else {
@@ -91,6 +84,8 @@
                                 \nPlease enter ${userNameInputValue} in the username input-field.
                                 \nThen enter your password in my password-field and click on my icon next to it.`);
                     }
+                } else {
+                    // How to tempt the user to use Opfes now?
                 }
             });
         }
