@@ -3,9 +3,6 @@
   "name": "OnePasswordForEverySite Browser extension",
   "description": "Hi, I'm Opfes, helping you to log in to every site with one password. Without storing any of your passwords at all!",
   "version": "1.0",
-  "background": {
-    "scripts": ["Background.js"]
-  },
   "browser_action": {
     "default_icon": "icons\/opfes_19.png",
     "default_popup": "OnePasswordForEverySiteApp.html",

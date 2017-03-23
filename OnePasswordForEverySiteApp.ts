@@ -4,15 +4,6 @@
 // declare function SHA512(string): string;
 let a: number = 1;
 ///<reference path="chrome/index.d.ts"/>
-chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function(response) {
-        if(response){
-            console.log(`received response: ${response.farewell}`);
-        } else {
-            console.log(`received response: No response recieved`);
-        }
-    });
-});
 
 document.addEventListener('DOMContentLoaded', function () {
 

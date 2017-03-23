@@ -1,11 +1,12 @@
 /**
  * Created by tvansteenbergen on 2017-03-09.
+ *
+ * This is what I do every time you visit any page:
+ * - I check if this site allows you to log on.
+ * - if so, I add my own version of the password-field
+ * - and I put your userid, that you have used before on this site, in the user-id's inputfield
  */
-
-/* This decorates (rather: 'appends to its parent') every InputElement of type password, with a extra inputElement called
- * OPFES_password_x_input
- */
-function decoratePasswordInputElements(): HTMLInputElement[] {
+(function () {
     let result = [];
     let inputs = document.getElementsByTagName("input");
     let pwdCounter: number = 0;
@@ -14,13 +15,13 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
             && inputs[i].id.substring(0, 5) !== `OPFES`) {
             pwdCounter++;
 
-            // Create the OPFES password input element
+            // I create the OPFES password input element
             let OPFES_PasswordInputElement: HTMLInputElement = <HTMLInputElement>document.createElement(`input`);
             OPFES_PasswordInputElement.id = `OPFES_password_${pwdCounter}_input`;
             OPFES_PasswordInputElement.type = `password`;
             OPFES_PasswordInputElement.border = `border:1px solid brown`;
 
-            // Copy the OPFES image from the extension's images to the variable myImage
+            // I copy the OPFES image from the extension's images to the variable myImage
             let customerBrowser = get_browser();
             let myImage: string = chrome.extension.getURL("icons\/opfes_19.png");
             if (customerBrowser.name === 'Chrome') {
@@ -29,14 +30,14 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
                 myImage = browser.extension.getURL("icons\/opfes_19.png");
             }
 
-            // Create the OPFES image element
+            // I create the OPFES image element
             let OPFES_MyImage: HTMLImageElement = <HTMLImageElement>document.createElement(`img`);
             OPFES_MyImage.name = `OPFES_myImage`;
             OPFES_MyImage.src = `${myImage}`;
             OPFES_MyImage.title = `Enter your OPFES password and I will generate your password, and try and log you in.`;
             OPFES_MyImage.id = `OPFES_LoginImage`;
 
-            // Add the new OPFES elements close to the original password element
+            // I add the new OPFES elements close to the original password element
             let decoratedElement: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
             decoratedElement.innerHTML = OPFES_PasswordInputElement.outerHTML + OPFES_MyImage.outerHTML;
             decoratedElement.id = `OPFES_password_${pwdCounter}_div`;
@@ -56,38 +57,30 @@ function decoratePasswordInputElements(): HTMLInputElement[] {
                 });
             });
 
-            // Check with the extension if there is a userid for this domain
-            console.log('sendMessage');
+            // I check your userData: have you logged in here before? And if so:
+            // I get your userid for this domain and put it in the user-id's inputfield.
             chrome.storage.local.get("_sites", function (response) {
+                // Look for the user-id ...
+                let userNameInputValue: string;
+                for (let site of response._sites) {
+                    if (window.location.href.indexOf(site.domain) >= 0) {
+                        userNameInputValue = site.userId;
+                    }
+                }
                 //todo: Make Finding the username-inputfield as smart as possible
-                let userNameInput = <HTMLInputElement>document.querySelector('#username');
-                if (userNameInput) {
-                    for (let site of response._sites) {
-                        if (window.location.href.indexOf(site.domain) >= 0) {
-                            userNameInput.value = site.userId;
-                        }
+                //... and put it in the user-id inputfield
+                if (userNameInputValue !== '') {
+                    let userNameInput = <HTMLInputElement>document.querySelector('#username');
+                    if (userNameInput) {
+                        userNameInput.value = userNameInputValue;
+                    } else {
+                        alert(`You have logged in to this site before and you used user-id ${userNameInputValue}.
+                     \nPlease enter ${userNameInputValue} in the username input-field.
+                     \nThen enter your password in my password-field and click on my icon next to it.`);
                     }
                 }
             });
-
-            // chrome.runtime.sendMessage({"pleaseGiveMe": "theUserid"}, function(response) {
-            //     if(response){
-            //         // Todo: put this response into the login-field.
-            //         console.log(`received response: ${response.itIs}`);
-            //     } else {
-            //         console.log(`received response: No response received`);
-            //     }
-            // });
         }
     }
     return result;
-}
-
-// Kick off initial page load check
-let passwordInputElements = decoratePasswordInputElements;
-if (passwordInputElements().length >= 1) {
-    // nowWhat;
-}
-/**
- * Created by Tim on 2017-03-18.
- */
+})();
