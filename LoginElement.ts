@@ -12,17 +12,23 @@
     for (let i = 0; i < inputs.length; i++) {
         if (inputs[i].type.toLowerCase() === `password`
             && inputs[i].id.substring(0, 5) !== `OPFES`) {
+            let thisSite : Site;
+            let OPFES_PasswordInputElement: HTMLInputElement;
+            let OPFES_MyImage: HTMLImageElement;
+            let OPFES_PasswordDiv: HTMLDivElement;
+            let customerBrowser;
+            let myImage: string;
+
             pwdCounter++;
 
             // I create the OPFES password input element
-            let OPFES_PasswordInputElement: HTMLInputElement = <HTMLInputElement>document.createElement(`input`);
+            OPFES_PasswordInputElement = <HTMLInputElement>document.createElement(`input`);
             OPFES_PasswordInputElement.id = `OPFES_password_${pwdCounter}_input`;
             OPFES_PasswordInputElement.type = `password`;
             OPFES_PasswordInputElement.border = `border:1px solid brown`;
 
             // I copy the OPFES image from the extension's images to the variable myImage
-            let customerBrowser = get_browser();
-            let myImage: string = chrome.extension.getURL("icons\/opfes_19.png");
+            customerBrowser = get_browser();
             if (customerBrowser.name === 'Chrome') {
                 myImage = chrome.extension.getURL("icons\/opfes_19.png");
             } else {
@@ -30,21 +36,22 @@
             }
 
             // I create the OPFES image element
-            let OPFES_MyImage: HTMLImageElement = <HTMLImageElement>document.createElement(`img`);
+            OPFES_MyImage = <HTMLImageElement>document.createElement(`img`);
             OPFES_MyImage.name = `OPFES_myImage`;
             OPFES_MyImage.src = `${myImage}`;
             OPFES_MyImage.title = `Enter your OPFES password and I will generate your password, and try and log you in.`;
             OPFES_MyImage.id = `OPFES_LoginImage`;
 
             // I add the new OPFES elements close to the original password element
-            let OPFES_PasswordDiv: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
+            OPFES_PasswordDiv = <HTMLDivElement>document.createElement(`div`);
             OPFES_PasswordDiv.innerHTML = OPFES_PasswordInputElement.outerHTML + OPFES_MyImage.outerHTML;
             OPFES_PasswordDiv.id = `OPFES_password_${pwdCounter}_div`;
             inputs[i].parentNode.appendChild(OPFES_PasswordDiv);
             document.getElementById(`OPFES_LoginImage`).addEventListener(`click`, function () {
                 // Check with the extension for the password for this domain
                 //todo: Get your password from SiteService->getSitepassword
-                let yourPasswordForThisSite: string = `sdfsafqwr`;
+                let yourPassword: string = (<HTMLInputElement>document.querySelector('#OPFES_password_1_input')).value;
+                let yourPasswordForThisSite: string = SiteService.getSitePassword(thisSite, yourPassword);
                 (<HTMLInputElement>document.querySelector('input[type="password"]')).value=`${yourPasswordForThisSite}`;
             });
 
@@ -52,12 +59,14 @@
             // I retrieve your userid for this domain and copy the value to the user-id's inputfield.
             chrome.storage.local.get("_sites", function (response) {
                 // Look for the user-id in the userData...
-                let userNameInputValue: string = '';
                 for (let site of response._sites) {
                     if (window.location.href.indexOf(site.domain) >= 0) {
-                        userNameInputValue = site.userId;
+                        thisSite = site;
                     }
                 }
+                let userNameInputValue: string = '';
+                userNameInputValue = thisSite.userId;
+
                 //todo: Make Finding the username-inputfield as smart as possible
                 //... and put it in the user-id inputfield
                 let userNameInput: HTMLInputElement = <HTMLInputElement>document.querySelector('form input[type="text"][id*=user]');

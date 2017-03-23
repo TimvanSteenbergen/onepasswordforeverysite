@@ -63,17 +63,18 @@ class UserData implements IUserData {
      */
     static retrieve() {
         console.log('Your localData is now retrieved from your browser\'s memory into Opfes\' memory.');
+        let result = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
         chrome.storage.local.get("_sites",function(){});
-        return JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
+        return result;
     }
 
     /**
      * Store the userData to the LocalStorage
      */
     persist() {
-        chrome.storage.local.set(this); //Replaced the localStorage
         let stringifiedUserData: string = JSON.stringify(this);
         localStorage.setItem("OPFES_UserData", stringifiedUserData);
+        chrome.storage.local.set(this); //Replaced the localStorage
         console.log(`Your localData is now updated to #{stringifiedUserData}.`);
     }
 

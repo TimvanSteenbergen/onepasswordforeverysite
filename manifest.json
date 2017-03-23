@@ -10,7 +10,7 @@
   },
   "content_scripts": [{
     "matches": ["<all_urls>"],
-    "js": ["CustomerBrowser.js", "LoginElement.js"]
+    "js": ["CustomerBrowser.js", "LoginElement.js", "SiteService.js", "Site.js", "SHA512.js"]
   }],
   "icons": {
     "19": "icons\/opfes_19.png",
