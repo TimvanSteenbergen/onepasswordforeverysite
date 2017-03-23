@@ -70,20 +70,21 @@
                 //... and put it in the user-id inputfield
                 if (userNameInputValue !== '') {
                     //find the input-field for the user-id in the DOM
-                    let siblingsOfOpfesPasswordDiv = document.querySelector('#OPFES_password_1_div').parentNode.childNodes;
-                    let userNameInputIsFound: boolean = false;
-                    let userNameInput: HTMLInputElement;
-                    for (let sibling of siblingsOfOpfesPasswordDiv) {
-                        userNameInput = <HTMLInputElement>sibling;
-                        if (userNameInput
-                            && userNameInput.type === "text"
-                            && (userNameInput.id.indexOf('user') >= 0 || userNameInput.name.indexOf('user') >= 0)) {
-                            userNameInputIsFound = true;
-                            break;
-                        }
-                    }
+                    // let siblingsOfOpfesPasswordDiv = document.querySelector('#OPFES_password_1_div').parentNode.childNodes;
+                    // let userNameInputIsFound: boolean = false;
+                    // let userNameInput: HTMLInputElement;
+                    // for (let sibling of siblingsOfOpfesPasswordDiv) {
+                    //     userNameInput = <HTMLInputElement>sibling;
+                    //     if (userNameInput
+                    //         && userNameInput.type === "text"
+                    //         && (userNameInput.id.indexOf('user') >= 0 || userNameInput.name.indexOf('user') >= 0)) {
+                    //         userNameInputIsFound = true;
+                    //         break;
+                    //     }
+                    // }
+                    let userNameInput = document.querySelector('form input[type="text"][id*=user]');
                     //
-                    if (userNameInputIsFound) {
+                    if (userNameInput) {
                         userNameInput.value = userNameInputValue;
                     } else {
                         alert(`You have logged in to this site before and you used user-id ${userNameInputValue}.
