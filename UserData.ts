@@ -71,7 +71,7 @@ class UserData implements IUserData {
      * Store the userData to the LocalStorage
      */
     persist() {
-        chrome.storage.local.set(this);
+        chrome.storage.local.set(this); //Replaced the localStorage
         let stringifiedUserData: string = JSON.stringify(this);
         localStorage.setItem("OPFES_UserData", stringifiedUserData);
         console.log(`Your localData is now updated to #{stringifiedUserData}.`);

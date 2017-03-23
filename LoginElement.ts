@@ -43,21 +43,13 @@
             inputs[i].parentNode.appendChild(OPFES_PasswordDiv);
             document.getElementById(`OPFES_LoginImage`).addEventListener(`click`, function () {
                 // Check with the extension for the password for this domain
-                console.log(`Attempting to get a respone...`);
-                chrome.runtime.sendMessage({"pleaseGiveMe": "thePassword", "password": "qwer"}, function (response) {
-                    if (response) {
-                        // Todo: put this response into the password-field and logon;
-                        console.log(`received response: ${response.itIs}`);
-                        // let passwordInput:HTMLInputElement = (<HTMLInputElement>document.getElementById(OPFES_PasswordInputElement.id));
-                        // passwordInput.value = response.itIs;
-                    } else {
-                        console.log(`received response: No response recieved`);
-                    }
-                });
+                //todo: Get your password from SiteService->getSitepassword
+                let yourPasswordForThisSite: string = `sdfsafqwr`;
+                (<HTMLInputElement>document.querySelector('input[type="password"]')).value=`${yourPasswordForThisSite}`;
             });
 
             // I check your userData: have you logged in here before? And if so:
-            // I get your userid for this domain and put it in the user-id's inputfield.
+            // I retrieve your userid for this domain and copy the value to the user-id's inputfield.
             chrome.storage.local.get("_sites", function (response) {
                 // Look for the user-id in the userData...
                 let userNameInputValue: string = '';

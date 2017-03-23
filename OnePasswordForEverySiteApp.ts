@@ -229,16 +229,3 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
 
     }, false);
 };
-
-// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-//     alert('Listener toegevoegd!');
-//     console.log('listening');
-//     if (request.method == "getLocalStorage") {
-//         console.log('getting localStorage');
-//         sendResponse({data: localStorage[request.key]});
-//         console.log('sending it back including data');
-//     } else {
-//         console.log('snubbing...');
-//         sendResponse({}); // snub them.
-//     }
-// });
