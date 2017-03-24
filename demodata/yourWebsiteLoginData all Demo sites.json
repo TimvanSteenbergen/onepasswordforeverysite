@@ -15,7 +15,7 @@
       "userId": "opfes",
       "sequenceNr": 1,
       "maxPwdChars": 20,
-      "lastUsed": "2017-03-24T07:16:12.333Z",
+      "lastUsed": "2017-03-24T12:46:36.233Z",
       "remark": "Dutch site for games."
     },
     {
@@ -24,7 +24,7 @@
       "userId": "demo@opfes.com",
       "sequenceNr": 1,
       "maxPwdChars": 36,
-      "lastUsed": "2017-03-24T07:32:51.239Z",
+      "lastUsed": "2017-03-24T12:47:30.028Z",
       "remark": "For all my running shoes"
     },
     {
@@ -33,16 +33,34 @@
       "userId": "opfesdemo",
       "sequenceNr": 1,
       "maxPwdChars": 25,
-      "lastUsed": "2017-03-20T21:06:14.920Z",
+      "lastUsed": "2017-03-24T12:50:57.563Z",
       "remark": "Looks like a nice site"
     },
     {
       "domain": "amazon.co.uk",
-      "salt": "demo",
-      "userId": "Opfes",
+      "salt": "salt",
+      "userId": "demo@opfes.com",
       "sequenceNr": 1,
       "maxPwdChars": 120,
-      "lastUsed": "2017-03-20T21:58:18.410Z",
+      "lastUsed": "2017-03-24T13:01:01.181Z",
+      "remark": "Remark"
+    },
+    {
+      "domain": "jetbrains.com",
+      "salt": "salt",
+      "userId": "demo@opfes.com",
+      "sequenceNr": 2,
+      "maxPwdChars": 120,
+      "lastUsed": "2017-03-24T15:19:30.861Z",
+      "remark": "The home of Opfes"
+    },
+    {
+      "domain": "co.uk",
+      "salt": "salt",
+      "userId": "demo@opfes.com",
+      "sequenceNr": 1,
+      "maxPwdChars": 120,
+      "lastUsed": "2017-03-24T12:59:10.353Z",
       "remark": "Remark"
     }
   ]
