@@ -59,13 +59,15 @@
             // I retrieve your userid for this domain and copy the value to the user-id's inputfield.
             chrome.storage.local.get("_sites", function (response) {
                 // Look for the user-id in the userData...
+                let userNameInputValue: string;
                 for (let site of response._sites) {
                     if (window.location.href.indexOf(site.domain) >= 0) {
-                        thisSite = site;
+                        thisSite = new Site(
+                            site.domain, site.salt, site.userId, site.sequenceNr, site.maxPwdChars, site.lastUsed, site.remark
+                        );
                     }
                 }
-                let userNameInputValue: string = '';
-                userNameInputValue = thisSite.userId;
+                userNameInputValue = thisSite.getUserId();
 
                 //todo: Make Finding the username-inputfield as smart as possible
                 //... and put it in the user-id inputfield
