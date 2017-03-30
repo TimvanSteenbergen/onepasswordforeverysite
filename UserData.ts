@@ -63,17 +63,19 @@ class UserData implements IUserData {
      */
     static retrieve() {
         console.log('Your localData is now retrieved from your browser\'s memory into Opfes\' memory.');
-        return JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
+        let result = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
+        chrome.storage.local.get("_sites",function(){});
+        return result;
     }
 
     /**
      * Store the userData to the LocalStorage
      */
     persist() {
-        if (confirm('Do you want to overwrite localData with the current userData?')) {
-            localStorage.setItem("OPFES_UserData", JSON.stringify(this));
-            console.log('Your localData is now updated.');
-        }
+        let stringifiedUserData: string = JSON.stringify(this);
+        localStorage.setItem("OPFES_UserData", stringifiedUserData);
+        chrome.storage.local.set(this); //Replaced the localStorage
+        console.log(`Your localData is now updated to #{stringifiedUserData}.`);
     }
 
     /**
@@ -84,7 +86,7 @@ class UserData implements IUserData {
             "use strict";
             let reader = new FileReader();
             reader.onload = function (e) {
-                console.log('Loading the file. Event is: ' + e);
+                console.log(`Loading the file. Event is: #{e}`);
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
                 let dataString: string = (<FileReader>e.target).result;
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);
@@ -97,7 +99,7 @@ class UserData implements IUserData {
                                       <td>${site.getUserId()}</td>
                                       <td>${site.getSequenceNr()}</td>
                                       <td>${site.getMaxPwdChars()}</td>
-                                      <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth()}-${site.getLastUsed().getDate()}</td>
+                                      <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth() + 1}-${site.getLastUsed().getDate()}</td>
                                       <td>${site.getRemark()}</td>
                                    </tr>`;
                 }
@@ -123,8 +125,8 @@ class UserData implements IUserData {
                     return view.Blob;
                 };
 
-            let userData = UserData.retrieve();
-            let exportData = JSON.stringify(userData);
+            let userData: UserData = UserData.retrieve();
+            let exportData: string = JSON.stringify(userData);
             //@todo encrypt this exportData
             if (confirm('This will copy the sites and their related properties to a file for you to store on your local drive.')) {
                 let BB = get_blob();

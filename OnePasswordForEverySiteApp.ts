@@ -6,6 +6,7 @@ let a: number = 1;
 ///<reference path="chrome/index.d.ts"/>
 
 document.addEventListener('DOMContentLoaded', function () {
+
     let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
     if (userData.sites.length === 0) { //then show the Upload-button
         console.log('Ik heb nog geen data gevonden.');
@@ -40,6 +41,9 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleChangability.call(this);
     });
     document.getElementById('OPFES_SelectMaxPwdCharsToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
+    });
+    document.getElementById('OPFES_InputRemarkToggle').addEventListener('click', function () {
         toggleChangability.call(this);
     });
     document.getElementById('OPFES_InputAppPasswordShow').addEventListener('click', function () {
@@ -87,26 +91,25 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
     showTheLocallyStoredData(userData, 5);
     setValueForElementDomain();
     function setValueForElementDomain() {
-        // let customerBrowser = get_browser();
-        // let myBrowser;
-        // if (customerBrowser.name === 'Chrome') {
-        //     myBrowser = chrome;
-        // } else {
-        //     myBrowser = browser;
-        // }
-        // myBrowser.tabs.getSelected(null, function (tab) { //Firefox works with this version.
-        chrome.tabs.query({active: true}, function (tabs) {
-            console.log('Active tab is ' + tabs[0].url);
+        let customerBrowser = get_browser();
+        let myBrowser;
+        if (customerBrowser.name === 'Chrome') {
+            myBrowser = chrome;
+        } else {
+            myBrowser = browser;
+        }
+        myBrowser.tabs.query({active: true}, function (tabs) {
             let ourPopup = document;
             let domain = getDomain(tabs[0].url);
             let domainElement = ourPopup.getElementById('OPFES_InputDomain');
             domainElement.setAttribute('value', domain);
-console.log('domain is ' + domain);
             setValueForElements(domain);
 
+            //This function will abstract the domain-part from the url
             function getDomain(url)
             //This function gets the domainname from the url.
             //Can't use "window.location.host" because this will return the domain of the OnePasswordForEverySiteApp.html
+            //@todo: solve issue #27, www.amazon.co.uk -> now co.uk instead of amazon.co.uk
             {
                 let domain = url.match(/:\/\/(.[^/]+)/)[1];
                 //remove the sub-domain(s)
@@ -119,11 +122,10 @@ console.log('domain is ' + domain);
 
             function setValueForElements(domain) {
                 let userData = UserData.retrieve();
-                console.log(userData);
                 let sites = userData.sites;
-                console.log('sites: ' + sites);
                 for (let site of sites) {
                     if (site.getDomain() == domain) {
+                        //Set the values of the other input-fields on the popup-screen
                         document.getElementById('OPFES_InputDomain').setAttribute('disabled', "disabled");
                         if (site.getSalt() != "") {
                             document.getElementById('OPFES_InputSalt').setAttribute('value', site.getSalt());
@@ -137,10 +139,11 @@ console.log('domain is ' + domain);
                             document.getElementById('OPFES_InputSequenceNr').setAttribute('value', (site.getSequenceNr() + ""));
                             document.getElementById('OPFES_InputSequenceNr').setAttribute('disabled', "disabled");
                         }
-                        if (site.getMaxPwdChars() != 120) {
-                            console.log('set max number of characters to: ' + site.getMaxPwdChars());
-                            (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdChars')).selectedIndex = site.getMaxPwdChars();
-                            document.getElementById('OPFES_SelectMaxPwdChars').setAttribute('disabled', "disabled");
+                        (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdChars')).selectedIndex = site.getMaxPwdChars();
+                        document.getElementById('OPFES_SelectMaxPwdChars').setAttribute('disabled', "disabled");
+                        if (site.getRemark() != "") {
+                            document.getElementById('OPFES_InputRemark').setAttribute('value', site.getRemark());
+                            document.getElementById('OPFES_InputRemark').setAttribute('disabled', "disabled");
                         }
                     }
                 }
@@ -165,7 +168,7 @@ console.log('domain is ' + domain);
                                  <td>${site.getUserId()}</td>
                                  <td>${site.getSequenceNr()}</td>
                                  <td>${site.getMaxPwdChars()}</td>
-                                 <td>${site.getLastUsed().getFullYear()} ${site.getLastUsed().getMonth()} ${site.getLastUsed().getDate()}</td>
+                                 <td>${site.getLastUsed().getFullYear()} ${site.getLastUsed().getMonth() + 1} ${site.getLastUsed().getDate()}</td>
                                  <td>${site.getRemark()}</td>
                              </tr>`;
         }
@@ -199,7 +202,7 @@ console.log('domain is ' + domain);
             +(<HTMLInputElement>ourPopup.getElementById('OPFES_InputSequenceNr')).value,
             +(<HTMLSelectElement>ourPopup.getElementById('OPFES_SelectMaxPwdChars')).value,
             new Date(Date.now()),
-            '' //remark
+            (<HTMLInputElement>ourPopup.getElementById('OPFES_InputRemark')).value
         );
 
         let inputValueAppPassword = (<HTMLInputElement>ourPopup.getElementById('OPFES_InputAppPassword')).value;

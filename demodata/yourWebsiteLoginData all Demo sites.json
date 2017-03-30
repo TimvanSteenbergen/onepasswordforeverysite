@@ -1,0 +1,58 @@
+{
+  "_sites": [
+    {
+      "domain": "gavelsnipe.com",
+      "salt": "demo",
+      "userId": "demo@opfes.com",
+      "sequenceNr": 1,
+      "maxPwdChars": 120,
+      "lastUsed": "2017-03-27T09:04:47.354Z",
+      "remark": "Demo-account"
+    },
+    {
+      "domain": "spelletjes.nl",
+      "salt": "demo",
+      "userId": "opfes",
+      "sequenceNr": 1,
+      "maxPwdChars": 20,
+      "lastUsed": "2017-03-27T09:05:53.899Z",
+      "remark": "Dutch site for games."
+    },
+    {
+      "domain": "eversource.com",
+      "salt": "Can be any text",
+      "userId": "opfesdemo",
+      "sequenceNr": 1,
+      "maxPwdChars": 25,
+      "lastUsed": "2017-03-24T12:50:57.563Z",
+      "remark": "Looks like a nice site"
+    },
+    {
+      "domain": "jetbrains.com",
+      "salt": "salt",
+      "userId": "demo@opfes.com",
+      "sequenceNr": 2,
+      "maxPwdChars": 120,
+      "lastUsed": "2017-03-24T15:19:30.861Z",
+      "remark": "The home of Opfes"
+    },
+    {
+      "domain": "amazon.co.uk",
+      "salt": "salt",
+      "userId": "demo@opfes.com",
+      "sequenceNr": 1,
+      "maxPwdChars": 120,
+      "lastUsed": "2017-03-27T09:11:53.654Z",
+      "remark": "domainextension includes a dot"
+    },
+    {
+      "domain": "nike.com",
+      "salt": "demo",
+      "userId": "demo@opfes.com",
+      "sequenceNr": 1,
+      "maxPwdChars": 36,
+      "lastUsed": "2017-03-27T09:08:23.998Z",
+      "remark": "For all my running shoes"
+    },
+  ]
+}
