@@ -64,13 +64,18 @@ class SiteService implements ISiteService {
         //   @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
         // I have choosen to exclude these: iIjJlLoOqQxXyY`\$[]017 and we are leftover with these 64 possible password characters
         const lowercaseCharacters: string[] = ["a", "b", "c", "d", "e", "f", "g", "h", "k", "m", "n", "p", "r", "s", "t", "u", "v", "w", "z"];
+        const numOfLowerChars: number = lowercaseCharacters.length;
         const uppercaseCharacters: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "K", "M", "N", "P", "R", "S", "T", "U", "V", "W", "Z"];
-        const numOfChars: number = 19;
-        const numberCharacters: string[] = ["2", "3", "4", "5", "6", "8", "9"];
-        const numOfNumberChars: number = 7;
+        const numOfUpperChars: number = uppercaseCharacters.length;
+        const numberCharacters: string[] = ["0", "2", "3", "4", "5", "6", "8", "9"];
+        const numOfNumberChars: number = numberCharacters.length;
         const specialCharacters: string[] = ["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
-        const numOfSpecialChars: number = 18;
+        const numOfSpecialChars: number = specialCharacters.length;
         const passwordCharacters: string[] = lowercaseCharacters.concat(uppercaseCharacters).concat(numberCharacters).concat(specialCharacters);
+        let sumOfNums: number = numOfLowerChars + numOfUpperChars + numOfNumberChars + numOfSpecialChars;
+        if (sumOfNums !== 64) {
+                throw RangeError; //sumOfNums has to be 64 to generate our 64-base password.
+        }
         let counterHash: number = 0;
         let generatedPassword: string = "";
         for (let counterPwd = 0; counterPwd < (passwordLength / 2); counterPwd++) {
@@ -88,14 +93,14 @@ class SiteService implements ISiteService {
         //Make sure there is at least one uppercase
         if ((/[A-Z]/.test(generatedPassword)) === false) {//If there is not yet a uppercase in the generated password..
             //.. then replace the first character by one of the chosen 16 uppercaseCharacters
-            let chosenUppercaseCharacter: string = uppercaseCharacters[generatedHash.charCodeAt(3) % numOfChars];
+            let chosenUppercaseCharacter: string = uppercaseCharacters[generatedHash.charCodeAt(3) % numOfLowerChars];
             generatedPassword = chosenUppercaseCharacter + generatedPassword.substr(1, passwordLength - 1);
         }
 
         //Make sure there is at least one lowercase
         if ((/[a-z]/.test(generatedPassword)) === false) {//If there is not yet a lowercase in the generated password..
             //.. then replace one character by one of the chosen 16 lowercaseCharacters
-            let chosenLowercaseCharacter: string = lowercaseCharacters[generatedHash.charCodeAt(3) % numOfChars];
+            let chosenLowercaseCharacter: string = lowercaseCharacters[generatedHash.charCodeAt(3) % numOfUpperChars];
             let chosenPosition: number = generatedHash.charCodeAt(4) % (passwordLength - 3) + 2; // will get a position in the range: 3 to 16
             let firstPart: string = generatedPassword.substr(0, chosenPosition);
             let lastPart: string = generatedPassword.substr(chosenPosition + 1);
