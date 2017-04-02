@@ -65,8 +65,11 @@ class SiteService implements ISiteService {
         // I have choosen to exclude these: iIjJlLoOqQxXyY`\$[]017 and we are leftover with these 64 possible password characters
         const lowercaseCharacters: string[] = ["a", "b", "c", "d", "e", "f", "g", "h", "k", "m", "n", "p", "r", "s", "t", "u", "v", "w", "z"];
         const uppercaseCharacters: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "K", "M", "N", "P", "R", "S", "T", "U", "V", "W", "Z"];
+        const numOfChars: number = 19;
         const numberCharacters: string[] = ["2", "3", "4", "5", "6", "8", "9"];
-        const specialCharacters: string[] = ["'", "/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
+        const numOfNumberChars: number = 7;
+        const specialCharacters: string[] = ["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
+        const numOfSpecialChars: number = 18;
         const passwordCharacters: string[] = lowercaseCharacters.concat(uppercaseCharacters).concat(numberCharacters).concat(specialCharacters);
         let counterHash: number = 0;
         let generatedPassword: string = "";
@@ -85,14 +88,14 @@ class SiteService implements ISiteService {
         //Make sure there is at least one uppercase
         if ((/[A-Z]/.test(generatedPassword)) === false) {//If there is not yet a uppercase in the generated password..
             //.. then replace the first character by one of the chosen 16 uppercaseCharacters
-            let chosenUppercaseCharacter: string = uppercaseCharacters[generatedHash.charCodeAt(3) % 19];
+            let chosenUppercaseCharacter: string = uppercaseCharacters[generatedHash.charCodeAt(3) % numOfChars];
             generatedPassword = chosenUppercaseCharacter + generatedPassword.substr(1, passwordLength - 1);
         }
 
         //Make sure there is at least one lowercase
         if ((/[a-z]/.test(generatedPassword)) === false) {//If there is not yet a lowercase in the generated password..
             //.. then replace one character by one of the chosen 16 lowercaseCharacters
-            let chosenLowercaseCharacter: string = lowercaseCharacters[generatedHash.charCodeAt(3) % 19];
+            let chosenLowercaseCharacter: string = lowercaseCharacters[generatedHash.charCodeAt(3) % numOfChars];
             let chosenPosition: number = generatedHash.charCodeAt(4) % (passwordLength - 3) + 2; // will get a position in the range: 3 to 16
             let firstPart: string = generatedPassword.substr(0, chosenPosition);
             let lastPart: string = generatedPassword.substr(chosenPosition + 1);
@@ -102,14 +105,14 @@ class SiteService implements ISiteService {
         //Make sure there is at least one number,
         if ((/[0-9]/.test(generatedPassword)) === false) {//If there is not yet a number in the generated password..
             //.. then replace the last character by one of the chosen 7 numbers in numberCharacters
-            let chosenNumberCharacter: string = numberCharacters[generatedHash.charCodeAt(3) % 7];
+            let chosenNumberCharacter: string = numberCharacters[generatedHash.charCodeAt(3) % numOfNumberChars];
             generatedPassword = generatedPassword.substr(0, passwordLength - 1) + chosenNumberCharacter;
         }
 
         //Make sure there is at least one special character
-        if ((/['/~@#%^()_+-=.:?!{}]/.test(generatedPassword)) === false) {//If there is not yet a special character in the generated password..
-            //.. then replace the second character by one of the chosen 19 specialCharacters
-            let chosenSpecialCharacter: string = specialCharacters[generatedHash.charCodeAt(3) % 19];
+        if ((/[/~@#%^()_+-=.:?!{}]/.test(generatedPassword)) === false) {//If there is not yet a special character in the generated password..
+            //.. then replace the second character by one of the chosen 18 specialCharacters
+            let chosenSpecialCharacter: string = specialCharacters[generatedHash.charCodeAt(3) % numOfSpecialChars];
             let firstPart: string = generatedPassword.substr(0, 1);
             let lastPart: string = generatedPassword.substr(2, passwordLength - 2);
             generatedPassword = firstPart + chosenSpecialCharacter + lastPart;
