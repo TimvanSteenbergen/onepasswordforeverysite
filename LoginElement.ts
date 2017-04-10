@@ -67,6 +67,10 @@
                         );
                     }
                 }
+                if(!thisSite){
+                    thisSite = new Site();
+                }
+
                 userNameInputValue = thisSite.getUserId();
 
                 //todo: Make Finding the username-inputfield as smart as possible

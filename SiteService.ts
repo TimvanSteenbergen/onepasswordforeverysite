@@ -74,7 +74,7 @@ class SiteService implements ISiteService {
         const passwordCharacters: string[] = lowercaseCharacters.concat(uppercaseCharacters).concat(numberCharacters).concat(specialCharacters);
         let sumOfNums: number = numOfLowerChars + numOfUpperChars + numOfNumberChars + numOfSpecialChars;
         if (sumOfNums !== 64) {
-                throw RangeError; //sumOfNums has to be 64 to generate our 64-base password.
+            throw RangeError; //sumOfNums has to be 64 to generate our 64-base password.
         }
         let counterHash: number = 0;
         let generatedPassword: string = "";
