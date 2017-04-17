@@ -3,20 +3,24 @@
  *
  * This is what I do every time you visit any page:
  * - I check if this site allows you to log on.
- * - if so, I add my own version of the password-field
- * - and I put your userid, that you have used before on this site, in the user-id's inputfield
+ * - If not: I do nothing
+ * - If so: I check in your userData if you have logged in to this site before.
+ * -        If not: You need to log in the old-fashioned way, change your password with my help and log in again.
+ * -        If so: I retrieve your userid for this site and copy the value to the user-id's inputfield.
+ * -               I add my own version of the password-field
+ * -               I put your userid, that you have used before on this site, in the user-id's inputfield
  */
 (function () {
     let inputs = document.getElementsByTagName("input");
     let pwdInputs: HTMLInputElement[];
-
+    let cnt = 0;
     function getPwdInputs(inputs) {
         pwdInputs = [];
         for (let i = 0; i < inputs.length; i++) {
             if (inputs[i].type.toLowerCase() === `password`
                 && inputs[i].id.substring(0, 5) !== `OPFES`
                 && !isHidden(inputs[i])) {
-                pwdInputs.push(inputs[i]);
+                pwdInputs[cnt++] = inputs[i];
             }
             function isHidden(el) { //Just checking if the user can see the password-inputfield
                 return (el.offsetParent === null)
@@ -24,13 +28,13 @@
         }
         return pwdInputs;
     }
-
     pwdInputs = getPwdInputs(inputs);
-
     if (!pwdInputs) {
+        //There are no password-fields on this page, so for this page I do nothing.
         return;
     }
-    for (let pwdCounter = 1; pwdCounter <= pwdInputs.length; pwdCounter++) {
+
+    for (let pwdCounter = 0; pwdCounter < pwdInputs.length; pwdCounter++) {
         if (pwdCounter > 3) return; //With more then three password-inputfields this tool has no use.
         let customerBrowser;
         let myImage: string;
@@ -128,13 +132,12 @@
             }
         });
 
-        // I check in your userData if you have logged in to this site before. And if so:
-        // I retrieve your userid for this site and copy the value to the user-id's inputfield.
-        if (pwdCounter == 1) {//Only do this for the first password-inputfield
+        if (pwdCounter == 0) {//Only do this for the first password-inputfield
             chrome.storage.local.get("_sites", function (response) {
                 // Look for the user-id in the userData...
                 let userNameInputValue: string;
-                for (let site of response._sites) {
+                let yourSites = (response._sites)?response._sites:[];
+                for (let site of yourSites) {
                     if (window.location.href.indexOf(site.domain) >= 0) {
                         thisSite = new Site(
                             site.domain, site.salt, site.userId, site.sequenceNr, site.maxPwdChars, site.lastUsed, site.remark
@@ -142,7 +145,8 @@
                     }
                 }
                 if (!thisSite) {
-                    thisSite = new Site();
+                    //First time opfes comes to this site, so user needs to log in the old-fashioned way, change her/his password using opfes and log in again.
+                    thisSite = new Site(SiteService.getDomain(window.location.href));
                 }
 
                 userNameInputValue = thisSite.getUserId();

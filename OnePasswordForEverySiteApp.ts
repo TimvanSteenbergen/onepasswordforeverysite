@@ -100,25 +100,10 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
         }
         myBrowser.tabs.query({active: true}, function (tabs) {
             let ourPopup = document;
-            let domain = getDomain(tabs[0].url);
+            let domain = SiteService.getDomain(tabs[0].url);
             let domainElement = ourPopup.getElementById('OPFES_InputDomain');
             domainElement.setAttribute('value', domain);
             setValueForElements(domain);
-
-            //This function will abstract the domain-part from the url
-            function getDomain(url)
-            //This function gets the domainname from the url.
-            //Can't use "window.location.host" because this will return the domain of the OnePasswordForEverySiteApp.html
-            //@todo: solve issue #27, www.amazon.co.uk -> now co.uk instead of amazon.co.uk
-            {
-                let domain = url.match(/:\/\/(.[^/]+)/)[1];
-                //remove the sub-domain(s)
-                let numberOfDotsInDomain = (domain.match(/\./g) || []).length;
-                for (let dot = 1; dot < numberOfDotsInDomain; dot++) {
-                    domain = domain.substr(domain.indexOf('.') + 1, domain.length);
-                }
-                return domain;
-            }
 
             function setValueForElements(domain) {
                 let userData = UserData.retrieve();

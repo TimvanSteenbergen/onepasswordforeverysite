@@ -125,4 +125,24 @@ class SiteService implements ISiteService {
 
         return generatedPassword;
     }
+
+    /**
+     * This function will abstract the domain-part from the url
+     * @param url an Location.href-type, http://xxx.yyy.zzz/something
+     * @returns {string}
+     */
+    static getDomain(url:string)
+//This function gets the domainname from the url, which needs to be an Location.href-type.
+//Can't use "window.location.host" because this will return the domain of the OnePasswordForEverySiteApp.html
+//@todo: solve issue #27, www.amazon.co.uk -> now co.uk instead of amazon.co.uk
+    {
+        let domain = url.match(/:\/\/(.[^/]+)/)[1];
+        //remove the sub-domain(s)
+        let numberOfDotsInDomain = (domain.match(/\./g) || []).length;
+        for (let dot = 1; dot < numberOfDotsInDomain; dot++) {
+            domain = domain.substr(domain.indexOf('.') + 1, domain.length);
+        }
+        return domain;
+    }
+
 }
