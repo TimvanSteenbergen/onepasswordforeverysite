@@ -11,31 +11,48 @@
  * -               I put your userid, that you have used before on this site, in the user-id's inputfield
  */
 (function () {
-    let inputs = document.getElementsByTagName("input");
-    let pwdInputs: HTMLInputElement[];
-    let cnt = 0;
-    function getPwdInputs(inputs) {
-        pwdInputs = [];
-        for (let i = 0; i < inputs.length; i++) {
-            if (inputs[i].type.toLowerCase() === `password`
-                && inputs[i].id.substring(0, 5) !== `OPFES`
-                && !isHidden(inputs[i])) {
-                pwdInputs[cnt++] = inputs[i];
+    // if (thisIsLoginForm) {
+    //     if(thisFormHasOneUseridInputAndOnePasswordInput){
+    //         let PasswordForm: PasswordForm = new LoginForm;
+    //     } else {
+    //         // This is a LoginForm with an unknown format, so:
+    //         Do nothing
+    //     }
+    // } else if (thisIsPasswordChangeForm) {
+    //     if(thisFormHasCurrentNewVerify){
+    //         let PasswordForm: PasswordForm = new ChangeForm;
+    //     } else {
+    //         // This is a changepasswordForm with an unknown format, so:
+    //         Do nothing
+    //     }
+    // } else { // This is page without any password form
+    //    Do Nothing
+    // }
+    let inputElements: NodeListOf<HTMLInputElement> = document.getElementsByTagName("input");
+    let pwdInputs: HTMLInputElement[] = getVisiblePwdInputs(inputElements);
+    function getVisiblePwdInputs(inputElements) {
+        let cnt: number = 0;
+        let pwdInputs: HTMLInputElement[] = [];
+        for (let i = 0; i < inputElements.length; i++) {
+            if (inputElements[i].type.toLowerCase() === `password`
+                && inputElements[i].id.substring(0, 5) !== `OPFES`
+                && !isHidden(inputElements[i])) {
+                // We found a password field! Let's add it to our collection:
+                pwdInputs[cnt++] = inputElements[i];
             }
-            function isHidden(el) { //Just checking if the user can see the password-inputfield
+            function isHidden(el) { // Check if the password-input-field is hidden for the user
                 return (el.offsetParent === null)
             }
         }
         return pwdInputs;
     }
-    pwdInputs = getPwdInputs(inputs);
     if (!pwdInputs) {
         //There are no password-fields on this page, so for this page I do nothing.
         return;
     }
 
     for (let pwdCounter = 0; pwdCounter < pwdInputs.length; pwdCounter++) {
-        if (pwdCounter > 3) return; //With more then three password-inputfields this tool has no use.
+        if (pwdCounter > 2) return; //With more then three password-input-fields this tool has no use.
         let customerBrowser;
         let myImage: string;
         let OPFES_HiddenOriginal: HTMLDivElement;
