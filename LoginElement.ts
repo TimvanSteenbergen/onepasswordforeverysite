@@ -54,11 +54,11 @@
     for (let pwdCounter = 0; pwdCounter < pwdInputs.length; pwdCounter++) {
         if (pwdCounter > 2) return; //With more then three password-input-fields this tool has no use.
         let customerBrowser;
-        let myImage: string;
+        let myImage: string, myImageUnsetOpfes: string;
         let OPFES_HiddenOriginal: HTMLDivElement;
         let OPFES_PasswordDiv: HTMLDivElement;
         let OPFES_PasswordInput: HTMLInputElement;
-        let OPFES_MyImage: HTMLImageElement;
+        let OPFES_MyImage: HTMLImageElement, OPFES_MyImageUnsetOpfes: HTMLImageElement;
         let thisSite: Site;
 
         // I create the OPFES password input element
@@ -72,8 +72,10 @@
         customerBrowser = get_browser();
         if (customerBrowser.name === 'Chrome') {
             myImage = chrome.extension.getURL("icons\/opfes_19.png");
+            myImageUnsetOpfes = chrome.extension.getURL("icons\/opfes_19_unset_opfes.png");
         } else {
             myImage = browser.extension.getURL("icons\/opfes_19.png");
+            myImageUnsetOpfes = browser.extension.getURL("icons\/opfes_19_unset_opfes.png");
         }
 
         // I create the OPFES image element
@@ -82,6 +84,13 @@
         OPFES_MyImage.name = `${pwdCounter}`;
         OPFES_MyImage.src = `${myImage}`;
         OPFES_MyImage.title = `Enter your OPFES password and I will generate your password, and try and log you in.`;
+
+        // I create the OPFES image Unset element, which you can use to restore the original passwordfield
+        OPFES_MyImageUnsetOpfes = <HTMLImageElement>document.createElement(`img`);
+        OPFES_MyImageUnsetOpfes.id = `OPFES_MyImageUnsetOpfes_${pwdCounter}`;
+        OPFES_MyImageUnsetOpfes.name = `${pwdCounter}`;
+        OPFES_MyImageUnsetOpfes.src = `${myImageUnsetOpfes}`;
+        OPFES_MyImageUnsetOpfes.title = `Replace OPFES' password-field by the original password field.`;
 
         OPFES_HiddenOriginal = <HTMLDivElement>document.createElement(`div`);
         OPFES_HiddenOriginal.id = `OPFES_HiddenOriginal_${pwdCounter}`;
@@ -93,6 +102,7 @@
         OPFES_PasswordDiv.innerHTML =
             OPFES_PasswordInput.outerHTML
             + OPFES_MyImage.outerHTML
+            + OPFES_MyImageUnsetOpfes.outerHTML
             + OPFES_HiddenOriginal.outerHTML;
 
         // Now hide the found passwordfield and wrap it with my new OPFES element
