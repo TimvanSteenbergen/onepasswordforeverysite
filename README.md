@@ -20,7 +20,6 @@ This results in extra security because fully opensource code can get monitored b
 </ul>
 </p>
 
-
 <h2>Only Client-side code</h2>
 <p>The only code that is executed is in javascript on your own computer. No on-line services, no cloud-applications. No
     one gets any bit of information about your one-and-only password.</p>
@@ -56,4 +55,4 @@ This data is stored in the webappsstore.sqlite file in the profile folder of you
  </ul>
  The OnePasswordForEverySite-extension should now be added to the top of your list of extensions.<br/>
  The icon for this extension should show up at your extension-icons tray, usually next to your url-bar.
-</p> 
+</p>

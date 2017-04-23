@@ -19,7 +19,8 @@
     "96": "icons\/opfes_96.png"
   },
   "web_accessible_resources": [
-    "icons\/opfes_19.png"
+    "icons\/opfes_19.png",
+    "icons\/opfes_19_unset_opfes.png"
   ],
   "permissions": [
     "activeTab",
