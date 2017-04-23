@@ -28,9 +28,9 @@
     // } else { // This is page without any password form
     //    Do Nothing
     // }
-    let inputElements = document.getElementsByTagName("input");
-    let pwdInputs = getVisiblePwdInputs(inputElements);
-    function getVisiblePwdInputs(inputElements) {
+    let pwdInputs = getVisiblePwdInputs();
+    function getVisiblePwdInputs(maxPwdInputs = null) {
+        let inputElements = document.getElementsByTagName("input");
         let cnt = 0;
         let pwdInputs = [];
         for (let i = 0; i < inputElements.length; i++) {
@@ -39,9 +39,8 @@
                 && !isHidden(inputElements[i])) {
                 // We found a password field! Let's add it to our collection:
                 pwdInputs[cnt++] = inputElements[i];
-            }
-            function isHidden(el) {
-                return (el.offsetParent === null);
+                if (cnt > maxPwdInputs)
+                    return pwdInputs;
             }
         }
         return pwdInputs;
@@ -177,27 +176,57 @@
                 userNameInputValue = thisSite.getUserId();
                 //todo: Make Finding the username-inputfield as smart as possible
                 //... and put it in the user-id inputfield
-                let userNameInput = document.querySelector('form input[type="text"][id*=user]');
+                let userNameInput = getVisibleUserIdElement('input[type="text"][id*=user]');
                 if (!userNameInput) {
-                    userNameInput = document.querySelector('form input[type="text"][id*=User]');
+                    userNameInput = getVisibleUserIdElement('input[type="text"][id*=User]');
                 }
-                else if (!userNameInput) {
-                    userNameInput = document.querySelector('form input[type="text"][id*=id]');
+                if (!userNameInput) {
+                    userNameInput = getVisibleUserIdElement('input[type="text"][id*=id]');
                 }
-                else if (!userNameInput) {
-                    userNameInput = document.querySelector('form input[type="text"][id*=Id]');
+                if (!userNameInput) {
+                    userNameInput = getVisibleUserIdElement('input[type="text"][id*=Id]');
+                }
+                if (!userNameInput) {
+                    userNameInput = getVisibleUserIdElement('input');
                 }
                 if (userNameInputValue !== '') {
                     if (userNameInput) {
                         userNameInput.value = userNameInputValue;
                     }
                     else {
+                        // let pwdInput: HTMLInputElement = <HTMLInputElement>getVisiblePwdInputs(1)[0];
+                        // alert(`You have logged in to this site before and you used user-id ${userNameInputValue}.
+                        //         \nPlease enter ${userNameInputValue} in the username input-field.
+                        //         \nThen enter your password in my password-field and click on my icon next to it.`);
                     }
                 }
                 else {
+                    // How to tempt the user to use Opfes now?
+                }
+                //This function returns the userNameInput. The first visible inputElement in the password-wrapping form
+                function getVisibleUserIdElement(selectorTail) {
+                    // Get the form wrapping the passwordfield
+                    let loginForm = document.getElementById('OPFES_HiddenOriginal_0').children[0].form;
+                    let selectorStart = (typeof loginForm.id == "string") ? ("#" + loginForm.id + " ") : "form ";
+                    let selectorString = selectorStart + selectorTail;
+                    //Todo Kill Annie
+                    let inputElements = document.querySelectorAll(selectorString);
+                    if (inputElements) {
+                        for (let i = 0; i < inputElements.length; i++) {
+                            if (!isHidden(inputElements[i])) {
+                                // We found a password field! Let's add it to our collection:
+                                return inputElements[i];
+                            }
+                        }
+                    }
                 }
             });
         }
+    }
+    // This function checks if the given element is visible
+    // Returns a boolean
+    function isHidden(el) {
+        return (el.offsetParent === null);
     }
 })();
 //# sourceMappingURL=LoginElement.js.map
