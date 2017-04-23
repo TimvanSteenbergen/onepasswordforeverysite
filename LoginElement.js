@@ -28,11 +28,11 @@
     // } else { // This is page without any password form
     //    Do Nothing
     // }
-    let inputElements: NodeListOf<HTMLInputElement> = document.getElementsByTagName("input");
-    let pwdInputs: HTMLInputElement[] = getVisiblePwdInputs(inputElements);
+    let inputElements = document.getElementsByTagName("input");
+    let pwdInputs = getVisiblePwdInputs(inputElements);
     function getVisiblePwdInputs(inputElements) {
-        let cnt: number = 0;
-        let pwdInputs: HTMLInputElement[] = [];
+        let cnt = 0;
+        let pwdInputs = [];
         for (let i = 0; i < inputElements.length; i++) {
             if (inputElements[i].type.toLowerCase() === `password`
                 && inputElements[i].id.substring(0, 5) !== `OPFES`
@@ -40,8 +40,8 @@
                 // We found a password field! Let's add it to our collection:
                 pwdInputs[cnt++] = inputElements[i];
             }
-            function isHidden(el) { // Check if the password-input-field is hidden for the user
-                return (el.offsetParent === null)
+            function isHidden(el) {
+                return (el.offsetParent === null);
             }
         }
         return pwdInputs;
@@ -50,62 +50,56 @@
         //There are no password-fields on this page, so for this page I do nothing.
         return;
     }
-
     for (let pwdCounter = 0; pwdCounter < pwdInputs.length; pwdCounter++) {
-        if (pwdCounter > 2) return; //With more then three password-input-fields this tool has no use.
+        if (pwdCounter > 2)
+            return; //With more then three password-input-fields this tool has no use.
         let customerBrowser;
-        let myImage: string, myImageUnsetOpfes: string;
-        let OPFES_HiddenOriginal: HTMLDivElement;
-        let OPFES_PasswordDiv: HTMLDivElement;
-        let OPFES_PasswordInput: HTMLInputElement;
-        let OPFES_MyImage: HTMLImageElement, OPFES_MyImageUnsetOpfes: HTMLImageElement;
-        let thisSite: Site;
-
+        let myImage, myImageUnsetOpfes;
+        let OPFES_HiddenOriginal;
+        let OPFES_PasswordDiv;
+        let OPFES_PasswordInput;
+        let OPFES_MyImage, OPFES_MyImageUnsetOpfes;
+        let thisSite;
         // I create the OPFES password input element
-        OPFES_PasswordInput = <HTMLInputElement>document.createElement(`input`);
+        OPFES_PasswordInput = document.createElement(`input`);
         OPFES_PasswordInput.id = `OPFES_PasswordInput_${pwdCounter}`;
         OPFES_PasswordInput.name = `${pwdCounter}`;
         OPFES_PasswordInput.type = `password`;
         OPFES_PasswordInput.border = `1px solid brown`;
         OPFES_PasswordInput.placeholder = `Your Opfes Password`;
-
         // I copy the OPFES image from the extension's images to the variable myImage
         customerBrowser = get_browser();
         if (customerBrowser.name === 'Chrome') {
             myImage = chrome.extension.getURL("icons\/opfes_19.png");
             myImageUnsetOpfes = chrome.extension.getURL("icons\/opfes_19_unset_opfes.png");
-        } else {
+        }
+        else {
             myImage = browser.extension.getURL("icons\/opfes_19.png");
             myImageUnsetOpfes = browser.extension.getURL("icons\/opfes_19_unset_opfes.png");
         }
-
         // I create the OPFES image element
-        OPFES_MyImage = <HTMLImageElement>document.createElement(`img`);
+        OPFES_MyImage = document.createElement(`img`);
         OPFES_MyImage.id = `OPFES_MyImage_${pwdCounter}`;
         OPFES_MyImage.name = `${pwdCounter}`;
         OPFES_MyImage.src = `${myImage}`;
         OPFES_MyImage.title = `Enter your OPFES password and I will generate your password, and prefill it in the original passwordfield.`;
-
         // I create the OPFES image Unset element, which you can use to restore the original passwordfield
-        OPFES_MyImageUnsetOpfes = <HTMLImageElement>document.createElement(`img`);
+        OPFES_MyImageUnsetOpfes = document.createElement(`img`);
         OPFES_MyImageUnsetOpfes.id = `OPFES_MyImageUnsetOpfes_${pwdCounter}`;
         OPFES_MyImageUnsetOpfes.name = `${pwdCounter}`;
         OPFES_MyImageUnsetOpfes.src = `${myImageUnsetOpfes}`;
         OPFES_MyImageUnsetOpfes.title = `Replace OPFES' password-field by the original password field.`;
-
-        OPFES_HiddenOriginal = <HTMLDivElement>document.createElement(`div`);
+        OPFES_HiddenOriginal = document.createElement(`div`);
         OPFES_HiddenOriginal.id = `OPFES_HiddenOriginal_${pwdCounter}`;
         OPFES_HiddenOriginal.setAttribute('style', 'display:none;');
         OPFES_HiddenOriginal.innerHTML = pwdInputs[pwdCounter].outerHTML;
-
-        OPFES_PasswordDiv = <HTMLDivElement>document.createElement(`div`);
+        OPFES_PasswordDiv = document.createElement(`div`);
         OPFES_PasswordDiv.id = `OPFES_PasswordDiv_${pwdCounter}`;
         OPFES_PasswordDiv.innerHTML =
             OPFES_PasswordInput.outerHTML
-            + OPFES_MyImage.outerHTML
-            + OPFES_MyImageUnsetOpfes.outerHTML
-            + OPFES_HiddenOriginal.outerHTML;
-
+                + OPFES_MyImage.outerHTML
+                + OPFES_MyImageUnsetOpfes.outerHTML
+                + OPFES_HiddenOriginal.outerHTML;
         // Now hide the found passwordfield and wrap it with my new OPFES element
         // <div id='OPFES_PasswordDiv_X'>
         //   <div id='OPFES_PasswordInput_X'>
@@ -114,41 +108,37 @@
         //   </div>
         // </div>
         pwdInputs[pwdCounter].outerHTML = OPFES_PasswordDiv.outerHTML;
-
         //Make it possible to remove Opfes-password and show the original passwordfield again
         document.getElementById(`OPFES_MyImageUnsetOpfes_${pwdCounter}`).addEventListener(`click`, function () {
-            let counter = this.name.slice(-1);//Will never be more than 4
+            let counter = this.name.slice(-1); //Will never be more than 4
             let target = `OPFES_PasswordDiv_${counter}`;
-            let original = <HTMLInputElement>(document.getElementById(`OPFES_HiddenOriginal_${counter}`).children[0]);
+            let original = (document.getElementById(`OPFES_HiddenOriginal_${counter}`).children[0]);
             let originalHTML = original.outerHTML;
             replaceTargetWith(target, originalHTML);
         });
-
         //Respond to clicking on Opfes by generating the password and showing the original field again, having the generated password.
         document.getElementById(`OPFES_MyImage_${pwdCounter}`).addEventListener(`click`, function () {
-            if (13 == 13) { //TODO: replace this event with login in directly after event PressEnter in the passwordfield
+            if (13 == 13) {
                 // document.getElementById(OPFES_PasswordInput.id).addEventListener(`keyup`, function (event: KeyboardEvent) {
                 //     if (event.keyCode == 13) {
                 event.stopPropagation();
                 // let loginForm = this.form; Trigger the form submission with: loginForm.submit();
                 let pwdItemNumber = this.name; // Usually 1, if it is 2 or 3 this most likely is a password-change-form
-                let yourPasswordForOpfes: string;
-
+                let yourPasswordForOpfes;
                 // Check with the extension for the password for this domain
-                yourPasswordForOpfes = (this.value) ? this.value : (<HTMLInputElement>document.getElementById(`OPFES_PasswordInput_${pwdCounter}`)).value;
-                let yourPasswordForThisSite: string = SiteService.getSitePassword(thisSite, yourPasswordForOpfes);
-                let tmpElement: string = document.getElementById(`OPFES_HiddenOriginal_${pwdItemNumber}`).innerHTML;
+                yourPasswordForOpfes = (this.value) ? this.value : document.getElementById(`OPFES_PasswordInput_${pwdCounter}`).value;
+                let yourPasswordForThisSite = SiteService.getSitePassword(thisSite, yourPasswordForOpfes);
+                let tmpElement = document.getElementById(`OPFES_HiddenOriginal_${pwdItemNumber}`).innerHTML;
                 if (tmpElement.indexOf('value=""') > 0) {
                     tmpElement = tmpElement.replace('value=""', `value="${yourPasswordForThisSite}"`);
-                } else {
+                }
+                else {
                     tmpElement = tmpElement.replace('type=', `value="${yourPasswordForThisSite}" type=`);
                 }
-
                 //Make the original password-inputfield visible again now with value: yourPasswordForThisSite
                 replaceTargetWith(`OPFES_PasswordDiv_${pwdItemNumber}`, tmpElement);
             }
         });
-
         function replaceTargetWith(targetID, html) {
             // find our target
             let i, div, elm, last, target = document.getElementById(targetID);
@@ -170,49 +160,44 @@
             // remove the target.
             target.parentNode.removeChild(target);
         }
-
-        if (pwdCounter == 0) {//Only do this for the first password-inputfield
+        if (pwdCounter == 0) {
             chrome.storage.local.get("_sites", function (response) {
                 // Look for the user-id in the userData...
-                let userNameInputValue: string;
-                let yourSites = (response._sites)?response._sites:[];
+                let userNameInputValue;
+                let yourSites = (response._sites) ? response._sites : [];
                 for (let site of yourSites) {
                     if (window.location.href.indexOf(site.domain) >= 0) {
-                        thisSite = new Site(
-                            site.domain, site.salt, site.userId, site.sequenceNr, site.maxPwdChars, site.lastUsed, site.remark
-                        );
+                        thisSite = new Site(site.domain, site.salt, site.userId, site.sequenceNr, site.maxPwdChars, site.lastUsed, site.remark);
                     }
                 }
                 if (!thisSite) {
                     //First time opfes comes to this site, so user needs to log in the old-fashioned way, change her/his password using opfes and log in again.
                     thisSite = new Site(SiteService.getDomain(window.location.href));
                 }
-
                 userNameInputValue = thisSite.getUserId();
-
                 //todo: Make Finding the username-inputfield as smart as possible
                 //... and put it in the user-id inputfield
-                let userNameInput: HTMLInputElement = <HTMLInputElement>document.querySelector(
-                    'form input[type="text"][id*=user]');
+                let userNameInput = document.querySelector('form input[type="text"][id*=user]');
                 if (!userNameInput) {
-                    userNameInput = <HTMLInputElement>document.querySelector('form input[type="text"][id*=User]');
-                } else if (!userNameInput) {
-                    userNameInput = <HTMLInputElement>document.querySelector('form input[type="text"][id*=id]');
-                } else if (!userNameInput) {
-                    userNameInput = <HTMLInputElement>document.querySelector('form input[type="text"][id*=Id]');
+                    userNameInput = document.querySelector('form input[type="text"][id*=User]');
+                }
+                else if (!userNameInput) {
+                    userNameInput = document.querySelector('form input[type="text"][id*=id]');
+                }
+                else if (!userNameInput) {
+                    userNameInput = document.querySelector('form input[type="text"][id*=Id]');
                 }
                 if (userNameInputValue !== '') {
                     if (userNameInput) {
                         userNameInput.value = userNameInputValue;
-                    } else {
-                        // alert(`You have logged in to this site before and you used user-id ${userNameInputValue}.
-                        //         \nPlease enter ${userNameInputValue} in the username input-field.
-                        //         \nThen enter your password in my password-field and click on my icon next to it.`);
                     }
-                } else {
-                    // How to tempt the user to use Opfes now?
+                    else {
+                    }
+                }
+                else {
                 }
             });
         }
     }
 })();
+//# sourceMappingURL=LoginElement.js.map
