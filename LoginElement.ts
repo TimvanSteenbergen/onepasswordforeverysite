@@ -222,7 +222,9 @@
                 function getVisibleUserIdElement(selectorTail: string) {
                     // Get the form wrapping the passwordfield
                     let loginForm = document.getElementById('OPFES_HiddenOriginal_0').children[0].form;
-                    let selectorStart: string = (typeof loginForm.id == "string") ? ("#" + loginForm.id + " ") : "form ";
+                    let selectorStart: string = (typeof loginForm.id == "string" && loginForm.id !== "")
+                        ? ("#" + loginForm.id + " ")
+                        : "form ";
                     let selectorString: string = selectorStart + selectorTail;
                     //Todo Kill Annie
                     let inputElements: any = document.querySelectorAll(selectorString);

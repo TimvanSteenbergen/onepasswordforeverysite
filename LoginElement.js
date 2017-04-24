@@ -194,20 +194,17 @@
                         userNameInput.value = userNameInputValue;
                     }
                     else {
-                        // let pwdInput: HTMLInputElement = <HTMLInputElement>getVisiblePwdInputs(1)[0];
-                        // alert(`You have logged in to this site before and you used user-id ${userNameInputValue}.
-                        //         \nPlease enter ${userNameInputValue} in the username input-field.
-                        //         \nThen enter your password in my password-field and click on my icon next to it.`);
                     }
                 }
                 else {
-                    // How to tempt the user to use Opfes now?
                 }
                 //This function returns the userNameInput. The first visible inputElement in the password-wrapping form
                 function getVisibleUserIdElement(selectorTail) {
                     // Get the form wrapping the passwordfield
                     let loginForm = document.getElementById('OPFES_HiddenOriginal_0').children[0].form;
-                    let selectorStart = (typeof loginForm.id == "string") ? ("#" + loginForm.id + " ") : "form ";
+                    let selectorStart = (typeof loginForm.id == "string" && loginForm.id !== "")
+                        ? ("#" + loginForm.id + " ")
+                        : "form ";
                     let selectorString = selectorStart + selectorTail;
                     //Todo Kill Annie
                     let inputElements = document.querySelectorAll(selectorString);
