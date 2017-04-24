@@ -54,7 +54,7 @@
             return; //With more then three password-input-fields this tool has no use.
         let customerBrowser;
         let myImage, myImageUnsetOpfes;
-        let OPFES_HiddenOriginal;
+        let OPFES_PasswordOriginal;
         let OPFES_PasswordDiv;
         let OPFES_PasswordInput;
         let OPFES_MyImage, OPFES_MyImageUnsetOpfes;
@@ -88,21 +88,21 @@
         OPFES_MyImageUnsetOpfes.name = `${pwdCounter}`;
         OPFES_MyImageUnsetOpfes.src = `${myImageUnsetOpfes}`;
         OPFES_MyImageUnsetOpfes.title = `Replace OPFES' password-field by the original password field.`;
-        OPFES_HiddenOriginal = document.createElement(`div`);
-        OPFES_HiddenOriginal.id = `OPFES_HiddenOriginal_${pwdCounter}`;
-        OPFES_HiddenOriginal.setAttribute('style', 'display:none;');
-        OPFES_HiddenOriginal.innerHTML = pwdInputs[pwdCounter].outerHTML;
+        OPFES_PasswordOriginal = document.createElement(`div`);
+        OPFES_PasswordOriginal.id = `OPFES_PasswordOriginal_${pwdCounter}`;
+        OPFES_PasswordOriginal.setAttribute('style', 'display:none;');
+        OPFES_PasswordOriginal.innerHTML = pwdInputs[pwdCounter].outerHTML;
         OPFES_PasswordDiv = document.createElement(`div`);
         OPFES_PasswordDiv.id = `OPFES_PasswordDiv_${pwdCounter}`;
         OPFES_PasswordDiv.innerHTML =
             OPFES_PasswordInput.outerHTML
                 + OPFES_MyImage.outerHTML
                 + OPFES_MyImageUnsetOpfes.outerHTML
-                + OPFES_HiddenOriginal.outerHTML;
+                + OPFES_PasswordOriginal.outerHTML;
         // Now hide the found passwordfield and wrap it with my new OPFES element
         // <div id='OPFES_PasswordDiv_X'>
         //   <div id='OPFES_PasswordInput_X'>
-        //   <div id='OPFES_HiddenOriginal_X' style='display:none;'>
+        //   <div id='OPFES_PasswordOriginal_X' style='display:none;'>
         //      pwdInputs[pwdCounter]
         //   </div>
         // </div>
@@ -111,7 +111,7 @@
         document.getElementById(`OPFES_MyImageUnsetOpfes_${pwdCounter}`).addEventListener(`click`, function () {
             let counter = this.name.slice(-1); //Will never be more than 4
             let target = `OPFES_PasswordDiv_${counter}`;
-            let original = (document.getElementById(`OPFES_HiddenOriginal_${counter}`).children[0]);
+            let original = (document.getElementById(`OPFES_PasswordOriginal_${counter}`).children[0]);
             let originalHTML = original.outerHTML;
             replaceTargetWith(target, originalHTML);
         });
@@ -127,7 +127,7 @@
                 // Check with the extension for the password for this domain
                 yourPasswordForOpfes = (this.value) ? this.value : document.getElementById(`OPFES_PasswordInput_${pwdCounter}`).value;
                 let yourPasswordForThisSite = SiteService.getSitePassword(thisSite, yourPasswordForOpfes);
-                let tmpElement = document.getElementById(`OPFES_HiddenOriginal_${pwdItemNumber}`).innerHTML;
+                let tmpElement = document.getElementById(`OPFES_PasswordOriginal_${pwdItemNumber}`).innerHTML;
                 if (tmpElement.indexOf('value=""') > 0) {
                     tmpElement = tmpElement.replace('value=""', `value="${yourPasswordForThisSite}"`);
                 }
@@ -199,15 +199,15 @@
                 else {
                 }
                 //This function returns the userNameInput. The first visible inputElement in the password-wrapping form
-                function getVisibleUserIdElement(selectorTail) {
+                function getVisibleUserIdElement(selectorString) {
                     // Get the form wrapping the passwordfield
-                    let loginForm = document.getElementById('OPFES_HiddenOriginal_0').children[0].form;
-                    let selectorStart = (typeof loginForm.id == "string" && loginForm.id !== "")
-                        ? ("#" + loginForm.id + " ")
-                        : "form ";
-                    let selectorString = selectorStart + selectorTail;
+                    let loginForm = document.getElementById('OPFES_PasswordOriginal_0').children[0].form;
+                    // let selectorStart: string = (typeof loginForm.id == "string" && loginForm.id !== "")
+                    //     ? ("#" + loginForm.id + " ")
+                    //     : "form ";
+                    // let selectorString: string = selectorStart + selectorTail;
                     //Todo Kill Annie
-                    let inputElements = document.querySelectorAll(selectorString);
+                    let inputElements = loginForm.querySelectorAll(selectorString);
                     if (inputElements) {
                         for (let i = 0; i < inputElements.length; i++) {
                             if (!isHidden(inputElements[i])) {
