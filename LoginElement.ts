@@ -30,7 +30,7 @@
     // }
     let pwdInputs: HTMLInputElement[] = getVisiblePwdInputs();
 
-    function getVisiblePwdInputs(maxPwdInputs: number = null) {
+    function getVisiblePwdInputs(maxPwdInputs: number = 5) {
         let inputElements: NodeListOf<HTMLInputElement> = document.getElementsByTagName("input");
         let cnt: number = 0;
         let pwdInputs: HTMLInputElement[] = [];
@@ -72,10 +72,10 @@
         // I copy the OPFES image from the extension's images to the variable myImage
         customerBrowser = get_browser();
         if (customerBrowser.name === 'Chrome') {
-            myImage = chrome.extension.getURL("icons\/opfes_19.png");
+            myImage = chrome.extension.getURL("icons\/opfes_32.png");
             myImageUnsetOpfes = chrome.extension.getURL("icons\/opfes_19_unset_opfes.png");
         } else {
-            myImage = browser.extension.getURL("icons\/opfes_19.png");
+            myImage = browser.extension.getURL("icons\/opfes_32.png");
             myImageUnsetOpfes = browser.extension.getURL("icons\/opfes_19_unset_opfes.png");
         }
 
@@ -136,6 +136,9 @@
 
                 // Check with the extension for the password for this domain
                 yourPasswordForOpfes = (this.value) ? this.value : (<HTMLInputElement>document.getElementById(`OPFES_PasswordInput_${pwdCounter}`)).value;
+                if (!thisSite) {
+                    thisSite = new Site(SiteService.getDomain(window.location.href));
+                }
                 let yourPasswordForThisSite: string = SiteService.getSitePassword(thisSite, yourPasswordForOpfes);
                 let tmpElement: string = document.getElementById(`OPFES_PasswordOriginal_${pwdItemNumber}`).innerHTML;
                 if (tmpElement.indexOf('value=""') > 0) {

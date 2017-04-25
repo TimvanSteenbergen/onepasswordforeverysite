@@ -20,6 +20,7 @@
   },
   "web_accessible_resources": [
     "icons\/opfes_19.png",
+    "icons\/opfes_32.png",
     "icons\/opfes_19_unset_opfes.png"
   ],
   "permissions": [
