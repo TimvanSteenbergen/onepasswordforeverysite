@@ -90,7 +90,6 @@ class SiteService implements ISiteService {
             counterHash = ((counterHash + 3) > 128) ? 1 : (counterHash + 3);//resetting counterHash to 1 (instead of 0) to get different nextHashParts the second time
         }
 
-        generatedPassword = ',.!@#$%^&*(),.!@#$%^&*(),.!@#$%^&*()';
         //Make sure there are at least two uppercase characters
         let uppercaseCount = generatedPassword.length - generatedPassword.replace(/[A-Z]/g, '').length;
         if (uppercaseCount < 2) {//If there are only 0 or 1 uppercase characters in the generated password..

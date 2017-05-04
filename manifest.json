@@ -11,6 +11,9 @@
   "content_scripts": [{
     "matches": ["<all_urls>"],
     "js": ["CustomerBrowser.js", "LoginElement.js", "SiteService.js", "Site.js", "SHA512.js"]
+  },{
+    "matches": ["https://www.opfes.com/runtests.html"],
+    "js": ["SiteServiceTests.js"]
   }],
   "icons": {
     "19": "icons\/opfes_19.png",
