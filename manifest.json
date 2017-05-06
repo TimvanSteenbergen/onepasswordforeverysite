@@ -13,7 +13,8 @@
     "js": ["CustomerBrowser.js", "LoginElement.js", "SiteService.js", "Site.js", "SHA512.js"]
   },{
     "matches": ["https://www.opfes.com/runtests.html"],
-    "js": ["SiteServiceTests.js"]
+    "js": ["SiteServiceTests.js"],
+    "css": ["SiteServiceTests.css"]
   }],
   "icons": {
     "19": "icons\/opfes_19.png",
