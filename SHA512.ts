@@ -6,8 +6,6 @@
  *  http://www.happycode.info/
  */
 
-// declare function unescape(s:string): string;
-
 function SHA512(str) {
     function Int64(msint_32, lsint_32) {
         this.highOrder = msint_32;

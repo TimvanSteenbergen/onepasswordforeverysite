@@ -215,12 +215,14 @@
                     //     : "form ";
                     // let selectorString: string = selectorStart + selectorTail;
                     //Todo Kill Annie
-                    let inputElements = loginForm.querySelectorAll(selectorString);
-                    if (inputElements) {
-                        for (let i = 0; i < inputElements.length; i++) {
-                            if (!isHidden(inputElements[i])) {
-                                // We found a password field! Let's add it to our collection:
-                                return inputElements[i];
+                    if (loginForm) {
+                        let inputElements = loginForm.querySelectorAll(selectorString);
+                        if (inputElements) {
+                            for (let i = 0; i < inputElements.length; i++) {
+                                if (!isHidden(inputElements[i])) {
+                                    // We found a password field! Let's add it to our collection:
+                                    return inputElements[i];
+                                }
                             }
                         }
                     }
