@@ -197,14 +197,9 @@
                         userNameInput.value = userNameInputValue;
                     }
                     else {
-                        // let pwdInput: HTMLInputElement = <HTMLInputElement>getVisiblePwdInputs(1)[0];
-                        // alert(`You have logged in to this site before and you used user-id ${userNameInputValue}.
-                        //         \nPlease enter ${userNameInputValue} in the username input-field.
-                        //         \nThen enter your password in my password-field and click on my icon next to it.`);
                     }
                 }
                 else {
-                    // How to tempt the user to use Opfes now?
                 }
                 //This function returns the userNameInput. The first visible inputElement in the password-wrapping form
                 function getVisibleUserIdElement(selectorString) {
@@ -215,14 +210,12 @@
                     //     : "form ";
                     // let selectorString: string = selectorStart + selectorTail;
                     //Todo Kill Annie
-                    if (loginForm) {
-                        let inputElements = loginForm.querySelectorAll(selectorString);
-                        if (inputElements) {
-                            for (let i = 0; i < inputElements.length; i++) {
-                                if (!isHidden(inputElements[i])) {
-                                    // We found a password field! Let's add it to our collection:
-                                    return inputElements[i];
-                                }
+                    let inputElements = loginForm.querySelectorAll(selectorString);
+                    if (inputElements) {
+                        for (let i = 0; i < inputElements.length; i++) {
+                            if (!isHidden(inputElements[i])) {
+                                // We found a password field! Let's add it to our collection:
+                                return inputElements[i];
                             }
                         }
                     }
