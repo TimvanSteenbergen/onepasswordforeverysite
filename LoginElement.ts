@@ -113,66 +113,67 @@
         //      pwdInputs[pwdCounter]
         //   </div>
         // </div>
-        pwdInputs[pwdCounter].outerHTML = OPFES_PasswordDiv.outerHTML;
 
-        //Make it possible to remove Opfes-password and show the original passwordfield again
-        document.getElementById(`OPFES_MyImageUnsetOpfes_${pwdCounter}`).addEventListener(`click`, function () {
-            let counter = this.name.slice(-1);//Will never be more than 4
-            let target = `OPFES_PasswordDiv_${counter}`;
-            let original = <HTMLInputElement>(document.getElementById(`OPFES_PasswordOriginal_${counter}`).children[0]);
-            let originalHTML = original.outerHTML;
-            replaceTargetWith(target, originalHTML);
-        });
-
-        //Respond to clicking on Opfes by generating the password and showing the original field again, having the generated password.
-        document.getElementById(`OPFES_MyImage_${pwdCounter}`).addEventListener(`click`, function () {
-            if (13 == 13) { //TODO: replace this event with login in directly after event PressEnter in the passwordfield
-                // document.getElementById(OPFES_PasswordInput.id).addEventListener(`keyup`, function (event: KeyboardEvent) {
-                //     if (event.keyCode == 13) {
-                event.stopPropagation();
-                // let loginForm = this.form; Trigger the form submission with: loginForm.submit();
-                let pwdItemNumber = this.name; // Usually 1, if it is 2 or 3 this most likely is a password-change-form
-                let yourPasswordForOpfes: string;
-
-                // Check with the extension for the password for this domain
-                yourPasswordForOpfes = (this.value) ? this.value : (<HTMLInputElement>document.getElementById(`OPFES_PasswordInput_${pwdCounter}`)).value;
-                if (!thisSite) {
-                    thisSite = new Site(SiteService.getDomain(window.location.href));
-                }
-                let yourPasswordForThisSite: string = SiteService.getSitePassword(thisSite, yourPasswordForOpfes);
-                let tmpElement: string = document.getElementById(`OPFES_PasswordOriginal_${pwdItemNumber}`).innerHTML;
-                if (tmpElement.indexOf('value=""') > 0) {
-                    tmpElement = tmpElement.replace('value=""', `value="${yourPasswordForThisSite}"`);
-                } else {
-                    tmpElement = tmpElement.replace('type=', `value="${yourPasswordForThisSite}" type=`);
-                }
-
-                //Make the original password-inputfield visible again now with value: yourPasswordForThisSite
-                replaceTargetWith(`OPFES_PasswordDiv_${pwdItemNumber}`, tmpElement);
-            }
-        });
-
-        function replaceTargetWith(targetID, html) {
-            // find our target
-            let i, div, elm, last, target = document.getElementById(targetID);
-            // create a temporary div
-            div = document.createElement('div');
-            // fill that div with our html, this generates our children
-            div.innerHTML = html;
-            // step through the temporary div's children and insertBefore our target
-            i = div.childNodes.length;
-            // The insertBefore method was more complicated than I first thought so I have improved it.
-            // Have to be careful when dealing with child lists as they are counted as live lists and so will
-            // update as and when you make changes. This is why it is best to work backwards when moving
-            // children around, and why I'm assigning the elements I'm working with to `elm` and `last`.
-            last = target;
-            while (i--) {
-                target.parentNode.insertBefore((elm = div.childNodes[i]), last);
-                last = elm;
-            }
-            // remove the target.
-            target.parentNode.removeChild(target);
-        }
+        // pwdInputs[pwdCounter].outerHTML = OPFES_PasswordDiv.outerHTML;
+        //
+        // //Make it possible to remove Opfes-password and show the original passwordfield again
+        // document.getElementById(`OPFES_MyImageUnsetOpfes_${pwdCounter}`).addEventListener(`click`, function () {
+        //     let counter = this.name.slice(-1);//Will never be more than 4
+        //     let target = `OPFES_PasswordDiv_${counter}`;
+        //     let original = <HTMLInputElement>(document.getElementById(`OPFES_PasswordOriginal_${counter}`).children[0]);
+        //     let originalHTML = original.outerHTML;
+        //     replaceTargetWith(target, originalHTML);
+        // });
+        //
+        // //Respond to clicking on Opfes by generating the password and showing the original field again, having the generated password.
+        // document.getElementById(`OPFES_MyImage_${pwdCounter}`).addEventListener(`click`, function () {
+        //     if (13 == 13) { //TODO: replace this event with login in directly after event PressEnter in the passwordfield
+        //         // document.getElementById(OPFES_PasswordInput.id).addEventListener(`keyup`, function (event: KeyboardEvent) {
+        //         //     if (event.keyCode == 13) {
+        //         event.stopPropagation();
+        //         // let loginForm = this.form; Trigger the form submission with: loginForm.submit();
+        //         let pwdItemNumber = this.name; // Usually 1, if it is 2 or 3 this most likely is a password-change-form
+        //         let yourPasswordForOpfes: string;
+        //
+        //         // Check with the extension for the password for this domain
+        //         yourPasswordForOpfes = (this.value) ? this.value : (<HTMLInputElement>document.getElementById(`OPFES_PasswordInput_${pwdCounter}`)).value;
+        //         if (!thisSite) {
+        //             thisSite = new Site(SiteService.getDomain(window.location.href));
+        //         }
+        //         let yourPasswordForThisSite: string = SiteService.getSitePassword(thisSite, yourPasswordForOpfes);
+        //         let tmpElement: string = document.getElementById(`OPFES_PasswordOriginal_${pwdItemNumber}`).innerHTML;
+        //         if (tmpElement.indexOf('value=""') > 0) {
+        //             tmpElement = tmpElement.replace('value=""', `value="${yourPasswordForThisSite}"`);
+        //         } else {
+        //             tmpElement = tmpElement.replace('type=', `value="${yourPasswordForThisSite}" type=`);
+        //         }
+        //
+        //         //Make the original password-inputfield visible again now with value: yourPasswordForThisSite
+        //         replaceTargetWith(`OPFES_PasswordDiv_${pwdItemNumber}`, tmpElement);
+        //     }
+        // });
+        //
+        // function replaceTargetWith(targetID, html) {
+        //     // find our target
+        //     let i, div, elm, last, target = document.getElementById(targetID);
+        //     // create a temporary div
+        //     div = document.createElement('div');
+        //     // fill that div with our html, this generates our children
+        //     div.innerHTML = html;
+        //     // step through the temporary div's children and insertBefore our target
+        //     i = div.childNodes.length;
+        //     // The insertBefore method was more complicated than I first thought so I have improved it.
+        //     // Have to be careful when dealing with child lists as they are counted as live lists and so will
+        //     // update as and when you make changes. This is why it is best to work backwards when moving
+        //     // children around, and why I'm assigning the elements I'm working with to `elm` and `last`.
+        //     last = target;
+        //     while (i--) {
+        //         target.parentNode.insertBefore((elm = div.childNodes[i]), last);
+        //         last = elm;
+        //     }
+        //     // remove the target.
+        //     target.parentNode.removeChild(target);
+        // }
 
         if (pwdCounter == 0) {//Only do this for the first password-inputfield
             chrome.storage.local.get("_sites", function (response) {
@@ -192,19 +193,13 @@
                 }
 
                 //todo integrate this better into the rest of the code
-                if (pwdInputs.length === 1) {
-                    //There is exactly one password-field on this page, so let me ask the Opfes-password, generate the password
-                    // and put it in the passwordfield.
+                if (pwdInputs.length === 1) {//There is exactly one password-field on this page
+                    // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
                     let opfesPassword : string = prompt('Your Opfes password please', '');
-                    let thisSite: Site;
-
-                    if (opfesPassword == null || opfesPassword == "") {
-                        // User cancelled the prompt.
-                    } else {
+                    if (opfesPassword !== null && opfesPassword !== "") {
                         let generatedPassword : string = SiteService.getSitePassword(thisSite, opfesPassword);
                         pwdInputs[0].value = generatedPassword;
                     }
-                    return;
                 }
 
                 userNameInputValue = thisSite.getUserId();
@@ -240,7 +235,7 @@
                 //This function returns the userNameInput. The first visible inputElement in the password-wrapping form
                 function getVisibleUserIdElement(selectorString: string) {
                     // Get the form wrapping the passwordfield
-                    let loginForm = document.getElementById('OPFES_PasswordOriginal_0').children[0].form;
+                    let loginForm = pwdInputs[0].form;
                     // let selectorStart: string = (typeof loginForm.id == "string" && loginForm.id !== "")
                     //     ? ("#" + loginForm.id + " ")
                     //     : "form ";
