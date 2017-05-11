@@ -171,6 +171,7 @@
                 // Look for the user-id in the userData...
                 let userNameInputValue;
                 let yourSites = (response._sites) ? response._sites : [];
+                let generatedPassword;
                 for (let site of yourSites) {
                     if (window.location.href.indexOf(site.domain) >= 0) {
                         thisSite = new Site(site.domain, site.salt, site.userId, site.sequenceNr, site.maxPwdChars, site.lastUsed, site.remark);
@@ -179,15 +180,6 @@
                 if (!thisSite) {
                     //First time opfes comes to this site, so user needs to log in the old-fashioned way, change her/his password using opfes and log in again.
                     thisSite = new Site(SiteService.getDomain(window.location.href));
-                }
-                //todo integrate this better into the rest of the code
-                if (pwdInputs.length === 1) {
-                    // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
-                    let opfesPassword = prompt('Your Opfes password please', '');
-                    if (opfesPassword !== null && opfesPassword !== "") {
-                        let generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
-                        pwdInputs[0].value = generatedPassword;
-                    }
                 }
                 userNameInputValue = thisSite.getUserId();
                 //todo: Make Finding the username-inputfield as smart as possible
@@ -213,6 +205,28 @@
                     }
                 }
                 else {
+                }
+                //todo integrate this better into the rest of the code
+                if (pwdInputs.length === 1) {
+                    // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
+                    let opfesPassword = prompt('Your Opfes password please', '');
+                    if (opfesPassword !== null && opfesPassword !== "") {
+                        generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
+                        pwdInputs[0].value = generatedPassword;
+                    }
+                }
+                if (generatedPassword) {
+                    // pwdInputs[0].form.submit();//triggers the form but does not work at gavelsnipe.com
+                    let submitButton = pwdInputs[0].form.querySelector('[type="submit"]'); //works at lots, for instance: gavelsnipe.com, npmjs.com
+                    if (!submitButton) {
+                        submitButton = pwdInputs[0].form.querySelector('[id*="submit"]'); //works at jetbrains.com
+                    }
+                    else if (!submitButton) {
+                        submitButton = pwdInputs[0].form.querySelector('[class*="submit"]'); //works at jetbrains.com
+                    }
+                    if (submitButton) {
+                        submitButton.click();
+                    }
                 }
                 //This function returns the userNameInput. The first visible inputElement in the password-wrapping form
                 function getVisibleUserIdElement(selectorString) {
