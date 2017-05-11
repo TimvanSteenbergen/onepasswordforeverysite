@@ -28,8 +28,8 @@
     // } else { // This is page without any password form
     //    Do Nothing
     // }
-    let pwdInputs = getVisiblePwdInputs();
-    function getVisiblePwdInputs(maxPwdInputs = 5) {
+    let pwdInputs = getVisiblePwdInputFields();
+    function getVisiblePwdInputFields(maxPwdInputs = 5) {
         let inputElements = document.getElementsByTagName("input");
         let cnt = 0;
         let pwdInputs = [];
@@ -175,6 +175,20 @@
                 if (!thisSite) {
                     //First time opfes comes to this site, so user needs to log in the old-fashioned way, change her/his password using opfes and log in again.
                     thisSite = new Site(SiteService.getDomain(window.location.href));
+                }
+                //todo integrate this better into the rest of the code
+                if (pwdInputs.length === 1) {
+                    //There is exactly one password-field on this page, so let me ask the Opfes-password, generate the password
+                    // and put it in the passwordfield.
+                    let opfesPassword = prompt('Your Opfes password please', '');
+                    let thisSite;
+                    if (opfesPassword == null || opfesPassword == "") {
+                    }
+                    else {
+                        let generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
+                        pwdInputs[0].value = generatedPassword;
+                    }
+                    return;
                 }
                 userNameInputValue = thisSite.getUserId();
                 //todo: Make Finding the username-inputfield as smart as possible
