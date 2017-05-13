@@ -6,7 +6,7 @@
       "userId": "demo@opfes.com",
       "sequenceNr": 1,
       "maxPwdChars": 120,
-      "lastUsed": "2017-03-20T11:47:58.859Z",
+      "lastUsed": "2017-05-13T07:23:40.291Z",
       "remark": "Demo-account"
     },
     {
@@ -15,7 +15,7 @@
       "userId": "opfes",
       "sequenceNr": 1,
       "maxPwdChars": 20,
-      "lastUsed": "2017-03-20T11:56:55.070Z",
+      "lastUsed": "2017-05-13T07:36:02.294Z",
       "remark": "Dutch site for games."
     }
   ]
