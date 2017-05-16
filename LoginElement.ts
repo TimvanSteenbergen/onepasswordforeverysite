@@ -238,9 +238,9 @@
                     // pwdInputs[0].form.submit();//triggers the form but does not work at gavelsnipe.com
                     let submitButton: HTMLElement = <HTMLElement>pwdInputs[0].form.querySelector('[type="submit"]');//works at lots, for instance: gavelsnipe.com, npmjs.com
                     if (!submitButton) {
-                        submitButton = <HTMLElement>pwdInputs[0].form.querySelector('[id*="submit"]');//works at jetbrains.com
-                    } else if (!submitButton) {
                         submitButton = <HTMLElement>pwdInputs[0].form.querySelector('[class*="submit"]');//works at jetbrains.com
+                    } else if (!submitButton) {
+                        submitButton = <HTMLElement>pwdInputs[0].form.querySelector('[id*="submit"]');//works at jetbrains.com
                     }
 
                     if (submitButton) { // If the submitbutton is found: click it!

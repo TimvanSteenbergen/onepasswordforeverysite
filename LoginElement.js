@@ -219,10 +219,10 @@
                     // pwdInputs[0].form.submit();//triggers the form but does not work at gavelsnipe.com
                     let submitButton = pwdInputs[0].form.querySelector('[type="submit"]'); //works at lots, for instance: gavelsnipe.com, npmjs.com
                     if (!submitButton) {
-                        submitButton = pwdInputs[0].form.querySelector('[id*="submit"]'); //works at jetbrains.com
+                        submitButton = pwdInputs[0].form.querySelector('[class*="submit"]'); //works at jetbrains.com
                     }
                     else if (!submitButton) {
-                        submitButton = pwdInputs[0].form.querySelector('[class*="submit"]'); //works at jetbrains.com
+                        submitButton = pwdInputs[0].form.querySelector('[id*="submit"]'); //works at jetbrains.com
                     }
                     if (submitButton) {
                         submitButton.click();
