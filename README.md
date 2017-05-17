@@ -5,7 +5,7 @@ Uncomfortable with trusting Google, Microsoft or any passwordmanagement-tool wit
 Looking for the simplest and safest solution? Yes?<br/>
 You found it!
 
-This Chrome-extension allows you to use one password for every site! All you have to remember is one simple password, that really does not need to be a complex or long one.
+This Chrome-extension allows you to use one password for every site! All you have to remember is one short and simple password.
 <h2>No password stored anywhere</h2>
 This extension will not store any password at all. Not locally on your pc, not in any cookie, not anywhere online. 
 Of course your password does get stored in the usual way: at the site where you are logging into. But that is of no concern to this extension.
