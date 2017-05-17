@@ -2,7 +2,8 @@
 Using this extension you only need one password to log into any website!<br/> 
 Tired of having to remember a lot of passwords? Yes?<br/>
 Uncomfortable with trusting Google, Microsoft or any passwordmanagement-tool with all your userids and passwords? Yes?<br/>
-Looking for the simplest and safest solution? You found it!
+Looking for the simplest and safest solution? Yes?
+You found it!
 
 This Chrome-extension allows you to use one password for every site! All you have to remember is one simple password, that really does not need to be a complex or long one.
 <h2>No password stored anywhere</h2>
