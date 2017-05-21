@@ -41,22 +41,29 @@ class SiteService {
     static getSitePassword(site, appPassword) {
         const passwordLength = site.getMaxPwdChars(); //Between 0 and 120
         //get the SHA512
-        let stringToHash = site.getDomain() + site.getSalt() + site.getUserId() + site.getSequenceNr() + site.getMaxPwdChars() + appPassword;
+        let stringToHash = site.getDomain() + site.getSalt() + site.getUserId() + site.getSequenceNr()
+            + site.getMaxPwdChars() + appPassword;
         let generatedHash = SHA512(stringToHash);
         //Now we have got a hexadecimal hash. Let's create our own BASE-64 password character set and
         // transform the hex to that. There are 86 characters available in passwords:
         // a-z A-Z 0-9 and these 24: `'/\~!@#$%^()_+-=.:?[]{}
         //   @see https://docs.oracle.com/cd/E11223_01/doc.910/e11197/app_special_char.htm#BABGCBGA
         // I have choosen to exclude these: iIjJlLoOqQxXyY`\$[]017 and we are leftover with these 64 possible password characters
-        const lowercaseCharacters = ["a", "b", "c", "d", "e", "f", "g", "h", "k", "m", "n", "p", "r", "s", "t", "u", "v", "w", "z"];
+        const lowercaseCharacters = ["a", "b", "c", "d", "e", "f", "g", "h", "k", "m", "n", "p", "r", "s",
+            "t", "u", "v", "w", "z"];
         const numOfLowerChars = lowercaseCharacters.length;
-        const uppercaseCharacters = ["A", "B", "C", "D", "E", "F", "G", "H", "K", "M", "N", "P", "R", "S", "T", "U", "V", "W", "Z"];
+        const uppercaseCharacters = ["A", "B", "C", "D", "E", "F", "G", "H", "K", "M", "N", "P", "R", "S",
+            "T", "U", "V", "W", "Z"];
         const numOfUpperChars = uppercaseCharacters.length;
         const numberCharacters = ["0", "2", "3", "4", "5", "6", "8", "9"];
         const numOfNumberChars = numberCharacters.length;
-        const specialCharacters = ["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
+        const specialCharacters = site.getAllowedSpecialCharacters();
+        //["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
         const numOfSpecialChars = specialCharacters.length;
-        const passwordCharacters = lowercaseCharacters.concat(uppercaseCharacters).concat(numberCharacters).concat(specialCharacters);
+        const passwordCharacters = lowercaseCharacters
+            .concat(uppercaseCharacters)
+            .concat(numberCharacters)
+            .concat(specialCharacters);
         let sumOfNums = numOfLowerChars + numOfUpperChars + numOfNumberChars + numOfSpecialChars;
         if (sumOfNums !== 64) {
             throw RangeError; //sumOfNums has to be 64 to generate our 64-base password.

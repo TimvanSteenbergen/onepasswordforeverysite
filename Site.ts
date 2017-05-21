@@ -12,6 +12,8 @@ interface ISite {
     setSequenceNr(value: number);
     getMaxPwdChars();
     setMaxPwdChars(value: number);
+    getAllowedSpecialCharacters();
+    setAllowedSpecialCharacters(value: string);
     getLastUsed();
     setLastUsed(value: Date);
     getRemark();
@@ -24,6 +26,7 @@ class Site implements ISite {
                 private userId: string = '',
                 private sequenceNr: number = 1,
                 private maxPwdChars: number = 120,
+                private allowedSpecialCharacters: string = '',
                 private lastUsed: Date = new Date(),
                 private remark: string = '') {
     }
@@ -66,6 +69,14 @@ class Site implements ISite {
 
     public setMaxPwdChars(value: number) {
         this.maxPwdChars = value;
+    }
+
+    public getAllowedSpecialCharacters(): string {
+        return this.allowedSpecialCharacters;
+    }
+
+    public setAllowedSpecialCharacters(value: string) {
+        this.allowedSpecialCharacters = value;
     }
 
     public getLastUsed(): Date {

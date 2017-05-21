@@ -5,6 +5,7 @@
 let a = 1;
 ///<reference path="chrome/index.d.ts"/>
 document.addEventListener('DOMContentLoaded', function () {
+    const specialCharacters = ["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
     let userData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
     if (userData.sites.length === 0) {
         console.log('Ik heb nog geen data gevonden.');
@@ -39,6 +40,9 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleChangability.call(this);
     });
     document.getElementById('OPFES_SelectMaxPwdCharsToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
+    });
+    document.getElementById('OPFES_InputAllowedSpecialCharactersToggle').addEventListener('click', function () {
         toggleChangability.call(this);
     });
     document.getElementById('OPFES_InputRemarkToggle').addEventListener('click', function () {
@@ -137,14 +141,16 @@ let OPFES_WorkWithUserData = function (userData) {
      */
     function showTheLocallyStoredData(userData, numOfSitesToShow = 999999) {
         let sites = userData.sites;
-        let dataTableHTML = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>used at</td></ts><td>remark</td></thead>";
+        let dataTableHTML = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>allowed</td><td>used at</td></ts><td>remark</td></thead>";
         let sitesToShow = sites.slice(0, numOfSitesToShow);
         for (let site of sitesToShow) {
+            console.log(site.getLastUsed());
             dataTableHTML += `<tr><td>${site.getDomain()}</td>
                                  <td>${site.getSalt()}</td>
                                  <td>${site.getUserId()}</td>
                                  <td>${site.getSequenceNr()}</td>
                                  <td>${site.getMaxPwdChars()}</td>
+                                 <td>${site.getAllowedSpecialCharacters()}</td>
                                  <td>${site.getLastUsed().getFullYear()} ${site.getLastUsed().getMonth() + 1} ${site.getLastUsed().getDate()}</td>
                                  <td>${site.getRemark()}</td>
                              </tr>`;

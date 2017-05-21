@@ -76,6 +76,7 @@ class UserData {
                                       <td>${site.getUserId()}</td>
                                       <td>${site.getSequenceNr()}</td>
                                       <td>${site.getMaxPwdChars()}</td>
+                                      <td>${site.getAllowedSpecialCharacters()}</td>
                                       <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth() + 1}-${site.getLastUsed().getDate()}</td>
                                       <td>${site.getRemark()}</td>
                                    </tr>`;
@@ -95,7 +96,9 @@ class UserData {
     static download() {
         (function (view) {
             "use strict";
-            let document = view.document, get_blob = function () {
+            let document = view.document
+            // only get URL when necessary in case Blob.js hasn't defined it yet
+            , get_blob = function () {
                 return view.Blob;
             };
             let userData = UserData.retrieve();
@@ -115,7 +118,9 @@ class UserData {
     static downloadPasswords() {
         (function (view) {
             "use strict";
-            let document = view.document, get_blob = function () {
+            let document = view.document
+            // only get URL when necessary in case Blob.js hasn't defined it yet
+            , get_blob = function () {
                 return view.Blob;
             };
             let userData = UserData.retrieve();
