@@ -127,6 +127,10 @@ let OPFES_WorkWithUserData = function (userData) {
                             document.getElementById('OPFES_InputRemark').setAttribute('value', site.getRemark());
                             document.getElementById('OPFES_InputRemark').setAttribute('disabled', "disabled");
                         }
+                        if (site.getAllowedSpecialCharacters() != "") {
+                            document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('value', (site.getAllowedSpecialCharacters()));
+                            document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('disabled', "disabled");
+                        }
                     }
                 }
             }

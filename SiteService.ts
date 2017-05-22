@@ -76,7 +76,7 @@ class SiteService implements ISiteService {
         let allowedSpecialCharacters: string[] = [];
         if(typeof (allSpeCha) != 'undefined'){
             for (let i = 0; i <= 17; i++) {
-                allowedSpecialCharacters[(i%allSpeCha.length)]= site.getAllowedSpecialCharacters();
+                allowedSpecialCharacters[i]= site.getAllowedSpecialCharacters()[i%allSpeCha.length];
             }
         } else {
             allowedSpecialCharacters = ["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"]; //The default value.

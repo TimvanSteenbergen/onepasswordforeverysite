@@ -61,7 +61,7 @@ class SiteService {
         let allowedSpecialCharacters = [];
         if (typeof (allSpeCha) != 'undefined') {
             for (let i = 0; i <= 17; i++) {
-                allowedSpecialCharacters[(i % allSpeCha.length)] = site.getAllowedSpecialCharacters();
+                allowedSpecialCharacters[i] = site.getAllowedSpecialCharacters()[i % allSpeCha.length];
             }
         }
         else {
