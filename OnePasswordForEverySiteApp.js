@@ -144,7 +144,6 @@ let OPFES_WorkWithUserData = function (userData) {
         let dataTableHTML = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>allowed</td><td>used at</td></ts><td>remark</td></thead>";
         let sitesToShow = sites.slice(0, numOfSitesToShow);
         for (let site of sitesToShow) {
-            console.log(site.getLastUsed());
             dataTableHTML += `<tr><td>${site.getDomain()}</td>
                                  <td>${site.getSalt()}</td>
                                  <td>${site.getUserId()}</td>
@@ -176,7 +175,7 @@ let OPFES_WorkWithUserData = function (userData) {
      */
     document.getElementById('OPFES_LoginButton').addEventListener('click', function () {
         let ourPopup = document;
-        let site = new Site(ourPopup.getElementById('OPFES_InputDomain').value, ourPopup.getElementById('OPFES_InputSalt').value, ourPopup.getElementById('OPFES_InputUserId').value, +ourPopup.getElementById('OPFES_InputSequenceNr').value, +ourPopup.getElementById('OPFES_SelectMaxPwdChars').value, new Date(Date.now()), ourPopup.getElementById('OPFES_InputRemark').value);
+        let site = new Site(ourPopup.getElementById('OPFES_InputDomain').value, ourPopup.getElementById('OPFES_InputSalt').value, ourPopup.getElementById('OPFES_InputUserId').value, +ourPopup.getElementById('OPFES_InputSequenceNr').value, +ourPopup.getElementById('OPFES_SelectMaxPwdChars').value, ourPopup.getElementById('OPFES_InputAllowedSpecialCharacters').value, new Date(Date.now()), ourPopup.getElementById('OPFES_InputRemark').value);
         let inputValueAppPassword = ourPopup.getElementById('OPFES_InputAppPassword').value;
         //save the sites data every time the password gets generated
         // siteService.add(site)

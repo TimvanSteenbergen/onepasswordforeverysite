@@ -57,13 +57,21 @@ class SiteService {
         const numOfUpperChars = uppercaseCharacters.length;
         const numberCharacters = ["0", "2", "3", "4", "5", "6", "8", "9"];
         const numOfNumberChars = numberCharacters.length;
-        const specialCharacters = site.getAllowedSpecialCharacters();
-        //["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
-        const numOfSpecialChars = specialCharacters.length;
+        let allSpeCha = site.getAllowedSpecialCharacters();
+        let allowedSpecialCharacters = [];
+        if (typeof (allSpeCha) != 'undefined') {
+            for (let i = 0; i <= 17; i++) {
+                allowedSpecialCharacters[(i % allSpeCha.length)] = site.getAllowedSpecialCharacters();
+            }
+        }
+        else {
+            allowedSpecialCharacters = ["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"]; //The default value.
+        }
+        const numOfSpecialChars = allowedSpecialCharacters.length;
         const passwordCharacters = lowercaseCharacters
             .concat(uppercaseCharacters)
             .concat(numberCharacters)
-            .concat(specialCharacters);
+            .concat(allowedSpecialCharacters);
         let sumOfNums = numOfLowerChars + numOfUpperChars + numOfNumberChars + numOfSpecialChars;
         if (sumOfNums !== 64) {
             throw RangeError; //sumOfNums has to be 64 to generate our 64-base password.
@@ -104,8 +112,8 @@ class SiteService {
         let specialCharCount = generatedPassword.length - generatedPassword.replace(/[/~@#%^()_+-=.:?!{}]/g, '').length;
         if (specialCharCount < 2) {
             //.. then replace the second and third character by two of the chosen 18 specialCharacters
-            let chosenSpecialCharacter = specialCharacters[generatedHash.charCodeAt(2) % numOfSpecialChars];
-            let chosenSpecialCharacter2 = specialCharacters[generatedHash.charCodeAt(3) % numOfSpecialChars];
+            let chosenSpecialCharacter = allowedSpecialCharacters[generatedHash.charCodeAt(2) % numOfSpecialChars];
+            let chosenSpecialCharacter2 = allowedSpecialCharacters[generatedHash.charCodeAt(3) % numOfSpecialChars];
             let firstPart = generatedPassword.substr(0, 1);
             let lastPart = generatedPassword.substr(3, passwordLength - 3);
             generatedPassword = firstPart + chosenSpecialCharacter + chosenSpecialCharacter2 + lastPart;

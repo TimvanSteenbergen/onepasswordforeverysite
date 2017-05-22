@@ -44,6 +44,7 @@ class UserData implements IUserData {
                     sitesArray[key]["userId"],
                     sitesArray[key]["sequenceNr"],
                     sitesArray[key]["maxPwdChars"],
+                    sitesArray[key]["allowedSpecialCharacters"],
                     new Date(sitesArray[key]["lastUsed"]),
                     sitesArray[key]["remark"]
                 );
@@ -75,7 +76,7 @@ class UserData implements IUserData {
         let stringifiedUserData: string = JSON.stringify(this);
         localStorage.setItem("OPFES_UserData", stringifiedUserData);
         chrome.storage.local.set(this); //Replaced the localStorage
-        console.log(`Your localData is now updated to #{stringifiedUserData}.`);
+        console.log(`Your localData is now updated to ${stringifiedUserData}.`);
     }
 
     /**
@@ -86,7 +87,7 @@ class UserData implements IUserData {
             "use strict";
             let reader = new FileReader();
             reader.onload = function (e) {
-                console.log(`Loading the file. Event is: #{e}`);
+                console.log(`Loading the file. Event is: ${e}`);
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
                 let dataString: string = (<FileReader>e.target).result;
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);

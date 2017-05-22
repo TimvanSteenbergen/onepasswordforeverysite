@@ -153,7 +153,6 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
         let dataTableHTML: string = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>allowed</td><td>used at</td></ts><td>remark</td></thead>";
         let sitesToShow = sites.slice(0, numOfSitesToShow);
         for (let site of sitesToShow) {
-            console.log(site.getLastUsed());
             dataTableHTML += `<tr><td>${site.getDomain()}</td>
                                  <td>${site.getSalt()}</td>
                                  <td>${site.getUserId()}</td>
@@ -193,6 +192,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
             (<HTMLInputElement>ourPopup.getElementById('OPFES_InputUserId')).value,
             +(<HTMLInputElement>ourPopup.getElementById('OPFES_InputSequenceNr')).value,
             +(<HTMLSelectElement>ourPopup.getElementById('OPFES_SelectMaxPwdChars')).value,
+            (<HTMLInputElement>ourPopup.getElementById('OPFES_InputAllowedSpecialCharacters')).value,
             new Date(Date.now()),
             (<HTMLInputElement>ourPopup.getElementById('OPFES_InputRemark')).value
         );
