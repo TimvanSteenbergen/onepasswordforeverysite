@@ -6,7 +6,8 @@
       "userId": "demo@opfes.com",
       "sequenceNr": 1,
       "maxPwdChars": 120,
-      "lastUsed": "2017-05-13T07:23:40.291Z",
+      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "lastUsed": "2017-03-27T09:04:47.354Z",
       "remark": "Demo-account"
     },
     {
@@ -15,34 +16,38 @@
       "userId": "opfes",
       "sequenceNr": 1,
       "maxPwdChars": 20,
-      "lastUsed": "2017-05-13T07:36:02.294Z",
+      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "lastUsed": "2017-03-27T09:05:53.899Z",
       "remark": "Dutch site for games."
     },
     {
       "domain": "eversource.com",
-      "salt": "demo",
+      "salt": "Can be any text",
       "userId": "opfesdemo",
       "sequenceNr": 1,
       "maxPwdChars": 25,
-      "lastUsed": "2017-05-13T07:51:44.424Z",
-      "remark": "Github issue 38"
+      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "lastUsed": "2017-03-24T12:50:57.563Z",
+      "remark": "Looks like a nice site"
     },
     {
       "domain": "jetbrains.com",
-      "salt": "demo",
+      "salt": "salt",
       "userId": "demo@opfes.com",
       "sequenceNr": 2,
       "maxPwdChars": 120,
-      "lastUsed": "2017-05-13T07:53:59.557Z",
+      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "lastUsed": "2017-03-24T15:19:30.861Z",
       "remark": "The home of Opfes"
     },
     {
       "domain": "amazon.co.uk",
-      "salt": "demo",
+      "salt": "salt",
       "userId": "demo@opfes.com",
       "sequenceNr": 1,
       "maxPwdChars": 120,
-      "lastUsed": "2017-05-13T08:02:03.717Z",
+      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "lastUsed": "2017-03-27T09:11:53.654Z",
       "remark": "domainextension includes a dot"
     },
     {
@@ -51,17 +56,19 @@
       "userId": "demo@opfes.com",
       "sequenceNr": 1,
       "maxPwdChars": 36,
-      "lastUsed": "2017-05-13T08:12:44.318Z",
-      "remark": "Github issue 42"
+      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "lastUsed": "2017-03-27T09:08:23.998Z",
+      "remark": "For all my running shoes"
     },
     {
-      "domain": "github.com",
-      "salt": "salt",
-      "userId": "",
-      "sequenceNr": 1,
-      "maxPwdChars": 120,
-      "lastUsed": "2017-05-13T07:50:55.984Z",
-      "remark": ""
+      "domain": "toernooi.nl",
+      "salt": "tovernarij",
+      "userId": "tim@tieka.nl",
+      "sequenceNr": 32,
+      "maxPwdChars": 10,
+      "allowedSpecialCharacters":"_-.",
+      "lastUsed": "2017-03-27T09:08:23.998Z",
+      "remark": "Sportstournaments"
     }
   ]
 }

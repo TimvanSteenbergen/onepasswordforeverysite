@@ -7,6 +7,8 @@ let a: number = 1;
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    const specialCharacters: string[] = ["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
+
     let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
     if (userData.sites.length === 0) { //then show the Upload-button
         console.log('Ik heb nog geen data gevonden.');
@@ -41,6 +43,9 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleChangability.call(this);
     });
     document.getElementById('OPFES_SelectMaxPwdCharsToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
+    });
+    document.getElementById('OPFES_InputAllowedSpecialCharactersToggle').addEventListener('click', function () {
         toggleChangability.call(this);
     });
     document.getElementById('OPFES_InputRemarkToggle').addEventListener('click', function () {
@@ -130,6 +135,10 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                             document.getElementById('OPFES_InputRemark').setAttribute('value', site.getRemark());
                             document.getElementById('OPFES_InputRemark').setAttribute('disabled', "disabled");
                         }
+                        if (site.getAllowedSpecialCharacters() != "") {
+                            document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('value', (site.getAllowedSpecialCharacters()));
+                            document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('disabled', "disabled");
+                        }
                     }
                 }
             }
@@ -145,7 +154,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
      */
     function showTheLocallyStoredData(userData: UserData, numOfSitesToShow: number = 999999) {
         let sites: Site[] = userData.sites;
-        let dataTableHTML: string = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>used at</td></ts><td>remark</td></thead>";
+        let dataTableHTML: string = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>allowed</td><td>used at</td></ts><td>remark</td></thead>";
         let sitesToShow = sites.slice(0, numOfSitesToShow);
         for (let site of sitesToShow) {
             dataTableHTML += `<tr><td>${site.getDomain()}</td>
@@ -153,6 +162,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                                  <td>${site.getUserId()}</td>
                                  <td>${site.getSequenceNr()}</td>
                                  <td>${site.getMaxPwdChars()}</td>
+                                 <td>${site.getAllowedSpecialCharacters()}</td>
                                  <td>${site.getLastUsed().getFullYear()} ${site.getLastUsed().getMonth() + 1} ${site.getLastUsed().getDate()}</td>
                                  <td>${site.getRemark()}</td>
                              </tr>`;
@@ -186,6 +196,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
             (<HTMLInputElement>ourPopup.getElementById('OPFES_InputUserId')).value,
             +(<HTMLInputElement>ourPopup.getElementById('OPFES_InputSequenceNr')).value,
             +(<HTMLSelectElement>ourPopup.getElementById('OPFES_SelectMaxPwdChars')).value,
+            (<HTMLInputElement>ourPopup.getElementById('OPFES_InputAllowedSpecialCharacters')).value,
             new Date(Date.now()),
             (<HTMLInputElement>ourPopup.getElementById('OPFES_InputRemark')).value
         );
