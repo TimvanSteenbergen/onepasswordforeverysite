@@ -56,31 +56,19 @@
         let myImage, myImageUnsetOpfes;
         let OPFES_PasswordInput;
         let thisSite;
-        // // I create the OPFES password input element
-        // OPFES_PasswordInput = <HTMLInputElement>document.createElement(`input`);
-        // OPFES_PasswordInput.id = `OPFES_PasswordInput_${pwdCounter}`;
-        // OPFES_PasswordInput.name = `${pwdCounter}`;
-        // OPFES_PasswordInput.type = `password`;
-        // OPFES_PasswordInput.border = `1px solid brown`;
-        // OPFES_PasswordInput.placeholder = `Your Opfes Password`;
-        //
-        // // I copy the OPFES image from the extension's images to the variable myImage
-        // customerBrowser = get_browser();
-        // if (customerBrowser.name === 'Chrome') {
-        //     myImage = chrome.extension.getURL("icons\/opfes_32.png");
-        //     myImageUnsetOpfes = chrome.extension.getURL("icons\/opfes_19_unset_opfes.png");
-        // } else {
-        //     myImage = browser.extension.getURL("icons\/opfes_32.png");
-        //     myImageUnsetOpfes = browser.extension.getURL("icons\/opfes_19_unset_opfes.png");
-        // }
         let addedLightbox = document.createElement(`div`);
-        addedLightbox.id = "light";
-        addedLightbox.setAttribute('class', "white_content");
-        addedLightbox.innerHTML = "What is your password? <input id='OPFESUserPassword' type='password'>";
+        addedLightbox.id = "OPFES_light";
+        addedLightbox.setAttribute('class', "OPFES_white_content");
+        addedLightbox.innerHTML =
+            "What is your password? " +
+                "<input id='OPFES_UserPassword' type='password'>" +
+                "<input id='OPFES_SubmitPassword' type='submit'>" +
+                "<input id='OPFES_Cancel' type='button' value='Close this popup and show this site's regular login-form'>" +
+                "";
         document.body.appendChild(addedLightbox);
         let overlay = document.createElement(`div`);
-        overlay.id = "fade";
-        overlay.setAttribute('class', "black_overlay");
+        overlay.id = "OPFES_fade";
+        overlay.setAttribute('class', "OPFES_black_overlay");
         document.body.appendChild(overlay);
         if (pwdCounter == 0) {
             chrome.storage.local.get("_sites", function (response) {
@@ -130,29 +118,32 @@
                 //todo integrate this better into the rest of the code
                 if (pwdInputs.length === 1) {
                     // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
-                    document.getElementById('light').style.display = 'block';
-                    document.getElementById('fade').style.display = 'block';
-                    let opfesPassword = prompt('Your Opfes password please', '');
-                    document.getElementById('light').style.display = 'none';
-                    document.getElementById('fade').style.display = 'none';
-                    if (opfesPassword !== null && opfesPassword !== "") {
-                        generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
-                        pwdInputs[0].value = generatedPassword;
-                    }
-                }
-                if (generatedPassword) {
-                    // pwdInputs[0].form.submit();//triggers the form but does not work at gavelsnipe.com
-                    let submitButton = pwdInputs[0].form.querySelector('[type="submit"]'); //works at lots, for instance: gavelsnipe.com, npmjs.com
-                    if (!submitButton) {
-                        submitButton = pwdInputs[0].form.querySelector('[class*="submit"]'); //works at jetbrains.com
-                    }
-                    else if (!submitButton) {
-                        submitButton = pwdInputs[0].form.querySelector('[id*="submit"]'); //works at jetbrains.com
-                    }
-                    if (submitButton) {
-                        document.body.appendChild(pwdInputs[0].form);
-                        submitButton.click();
-                    }
+                    document.getElementById('OPFES_light').style.display = 'block';
+                    document.getElementById('OPFES_fade').style.display = 'block';
+                    document.getElementById('OPFES_SubmitPassword').addEventListener('click', function () {
+                        let opfesPassword = document.getElementById('OPFES_UserPassword').value;
+                        document.getElementById('OPFES_light').style.display = 'none';
+                        document.getElementById('OPFES_fade').style.display = 'none';
+                        if (opfesPassword !== null && opfesPassword !== "") {
+                            generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
+                            pwdInputs[0].value = generatedPassword;
+                            let submitButton = pwdInputs[0].form.querySelector('[type="submit"]'); //works at lots, for instance: gavelsnipe.com, npmjs.com
+                            if (!submitButton) {
+                                submitButton = pwdInputs[0].form.querySelector('[class*="submit"]'); //works at for instance jetbrains.com
+                            }
+                            else if (!submitButton) {
+                                submitButton = pwdInputs[0].form.querySelector('[id*="submit"]'); //works at for instance ...
+                            }
+                            if (submitButton) {
+                                document.body.appendChild(pwdInputs[0].form);
+                                submitButton.click();
+                            }
+                        }
+                    });
+                    document.getElementById('OPFES_Cancel').addEventListener('click', function () {
+                        document.getElementById('OPFES_light').style.display = 'none';
+                        document.getElementById('OPFES_fade').style.display = 'none';
+                    });
                 }
                 //This function returns the userNameInput. The first visible inputElement in the password-wrapping form
                 function getVisibleUserIdElement(selectorString) {
