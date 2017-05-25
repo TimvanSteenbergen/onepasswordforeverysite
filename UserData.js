@@ -28,7 +28,7 @@ class UserData {
             } //the source array of sites
             for (let key in sitesArray) {
                 // let remark: string = (sitesArray[key]["remark"]) ? sitesArray[key]["remark"] : "asdf";
-                let site = new Site(sitesArray[key]["domain"], sitesArray[key]["salt"], sitesArray[key]["userId"], sitesArray[key]["sequenceNr"], sitesArray[key]["maxPwdChars"], new Date(sitesArray[key]["lastUsed"]), sitesArray[key]["remark"]);
+                let site = new Site(sitesArray[key]["domain"], sitesArray[key]["salt"], sitesArray[key]["userId"], sitesArray[key]["sequenceNr"], sitesArray[key]["maxPwdChars"], sitesArray[key]["allowedSpecialCharacters"], new Date(sitesArray[key]["lastUsed"]), sitesArray[key]["remark"]);
                 sites.push(site);
             }
         }
@@ -54,7 +54,7 @@ class UserData {
         let stringifiedUserData = JSON.stringify(this);
         localStorage.setItem("OPFES_UserData", stringifiedUserData);
         chrome.storage.local.set(this); //Replaced the localStorage
-        console.log(`Your localData is now updated to #{stringifiedUserData}.`);
+        console.log(`Your localData is now updated to ${stringifiedUserData}.`);
     }
     /**
      * This function uploads the UserData from your local pc into memory
@@ -64,7 +64,7 @@ class UserData {
             "use strict";
             let reader = new FileReader();
             reader.onload = function (e) {
-                console.log(`Loading the file. Event is: #{e}`);
+                console.log(`Loading the file. Event is: ${e}`);
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
                 let dataString = e.target.result;
                 let userData = JSON.parse(dataString, UserData.reviver);
@@ -76,6 +76,7 @@ class UserData {
                                       <td>${site.getUserId()}</td>
                                       <td>${site.getSequenceNr()}</td>
                                       <td>${site.getMaxPwdChars()}</td>
+                                      <td>${site.getAllowedSpecialCharacters()}</td>
                                       <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth() + 1}-${site.getLastUsed().getDate()}</td>
                                       <td>${site.getRemark()}</td>
                                    </tr>`;
@@ -95,7 +96,9 @@ class UserData {
     static download() {
         (function (view) {
             "use strict";
-            let document = view.document, get_blob = function () {
+            let document = view.document
+            // only get URL when necessary in case Blob.js hasn't defined it yet
+            , get_blob = function () {
                 return view.Blob;
             };
             let userData = UserData.retrieve();
@@ -115,7 +118,9 @@ class UserData {
     static downloadPasswords() {
         (function (view) {
             "use strict";
-            let document = view.document, get_blob = function () {
+            let document = view.document
+            // only get URL when necessary in case Blob.js hasn't defined it yet
+            , get_blob = function () {
                 return view.Blob;
             };
             let userData = UserData.retrieve();

@@ -1,10 +1,11 @@
 class Site {
-    constructor(domain = '', salt = '', userId = '', sequenceNr = 1, maxPwdChars = 120, lastUsed = new Date(), remark = '') {
+    constructor(domain = '', salt = '', userId = '', sequenceNr = 1, maxPwdChars = 120, allowedSpecialCharacters = '', lastUsed = new Date(), remark = '') {
         this.domain = domain;
         this.salt = salt;
         this.userId = userId;
         this.sequenceNr = sequenceNr;
         this.maxPwdChars = maxPwdChars;
+        this.allowedSpecialCharacters = allowedSpecialCharacters;
         this.lastUsed = lastUsed;
         this.remark = remark;
     }
@@ -37,6 +38,12 @@ class Site {
     }
     setMaxPwdChars(value) {
         this.maxPwdChars = value;
+    }
+    getAllowedSpecialCharacters() {
+        return this.allowedSpecialCharacters;
+    }
+    setAllowedSpecialCharacters(value) {
+        this.allowedSpecialCharacters = value;
     }
     getLastUsed() {
         return this.lastUsed;

@@ -5,6 +5,7 @@
 let a = 1;
 ///<reference path="chrome/index.d.ts"/>
 document.addEventListener('DOMContentLoaded', function () {
+    const specialCharacters = ["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
     let userData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
     if (userData.sites.length === 0) {
         console.log('Ik heb nog geen data gevonden.');
@@ -39,6 +40,9 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleChangability.call(this);
     });
     document.getElementById('OPFES_SelectMaxPwdCharsToggle').addEventListener('click', function () {
+        toggleChangability.call(this);
+    });
+    document.getElementById('OPFES_InputAllowedSpecialCharactersToggle').addEventListener('click', function () {
         toggleChangability.call(this);
     });
     document.getElementById('OPFES_InputRemarkToggle').addEventListener('click', function () {
@@ -123,6 +127,10 @@ let OPFES_WorkWithUserData = function (userData) {
                             document.getElementById('OPFES_InputRemark').setAttribute('value', site.getRemark());
                             document.getElementById('OPFES_InputRemark').setAttribute('disabled', "disabled");
                         }
+                        if (site.getAllowedSpecialCharacters() != "") {
+                            document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('value', (site.getAllowedSpecialCharacters()));
+                            document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('disabled', "disabled");
+                        }
                     }
                 }
             }
@@ -137,7 +145,7 @@ let OPFES_WorkWithUserData = function (userData) {
      */
     function showTheLocallyStoredData(userData, numOfSitesToShow = 999999) {
         let sites = userData.sites;
-        let dataTableHTML = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>used at</td></ts><td>remark</td></thead>";
+        let dataTableHTML = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>allowed</td><td>used at</td></ts><td>remark</td></thead>";
         let sitesToShow = sites.slice(0, numOfSitesToShow);
         for (let site of sitesToShow) {
             dataTableHTML += `<tr><td>${site.getDomain()}</td>
@@ -145,6 +153,7 @@ let OPFES_WorkWithUserData = function (userData) {
                                  <td>${site.getUserId()}</td>
                                  <td>${site.getSequenceNr()}</td>
                                  <td>${site.getMaxPwdChars()}</td>
+                                 <td>${site.getAllowedSpecialCharacters()}</td>
                                  <td>${site.getLastUsed().getFullYear()} ${site.getLastUsed().getMonth() + 1} ${site.getLastUsed().getDate()}</td>
                                  <td>${site.getRemark()}</td>
                              </tr>`;
@@ -170,7 +179,7 @@ let OPFES_WorkWithUserData = function (userData) {
      */
     document.getElementById('OPFES_LoginButton').addEventListener('click', function () {
         let ourPopup = document;
-        let site = new Site(ourPopup.getElementById('OPFES_InputDomain').value, ourPopup.getElementById('OPFES_InputSalt').value, ourPopup.getElementById('OPFES_InputUserId').value, +ourPopup.getElementById('OPFES_InputSequenceNr').value, +ourPopup.getElementById('OPFES_SelectMaxPwdChars').value, new Date(Date.now()), ourPopup.getElementById('OPFES_InputRemark').value);
+        let site = new Site(ourPopup.getElementById('OPFES_InputDomain').value, ourPopup.getElementById('OPFES_InputSalt').value, ourPopup.getElementById('OPFES_InputUserId').value, +ourPopup.getElementById('OPFES_InputSequenceNr').value, +ourPopup.getElementById('OPFES_SelectMaxPwdChars').value, ourPopup.getElementById('OPFES_InputAllowedSpecialCharacters').value, new Date(Date.now()), ourPopup.getElementById('OPFES_InputRemark').value);
         let inputValueAppPassword = ourPopup.getElementById('OPFES_InputAppPassword').value;
         //save the sites data every time the password gets generated
         // siteService.add(site)
