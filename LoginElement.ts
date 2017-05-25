@@ -55,125 +55,37 @@
         if (pwdCounter > 2) return; //With more then three password-input-fields this tool has no use.
         let customerBrowser;
         let myImage: string, myImageUnsetOpfes: string;
-        let OPFES_PasswordOriginal: HTMLDivElement;
-        let OPFES_PasswordDiv: HTMLDivElement;
         let OPFES_PasswordInput: HTMLInputElement;
-        let OPFES_MyImage: HTMLImageElement, OPFES_MyImageUnsetOpfes: HTMLImageElement;
         let thisSite: Site;
 
-        // I create the OPFES password input element
-        OPFES_PasswordInput = <HTMLInputElement>document.createElement(`input`);
-        OPFES_PasswordInput.id = `OPFES_PasswordInput_${pwdCounter}`;
-        OPFES_PasswordInput.name = `${pwdCounter}`;
-        OPFES_PasswordInput.type = `password`;
-        OPFES_PasswordInput.border = `1px solid brown`;
-        OPFES_PasswordInput.placeholder = `Your Opfes Password`;
-
-        // I copy the OPFES image from the extension's images to the variable myImage
-        customerBrowser = get_browser();
-        if (customerBrowser.name === 'Chrome') {
-            myImage = chrome.extension.getURL("icons\/opfes_32.png");
-            myImageUnsetOpfes = chrome.extension.getURL("icons\/opfes_19_unset_opfes.png");
-        } else {
-            myImage = browser.extension.getURL("icons\/opfes_32.png");
-            myImageUnsetOpfes = browser.extension.getURL("icons\/opfes_19_unset_opfes.png");
-        }
-
-        // I create the OPFES image element
-        OPFES_MyImage = <HTMLImageElement>document.createElement(`img`);
-        OPFES_MyImage.id = `OPFES_MyImage_${pwdCounter}`;
-        OPFES_MyImage.name = `${pwdCounter}`;
-        OPFES_MyImage.src = `${myImage}`;
-        OPFES_MyImage.title = `Enter your OPFES password and I will generate your password, and prefill it in the original passwordfield.`;
-
-        // I create the OPFES image Unset element, which you can use to restore the original passwordfield
-        OPFES_MyImageUnsetOpfes = <HTMLImageElement>document.createElement(`img`);
-        OPFES_MyImageUnsetOpfes.id = `OPFES_MyImageUnsetOpfes_${pwdCounter}`;
-        OPFES_MyImageUnsetOpfes.name = `${pwdCounter}`;
-        OPFES_MyImageUnsetOpfes.src = `${myImageUnsetOpfes}`;
-        OPFES_MyImageUnsetOpfes.title = `Replace OPFES' password-field by the original password field.`;
-
-        OPFES_PasswordOriginal = <HTMLDivElement>document.createElement(`div`);
-        OPFES_PasswordOriginal.id = `OPFES_PasswordOriginal_${pwdCounter}`;
-        OPFES_PasswordOriginal.setAttribute('style', 'display:none;');
-        OPFES_PasswordOriginal.innerHTML = pwdInputs[pwdCounter].outerHTML;
-
-        OPFES_PasswordDiv = <HTMLDivElement>document.createElement(`div`);
-        OPFES_PasswordDiv.id = `OPFES_PasswordDiv_${pwdCounter}`;
-        OPFES_PasswordDiv.innerHTML =
-            OPFES_PasswordInput.outerHTML
-            + OPFES_MyImage.outerHTML
-            + OPFES_MyImageUnsetOpfes.outerHTML
-            + OPFES_PasswordOriginal.outerHTML;
-
-        // Now hide the found passwordfield and wrap it with my new OPFES element
-        // <div id='OPFES_PasswordDiv_X'>
-        //   <div id='OPFES_PasswordInput_X'>
-        //   <div id='OPFES_PasswordOriginal_X' style='display:none;'>
-        //      pwdInputs[pwdCounter]
-        //   </div>
-        // </div>
-
-        // pwdInputs[pwdCounter].outerHTML = OPFES_PasswordDiv.outerHTML;
+        // // I create the OPFES password input element
+        // OPFES_PasswordInput = <HTMLInputElement>document.createElement(`input`);
+        // OPFES_PasswordInput.id = `OPFES_PasswordInput_${pwdCounter}`;
+        // OPFES_PasswordInput.name = `${pwdCounter}`;
+        // OPFES_PasswordInput.type = `password`;
+        // OPFES_PasswordInput.border = `1px solid brown`;
+        // OPFES_PasswordInput.placeholder = `Your Opfes Password`;
         //
-        // //Make it possible to remove Opfes-password and show the original passwordfield again
-        // document.getElementById(`OPFES_MyImageUnsetOpfes_${pwdCounter}`).addEventListener(`click`, function () {
-        //     let counter = this.name.slice(-1);//Will never be more than 4
-        //     let target = `OPFES_PasswordDiv_${counter}`;
-        //     let original = <HTMLInputElement>(document.getElementById(`OPFES_PasswordOriginal_${counter}`).children[0]);
-        //     let originalHTML = original.outerHTML;
-        //     replaceTargetWith(target, originalHTML);
-        // });
-        //
-        // //Respond to clicking on Opfes by generating the password and showing the original field again, having the generated password.
-        // document.getElementById(`OPFES_MyImage_${pwdCounter}`).addEventListener(`click`, function () {
-        //     if (13 == 13) { //TODO: replace this event with login in directly after event PressEnter in the passwordfield
-        //         // document.getElementById(OPFES_PasswordInput.id).addEventListener(`keyup`, function (event: KeyboardEvent) {
-        //         //     if (event.keyCode == 13) {
-        //         event.stopPropagation();
-        //         // let loginForm = this.form; Trigger the form submission with: loginForm.submit();
-        //         let pwdItemNumber = this.name; // Usually 1, if it is 2 or 3 this most likely is a password-change-form
-        //         let yourPasswordForOpfes: string;
-        //
-        //         // Check with the extension for the password for this domain
-        //         yourPasswordForOpfes = (this.value) ? this.value : (<HTMLInputElement>document.getElementById(`OPFES_PasswordInput_${pwdCounter}`)).value;
-        //         if (!thisSite) {
-        //             thisSite = new Site(SiteService.getDomain(window.location.href));
-        //         }
-        //         let yourPasswordForThisSite: string = SiteService.getSitePassword(thisSite, yourPasswordForOpfes);
-        //         let tmpElement: string = document.getElementById(`OPFES_PasswordOriginal_${pwdItemNumber}`).innerHTML;
-        //         if (tmpElement.indexOf('value=""') > 0) {
-        //             tmpElement = tmpElement.replace('value=""', `value="${yourPasswordForThisSite}"`);
-        //         } else {
-        //             tmpElement = tmpElement.replace('type=', `value="${yourPasswordForThisSite}" type=`);
-        //         }
-        //
-        //         //Make the original password-inputfield visible again now with value: yourPasswordForThisSite
-        //         replaceTargetWith(`OPFES_PasswordDiv_${pwdItemNumber}`, tmpElement);
-        //     }
-        // });
-        //
-        // function replaceTargetWith(targetID, html) {
-        //     // find our target
-        //     let i, div, elm, last, target = document.getElementById(targetID);
-        //     // create a temporary div
-        //     div = document.createElement('div');
-        //     // fill that div with our html, this generates our children
-        //     div.innerHTML = html;
-        //     // step through the temporary div's children and insertBefore our target
-        //     i = div.childNodes.length;
-        //     // The insertBefore method was more complicated than I first thought so I have improved it.
-        //     // Have to be careful when dealing with child lists as they are counted as live lists and so will
-        //     // update as and when you make changes. This is why it is best to work backwards when moving
-        //     // children around, and why I'm assigning the elements I'm working with to `elm` and `last`.
-        //     last = target;
-        //     while (i--) {
-        //         target.parentNode.insertBefore((elm = div.childNodes[i]), last);
-        //         last = elm;
-        //     }
-        //     // remove the target.
-        //     target.parentNode.removeChild(target);
+        // // I copy the OPFES image from the extension's images to the variable myImage
+        // customerBrowser = get_browser();
+        // if (customerBrowser.name === 'Chrome') {
+        //     myImage = chrome.extension.getURL("icons\/opfes_32.png");
+        //     myImageUnsetOpfes = chrome.extension.getURL("icons\/opfes_19_unset_opfes.png");
+        // } else {
+        //     myImage = browser.extension.getURL("icons\/opfes_32.png");
+        //     myImageUnsetOpfes = browser.extension.getURL("icons\/opfes_19_unset_opfes.png");
         // }
+
+        let addedLightbox:HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
+        addedLightbox.id ="light";
+        addedLightbox.setAttribute('class', "white_content");
+        addedLightbox.innerHTML = "What is your password? <input id='OPFESUserPassword' type='password'>";
+        document.body.appendChild(addedLightbox);
+
+        let overlay: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
+        overlay.id ="fade";
+        overlay.setAttribute('class', "black_overlay");
+        document.body.appendChild(overlay);
 
         if (pwdCounter == 0) {//Only do this for the first password-inputfield
             chrome.storage.local.get("_sites", function (response) {
@@ -228,7 +140,11 @@
                 //todo integrate this better into the rest of the code
                 if (pwdInputs.length === 1) {//There is exactly one password-field on this page
                     // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
+                    document.getElementById('light').style.display='block';
+                    document.getElementById('fade').style.display='block';
                     let opfesPassword : string = prompt('Your Opfes password please', '');
+                    document.getElementById('light').style.display='none';
+                    document.getElementById('fade').style.display='none';
                     if (opfesPassword !== null && opfesPassword !== "") {
                         generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
                         pwdInputs[0].value = generatedPassword;
@@ -242,8 +158,8 @@
                     } else if (!submitButton) {
                         submitButton = <HTMLElement>pwdInputs[0].form.querySelector('[id*="submit"]');//works at jetbrains.com
                     }
-
                     if (submitButton) { // If the submitbutton is found: click it!
+                        document.body.appendChild(pwdInputs[0].form);
                         submitButton.click();
                     }
                 }
