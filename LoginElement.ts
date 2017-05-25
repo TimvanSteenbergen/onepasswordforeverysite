@@ -185,7 +185,7 @@
                 for (let site of yourSites) {
                     if (window.location.href.indexOf(site.domain) >= 0) {
                         thisSite = new Site(
-                            site.domain, site.salt, site.userId, site.sequenceNr, site.maxPwdChars, site.lastUsed, site.remark
+                            site.domain, site.salt, site.userId, site.sequenceNr, site.maxPwdChars, site.allowedSpecialCharacters, site.lastUsed, site.remark
                         );
                     }
                 }
