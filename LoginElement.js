@@ -55,18 +55,16 @@
         let thisSite;
         let addedLightbox = document.createElement(`div`);
         let overlay = document.createElement(`div`);
-        addedLightbox.id = "OPFES_loginform";
-        addedLightbox.setAttribute('class', "OPFES_white_content");
+        addedLightbox.id = "OPFES_loginForm_form";
         addedLightbox.innerHTML =
             "<h1>Hi, Opfes here. </h1>" +
                 "<p>On this site you have logged in previously with user-id '<span id='OPFES_userid'></span>'.</p>" +
-                "<p>Enter your Opfes-password to log in: <input id='OPFES_UserPassword' type='password'>" +
+                "<p>Enter your Opfes-password to log in: <input id='OPFES_UserPassword' type='password' placeholder='____'>" +
                 "   <input id='OPFES_SubmitPassword' type='submit' value='Login'></p>" +
                 "<p><input id='OPFES_Cancel' type='button' value='Close this popup and show this sites regular login-form'></p>" +
                 "";
         document.body.appendChild(addedLightbox);
-        overlay.id = "OPFES_fade";
-        overlay.setAttribute('class', "OPFES_black_overlay");
+        overlay.id = "OPFES_loginForm_overlay";
         document.body.appendChild(overlay);
         if (pwdCounter == 0) {
             chrome.storage.local.get("_sites", function (response) {
@@ -104,31 +102,28 @@
                         userNameInput.value = userNameInputValue;
                     }
                     else {
-                        // let pwdInput: HTMLInputElement = <HTMLInputElement>getVisiblePwdInputs(1)[0];
-                        // alert(`You have logged in to this site before and you used user-id ${userNameInputValue}.
-                        //         \nPlease enter ${userNameInputValue} in the username input-field.
-                        //         \nThen enter your password in my password-field and click on my icon next to it.`);
                     }
                 }
                 else {
-                    // How to tempt the user to use Opfes now?
                 }
                 //todo integrate this better into the rest of the code
                 if (pwdInputs.length === 1) {
                     // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
                     document.getElementById('OPFES_userid').innerHTML = thisSite.getUserId();
-                    document.getElementById('OPFES_loginform').style.display = 'block';
-                    document.getElementById('OPFES_fade').style.display = 'block';
+                    document.getElementById('OPFES_loginForm_form').style.display = 'block';
+                    document.getElementById('OPFES_loginForm_overlay').style.display = 'block';
                     document.getElementById('OPFES_UserPassword').focus();
                     // event.stopPropagation();
                     document.getElementById('OPFES_SubmitPassword').addEventListener('click', function () {
                         let opfesPassword = document.getElementById('OPFES_UserPassword').value;
-                        document.body.removeChild(document.getElementById('OPFES_loginform'));
-                        document.body.removeChild(document.getElementById('OPFES_fade'));
+                        let submitButton;
+                        document.body.removeChild(document.getElementById('OPFES_loginForm_form'));
+                        document.body.removeChild(document.getElementById('OPFES_loginForm_overlay'));
                         if (opfesPassword !== null && opfesPassword !== "") {
                             generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
                             pwdInputs[0].value = generatedPassword;
-                            let submitButton = pwdInputs[0].form.querySelector('[type="submit"]'); //works at lots, for instance: gavelsnipe.com, npmjs.com
+                            // alert (generatedPassword);
+                            submitButton = pwdInputs[0].form.querySelector('[type="submit"]'); //works at lots, for instance: gavelsnipe.com, npmjs.com
                             if (!submitButton) {
                                 submitButton = pwdInputs[0].form.querySelector('[class*="submit"]'); //works at for instance jetbrains.com
                             }
@@ -137,13 +132,19 @@
                             }
                             if (submitButton) {
                                 // document.body.appendChild(pwdInputs[0].form);
-                                submitButton.click();
+                                // alert(submitButton.click());
+                                // submitButton.click();
+                                if (typeof jQuery != 'undefined') {
+                                    // jQuery is loaded => print the version
+                                    alert(jQuery.fn.jquery);
+                                }
+                                pwdInputs[0].form.submit();
                             }
                         }
                     });
                     document.getElementById('OPFES_Cancel').addEventListener('click', function () {
-                        document.body.removeChild(document.getElementById('OPFES_loginform'));
-                        document.body.removeChild(document.getElementById('OPFES_fade'));
+                        document.body.removeChild(document.getElementById('OPFES_loginForm_form'));
+                        document.body.removeChild(document.getElementById('OPFES_loginForm_overlay'));
                     });
                 }
                 //This function returns the userNameInput. The first visible inputElement in the password-wrapping form
