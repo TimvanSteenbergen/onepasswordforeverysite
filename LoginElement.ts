@@ -53,23 +53,22 @@
 
     for (let pwdCounter = 0; pwdCounter < pwdInputs.length; pwdCounter++) {
         if (pwdCounter > 2) return; //With more then three password-input-fields this tool has no use.
-        let customerBrowser;
-        let myImage: string, myImageUnsetOpfes: string;
-        let OPFES_PasswordInput: HTMLInputElement;
         let thisSite: Site;
-
         let addedLightbox:HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
-        addedLightbox.id ="OPFES_light";
+        let overlay: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
+
+        addedLightbox.id ="OPFES_loginform";
         addedLightbox.setAttribute('class', "OPFES_white_content");
+
         addedLightbox.innerHTML =
-            "What is your password? " +
-            "<input id='OPFES_UserPassword' type='password'>" +
-            "<input id='OPFES_SubmitPassword' type='submit'>" +
-            "<input id='OPFES_Cancel' type='button' value='Close this popup and show this site's regular login-form'>" +
+            "<h1>Hi, Opfes here. </h1>" +
+            "<p>On this site you have logged in previously with user-id '<span id='OPFES_userid'></span>'.</p>" +
+            "<p>Enter your Opfes-password to log in: <input id='OPFES_UserPassword' type='password'>" +
+            "   <input id='OPFES_SubmitPassword' type='submit' value='Login'></p>" +
+            "<p><input id='OPFES_Cancel' type='button' value='Close this popup and show this sites regular login-form'></p>" +
             "";
         document.body.appendChild(addedLightbox);
 
-        let overlay: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
         overlay.id ="OPFES_fade";
         overlay.setAttribute('class', "OPFES_black_overlay");
         document.body.appendChild(overlay);
@@ -127,31 +126,35 @@
                 //todo integrate this better into the rest of the code
                 if (pwdInputs.length === 1) {//There is exactly one password-field on this page
                     // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
-                    document.getElementById('OPFES_light').style.display='block';
+                    document.getElementById('OPFES_userid').innerHTML = thisSite.getUserId();
+                    document.getElementById('OPFES_loginform').style.display='block';
                     document.getElementById('OPFES_fade').style.display='block';
+                    document.getElementById('OPFES_UserPassword').focus();
+                    // event.stopPropagation();
 
                     document.getElementById('OPFES_SubmitPassword').addEventListener('click', function () {
                         let opfesPassword: string = (<HTMLInputElement>document.getElementById('OPFES_UserPassword')).value;
-                        document.getElementById('OPFES_light').style.display='none';
-                        document.getElementById('OPFES_fade').style.display='none';
+                        document.body.removeChild(document.getElementById('OPFES_loginform'));
+                        document.body.removeChild(document.getElementById('OPFES_fade'));
                         if (opfesPassword !== null && opfesPassword !== "") {
                             generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
                             pwdInputs[0].value = generatedPassword;
                             let submitButton: HTMLElement = <HTMLElement>pwdInputs[0].form.querySelector('[type="submit"]');//works at lots, for instance: gavelsnipe.com, npmjs.com
                             if (!submitButton) {
                                 submitButton = <HTMLElement>pwdInputs[0].form.querySelector('[class*="submit"]');//works at for instance jetbrains.com
-                            } else if (!submitButton) {
+                            }
+                            if (!submitButton) {
                                 submitButton = <HTMLElement>pwdInputs[0].form.querySelector('[id*="submit"]');//works at for instance ...
                             }
                             if (submitButton) { // If the submitbutton is found: click it!
-                                document.body.appendChild(pwdInputs[0].form);
+                                // document.body.appendChild(pwdInputs[0].form);
                                 submitButton.click();
                             }
                         }
                     });
                     document.getElementById('OPFES_Cancel').addEventListener('click', function () {
-                        document.getElementById('OPFES_light').style.display='none';
-                        document.getElementById('OPFES_fade').style.display='none';
+                        document.body.removeChild(document.getElementById('OPFES_loginform'));
+                        document.body.removeChild(document.getElementById('OPFES_fade'));
                     });
                 }
 
