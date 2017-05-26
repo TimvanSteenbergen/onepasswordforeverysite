@@ -54,24 +54,15 @@
     for (let pwdCounter = 0; pwdCounter < pwdInputs.length; pwdCounter++) {
         if (pwdCounter > 2) return; //With more then three password-input-fields this tool has no use.
         let thisSite: Site;
-        let addedLightbox:HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
+        let addedLightBox:HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
         let overlay: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
-
-        addedLightbox.id ="OPFES_loginForm_form";
-        addedLightbox.innerHTML =
-            "<h1>Hi, Opfes here. </h1>" +
-            "<p>On this site you have logged in previously with user-id '<span id='OPFES_userid'></span>'.</p>" +
-            "<p>Enter your Opfes-password to log in: <input id='OPFES_UserPassword' type='password' placeholder='____'>" +
-            "   <input id='OPFES_SubmitPassword' type='submit' value='Login'></p>" +
-            "<p><input id='OPFES_Cancel' type='button' value='Close this popup and show this sites regular login-form'></p>" +
-            "";
-        document.body.appendChild(addedLightbox);
-
         overlay.id ="OPFES_loginForm_overlay";
         document.body.appendChild(overlay);
 
         if (pwdCounter == 0) {//Only do this for the first password-inputfield
             chrome.storage.local.get("_sites", function (response) {
+                addedLightBox.id ="OPFES_loginForm_form";
+                document.body.appendChild(addedLightBox);
                 // Look for the user-id in the userData...
                 let userNameInputValue: string;
                 let yourSites = (response._sites) ? response._sites : [];
@@ -86,7 +77,11 @@
                 }
                 if (!thisSite) {
                     //First time opfes comes to this site, so user needs to log in the old-fashioned way, change her/his password using opfes and log in again.
-                    thisSite = new Site(SiteService.getDomain(window.location.href));
+                    alert('I, Opfes, do see a login form, but you have not yet logged to this site using my assistance. If you wish to do so, then: <ul>' +
+                        '<li>login like you used to</li>' +
+                        '<li>go to your account-settings to the option where you can change your password.</li>' +
+                        '<li>enter your old password</li>' +
+                        '<li>Let me help you to generate and enter a new strong and safe password</li>');
                 }
 
                 userNameInputValue = thisSite.getUserId();
@@ -123,6 +118,16 @@
                 //todo integrate this better into the rest of the code
                 if (pwdInputs.length === 1) {//There is exactly one password-field on this page
                     // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
+
+                    let lightBox = document.getElementById("OPFES_loginForm_form");
+                    lightBox.innerHTML =
+                        "<h1>Hi, Opfes here. </h1>" +
+                        "<p>On this site you have logged in previously with user-id '<span id='OPFES_userid'></span>'.</p>" +
+                        "<p>Enter your Opfes-password to log in: <input id='OPFES_UserPassword' type='password' placeholder='____'>" +
+                        "   <input id='OPFES_SubmitPassword' type='submit' value='Login'></p>" +
+                        "<p><input id='OPFES_Cancel' type='button' value='Close this popup and show this sites regular login-form'></p>" +
+                        "";
+                    document.body.appendChild(lightBox);
                     document.getElementById('OPFES_userid').innerHTML = thisSite.getUserId();
                     document.getElementById('OPFES_loginForm_form').style.display='block';
                     document.getElementById('OPFES_loginForm_overlay').style.display='block';
@@ -146,14 +151,13 @@
                                 submitButton = <HTMLElement>pwdInputs[0].form.querySelector('[id*="submit"]');//works at for instance ...
                             }
                             if (submitButton) { // If the submitbutton is found: click it!
-                                // document.body.appendChild(pwdInputs[0].form);
-                                // alert(submitButton.click());
-                                // submitButton.click();
-                                if (typeof jQuery != 'undefined') {
-                                    // jQuery is loaded => print the version
-                                    alert(jQuery.fn.jquery);
-                                }
-                                pwdInputs[0].form.submit();
+                                if(thisSite.getDomain() !== 'ebay.nl') {
+                                    submitButton.click();
+                                } else {
+                                    alert('You will need to click the submit button yourself for this site. This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ' +
+                                          'See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.')
+                                }//Does not work on ebay.nl...
+                                // pwdInputs[0].form.submit(); //.. but this neither...
                             }
                         }
                     });
