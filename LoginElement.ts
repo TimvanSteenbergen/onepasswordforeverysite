@@ -72,7 +72,7 @@
                     `<p><input id='OPFES_popup_cancel' type='button' value='Close this popup'></p>`;
                 document.body.appendChild(popupForm);
                 function showPopupForm(message = '', showSubmitPassword = false) {
-                    document.getElementById('OPFES_popup_message').innerText = message;
+                    document.getElementById('OPFES_popup_message').innerHTML = message;
                     document.getElementById('OPFES_popup_password_element').style.display = (showSubmitPassword)?'block':'none';
                     document.getElementById('OPFES_popup_form').style.display = 'block';
                     document.getElementById('OPFES_popup_overlay').style.display = 'block';
@@ -102,12 +102,13 @@
                 if (!thisSite) {
                     //...then tell the user to change her password and add this domain to the userData
                     let message:string =
-                        `I, Opfes, do see a login form, but you have not yet logged to this site using my assistance. If you wish to do so, then: <ul>` +
-                        `<li>login like you used to</li>` +
-                        `<li>go to your account-settings to the option where you can change your password.</li>` +
-                        `<li>enter your old password</li>` +
-                        `<li>Let me help you to generate and enter a new strong and safe password</li>` +
-                        `<p><input id='OPFES_Cancel' type='button' value='Close this popup'></p>`;
+                        `I, Opfes, do see a login form, but you have not yet logged to this site using my assistance. If you wish to do so, then: ` +
+                        `<ol>` +
+                            `<li>login like you used to</li>` +
+                            `<li>go to your account-settings to the option where you can change your password.</li>` +
+                            `<li>enter your old password</li>` +
+                            `<li>Let me help you to generate and enter a new strong and safe password</li>` +
+                        `</ol>`;
                     showPopupForm(message, false);
                     return;
                 }
