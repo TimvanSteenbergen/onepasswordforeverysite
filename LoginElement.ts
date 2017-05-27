@@ -54,15 +54,37 @@
     for (let pwdCounter = 0; pwdCounter < pwdInputs.length; pwdCounter++) {
         if (pwdCounter > 2) return; //With more then three password-input-fields this tool has no use.
         let thisSite: Site;
-        let addedLightBox:HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
+        let popupForm:HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
         let overlay: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
-        overlay.id ="OPFES_loginForm_overlay";
+        overlay.id ="OPFES_popup_overlay";
         document.body.appendChild(overlay);
 
         if (pwdCounter == 0) {//Only do this for the first password-inputfield
             chrome.storage.local.get("_sites", function (response) {
-                addedLightBox.id ="OPFES_loginForm_form";
-                document.body.appendChild(addedLightBox);
+
+                //Setup the Popup for userinteraction
+                popupForm.id ="OPFES_popup_form";
+                popupForm.innerHTML =
+                    `<h1 id="OPFES_popup_title">Hi, Opfes here.</h1>` +
+                    `<p id='OPFES_popup_message'></p>` +
+                    `<p id='OPFES_popup_password_element'>Enter your Opfes-password to log in: <input id='OPFES_popup_password' type='password' placeholder='____'>` +
+                    `   <input id='OPFES_popup_submit' type='submit' value='Login'></p>` +
+                    `<p><input id='OPFES_popup_cancel' type='button' value='Close this popup'></p>`;
+                document.body.appendChild(popupForm);
+                function showPopupForm(message = '', showSubmitPassword = false) {
+                    document.getElementById('OPFES_popup_message').innerText = message;
+                    document.getElementById('OPFES_popup_password_element').style.display = (showSubmitPassword)?'block':'none';
+                    document.getElementById('OPFES_popup_form').style.display = 'block';
+                    document.getElementById('OPFES_popup_overlay').style.display = 'block';
+                }
+                function hidePopupForm() {
+                    document.getElementById('OPFES_popup_form').style.display = 'none';
+                    document.getElementById('OPFES_popup_overlay').style.display = 'none';
+                }
+                document.getElementById('OPFES_popup_cancel').addEventListener('click', function () {
+                    hidePopupForm();
+                });
+
                 // Look for the user-id in the userData...
                 let userNameInputValue: string;
                 let yourSites = (response._sites) ? response._sites : [];
@@ -75,13 +97,19 @@
                         );
                     }
                 }
+                
+                //If on a loginpage of a domain that is not in the userData... 
                 if (!thisSite) {
-                    //First time opfes comes to this site, so user needs to log in the old-fashioned way, change her/his password using opfes and log in again.
-                    alert('I, Opfes, do see a login form, but you have not yet logged to this site using my assistance. If you wish to do so, then: <ul>' +
-                        '<li>login like you used to</li>' +
-                        '<li>go to your account-settings to the option where you can change your password.</li>' +
-                        '<li>enter your old password</li>' +
-                        '<li>Let me help you to generate and enter a new strong and safe password</li>');
+                    //...then tell the user to change her password and add this domain to the userData
+                    let message:string =
+                        `I, Opfes, do see a login form, but you have not yet logged to this site using my assistance. If you wish to do so, then: <ul>` +
+                        `<li>login like you used to</li>` +
+                        `<li>go to your account-settings to the option where you can change your password.</li>` +
+                        `<li>enter your old password</li>` +
+                        `<li>Let me help you to generate and enter a new strong and safe password</li>` +
+                        `<p><input id='OPFES_Cancel' type='button' value='Close this popup'></p>`;
+                    showPopupForm(message, false);
+                    return;
                 }
 
                 userNameInputValue = thisSite.getUserId();
@@ -118,27 +146,14 @@
                 //todo integrate this better into the rest of the code
                 if (pwdInputs.length === 1) {//There is exactly one password-field on this page
                     // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
-
-                    let lightBox = document.getElementById("OPFES_loginForm_form");
-                    lightBox.innerHTML =
-                        "<h1>Hi, Opfes here. </h1>" +
-                        "<p>On this site you have logged in previously with user-id '<span id='OPFES_userid'></span>'.</p>" +
-                        "<p>Enter your Opfes-password to log in: <input id='OPFES_UserPassword' type='password' placeholder='____'>" +
-                        "   <input id='OPFES_SubmitPassword' type='submit' value='Login'></p>" +
-                        "<p><input id='OPFES_Cancel' type='button' value='Close this popup and show this sites regular login-form'></p>" +
-                        "";
-                    document.body.appendChild(lightBox);
-                    document.getElementById('OPFES_userid').innerHTML = thisSite.getUserId();
-                    document.getElementById('OPFES_loginForm_form').style.display='block';
-                    document.getElementById('OPFES_loginForm_overlay').style.display='block';
-                    document.getElementById('OPFES_UserPassword').focus();
+                    showPopupForm(`On this site you have logged in previously with user-id ${thisSite.getUserId()}`, true);
+                    document.getElementById('OPFES_popup_submit').focus();
                     // event.stopPropagation();
 
-                    document.getElementById('OPFES_SubmitPassword').addEventListener('click', function () {
-                        let opfesPassword: string = (<HTMLInputElement>document.getElementById('OPFES_UserPassword')).value;
+                    document.getElementById('OPFES_popup_submit').addEventListener('click', function () {
+                        let opfesPassword: string = (<HTMLInputElement>document.getElementById('OPFES_popup_password')).value;
                         let submitButton: HTMLElement;
-                        document.body.removeChild(document.getElementById('OPFES_loginForm_form'));
-                        document.body.removeChild(document.getElementById('OPFES_loginForm_overlay'));
+                        hidePopupForm();
                         if (opfesPassword !== null && opfesPassword !== "") {
                             generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
                             pwdInputs[0].value = generatedPassword;
@@ -161,20 +176,13 @@
                             }
                         }
                     });
-                    document.getElementById('OPFES_Cancel').addEventListener('click', function () {
-                        document.body.removeChild(document.getElementById('OPFES_loginForm_form'));
-                        document.body.removeChild(document.getElementById('OPFES_loginForm_overlay'));
-                    });
                 }
 
                     //This function returns the userNameInput. The first visible inputElement in the password-wrapping form
                 function getVisibleUserIdElement(selectorString: string) {
                     // Get the form wrapping the passwordfield
                     let loginForm = pwdInputs[0].form;
-                    // let selectorStart: string = (typeof loginForm.id == "string" && loginForm.id !== "")
-                    //     ? ("#" + loginForm.id + " ")
-                    //     : "form ";
-                    // let selectorString: string = selectorStart + selectorTail;
+                    
                     //Todo Kill Annie
                     let inputElements: any = loginForm.querySelectorAll(selectorString);
                     if (inputElements) {
