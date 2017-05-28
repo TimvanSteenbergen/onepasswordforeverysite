@@ -89,7 +89,7 @@ class SiteService {
             }
             counterHash = ((counterHash + 3) > 128) ? 1 : (counterHash + 3); //resetting counterHash to 1 (instead of 0) to get different nextHashParts the second time
         }
-        //Make sure there are at least two uppercase characters
+        //Make sure there are at least two uppercase characters.
         let uppercaseCount = generatedPassword.length - generatedPassword.replace(/[A-Z]/g, '').length;
         if (uppercaseCount < 2) {
             //.. then replace the first two characters by two of the chosen 16 uppercaseCharacters
