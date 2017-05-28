@@ -33,14 +33,14 @@
     }
 
     pwdInputs = getVisiblePwdInputFields();
-    if (!pwdInputs) {
+    if (pwdInputs.length === 0) {
         //There are no password-fields on this site, so no need for me to do anything.
         return;
     } else {
         chrome.storage.local.get("_sites", function (response) {
             //Login form detected, now determine the PopupFormType that has to get called
-            if (!response._sites){ //Login form detected, but no UserData is yet available to OPFES. User should upload or initiate userData
-                formTypeLoginNoUserData();
+            if (!response._sites || response._sites === []){ //Login form detected, but no UserData is yet available to OPFES. User should upload or initiate userData
+                formNoUserData();
             }
             for (let site of response._sites) {
                 if (window.location.href.indexOf(site.domain) >= 0) {
@@ -61,13 +61,9 @@
         });
     }
     let thisSite: Site;
-    let popupForm: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
-    let popupOverlay: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
-    popupOverlay.id = "OPFES_popup_overlay";
-    document.body.appendChild(popupOverlay);
 
-    function formTypeLoginNoUserData() {
-
+    function formNoUserData() {
+        let popupForm = new NoUserData();
     }
     function formTypeUnknownSite() {
         let popupForm = new UnknownSite();
