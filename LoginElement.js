@@ -37,38 +37,31 @@
     else {
         chrome.storage.local.get("_sites", function (response) {
             //Login form detected, now determine the PopupFormType that has to get called
-            if (!response._sites || response._sites === []) {
-                formNoUserData();
+            if (!response._sites || response._sites.length === 0) {
+                new NoUserData();
             }
-            for (let site of response._sites) {
-                if (window.location.href.indexOf(site.domain) >= 0) {
-                    thisSite = new Site(site.domain, site.salt, site.userId, site.sequenceNr, site.maxPwdChars, site.allowedSpecialCharacters, site.lastUsed, site.remark);
+            else {
+                for (let site of response._sites) {
+                    if (window.location.href.indexOf(site.domain) >= 0) {
+                        thisSite = new Site(site.domain, site.salt, site.userId, site.sequenceNr, site.maxPwdChars, site.allowedSpecialCharacters, site.lastUsed, site.remark);
+                    }
                 }
-            }
-            if (!thisSite) {
-                formTypeUnknownSite();
-            }
-            else if (pwdInputs.length === 1) {
-                formTypeLogin(thisSite, pwdInputs);
-            }
-            else if (pwdInputs.length === 2) {
-                formType = `newPassword`;
-            }
-            else if (pwdInputs.length === 3) {
-                formType = `changePassword`;
+                if (!thisSite) {
+                    new UnknownSite();
+                }
+                else if (pwdInputs.length === 1) {
+                    new LoginForm(thisSite, pwdInputs);
+                }
+                else if (pwdInputs.length === 2) {
+                    formType = `newPassword`;
+                }
+                else if (pwdInputs.length === 3) {
+                    formType = `changePassword`;
+                }
             }
         });
     }
     let thisSite;
-    function formNoUserData() {
-        let popupForm = new NoUserData();
-    }
-    function formTypeUnknownSite() {
-        let popupForm = new UnknownSite();
-    }
-    function formTypeLogin(thisSite, pwdInputs) {
-        let popupForm = new LoginForm(thisSite, pwdInputs);
-    }
     // This function checks if the given element is visible
     // Returns a boolean
     function isHidden(el) {
