@@ -24,7 +24,7 @@ class AbstractForm {
         document.body.appendChild(popupOverlay);
 
         document.getElementById('OPFES_popup_cancel').addEventListener('click', function(){
-            UnknownSite.hidePopupForm();
+            AbstractForm.hidePopupForm();
         })
     }
 

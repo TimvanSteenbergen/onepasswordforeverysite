@@ -12,7 +12,6 @@
  */
 (function () {
     let pwdInputs;
-    let formType;
     function getVisiblePwdInputFields(maxPwdInputs = 5) {
         let inputElements = document.getElementsByTagName("input");
         let cnt = 0;
@@ -50,13 +49,13 @@
                     new UnknownSite();
                 }
                 else if (pwdInputs.length === 1) {
-                    new LoginForm(thisSite, pwdInputs);
+                    new Login(thisSite, pwdInputs);
                 }
                 else if (pwdInputs.length === 2) {
-                    formType = `newPassword`;
+                    new NewAndVerifyPassword(thisSite, pwdInputs);
                 }
                 else if (pwdInputs.length === 3) {
-                    formType = `changePassword`;
+                    new OldNewAndVerifyPassword(thisSite, pwdInputs);
                 }
             }
         });

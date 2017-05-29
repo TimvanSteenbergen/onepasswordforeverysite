@@ -1,9 +1,9 @@
 /**
  * Created by tvansteenbergen on 2017-03-09.
  *
- * This is the template Form used by every other PopupForm. It contains functions used by all of them:
+ * This is PopupForm for webpages having one password-field. We are trying to log in.
  */
-class LoginForm extends AbstractForm {
+class Login extends AbstractForm {
     constructor(thisSite, pwdInputs) {
         super();
         let userNameInputValue = thisSite.getUserId();
@@ -27,20 +27,26 @@ class LoginForm extends AbstractForm {
                 userNameInputElement.value = userNameInputValue;
             }
             else {
+                // let pwdInput: HTMLInputElement = <HTMLInputElement>getVisiblePwdInputs(1)[0];
+                // alert(`You have logged in to this site before and you used user-id ${userNameInputValue}.
+                //         \nPlease enter ${userNameInputValue} in the username input-field.
+                //         \nThen enter your password in my password-field and click on my icon next to it.`);
+                alert('I have not been able to find the input field for the accountname/userid. ' +
+                    'Please manually enter the accountname where possible. ');
+                return;
             }
         }
-        else {
-        }
+        else { }
         // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
-        LoginForm.showPopupForm(`On this site you have logged in previously with user-id ${thisSite.getUserId()}`, true);
+        AbstractForm.showPopupForm(`On this site you have logged in previously with user-id ${thisSite.getUserId()}`, true);
         document.getElementById('OPFES_popup_password').focus();
         document.getElementById('OPFES_popup_password').addEventListener('keydown', function (e) {
             if (e.which == 13 || e.keyCode == 13) {
-                LoginForm.generatePasswordAndLogin(thisSite, pwdInputs);
+                Login.generatePasswordAndLogin(thisSite, pwdInputs);
             }
         });
         document.getElementById('OPFES_popup_submit').addEventListener('click', function () {
-            LoginForm.generatePasswordAndLogin(thisSite, pwdInputs);
+            Login.generatePasswordAndLogin(thisSite, pwdInputs);
         });
         //This function returns the userNameInputElement. The first visible inputElement in the password-wrapping form
         function getVisibleUserIdElement(selectorString) {
@@ -67,7 +73,7 @@ class LoginForm extends AbstractForm {
         let opfesPassword = document.getElementById('OPFES_popup_password').value;
         let submitButton;
         let generatedPassword;
-        LoginForm.hidePopupForm();
+        AbstractForm.hidePopupForm();
         if (opfesPassword !== null && opfesPassword !== "") {
             generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
             pwdInputs[0].value = generatedPassword;
@@ -87,8 +93,9 @@ class LoginForm extends AbstractForm {
                     alert('You will need to click the submit button yourself for this site. This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ' +
                         'See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.');
                 } //Does not work on ebay.nl...
+                // pwdInputs[0].form.submit(); //.. but this neither...
             }
         }
     }
 }
-//# sourceMappingURL=LoginForm.js.map
+//# sourceMappingURL=Login.js.map

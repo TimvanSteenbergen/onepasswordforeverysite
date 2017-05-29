@@ -28,6 +28,6 @@ class NoUserData extends AbstractForm {
             `<li>And click 'Open'.</li>` +
             `</ul>` +
             `Then refresh this web-page and log in the Opfes way.</p>`;
-        UnknownSite.showPopupForm(message, false);
+        AbstractForm.showPopupForm(message, false);
     }
 }

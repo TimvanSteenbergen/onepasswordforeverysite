@@ -22,7 +22,7 @@ class AbstractForm {
         popupOverlay.id = "OPFES_popup_overlay";
         document.body.appendChild(popupOverlay);
         document.getElementById('OPFES_popup_cancel').addEventListener('click', function () {
-            UnknownSite.hidePopupForm();
+            AbstractForm.hidePopupForm();
         });
     }
     static showPopupForm(message = '', showSubmitPassword = false) {
