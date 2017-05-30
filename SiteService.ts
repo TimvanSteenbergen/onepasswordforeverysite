@@ -34,15 +34,10 @@ class SiteService implements ISiteService{
     static persist (mySite: Site) : Boolean {
         // let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
         let userData: UserData = UserData.retrieve();
-        let sites = userData["sites"];
-        for(site of userData["sites"])
-        {
-//         loop over de site, site
-//         if(mySite === site){
-//             update userData;
-//     } else {
-//     voeg site toe aan userData;
-// }
+        for(et site of userData["sites"]) {
+            if (mySite.getDomain() === site.getDomain()) {
+                site.setSequenceNr(mySite.getSequenceNr());
+            }
         }
         userData.persist();
         return true;
