@@ -52,10 +52,10 @@
                     new Login(thisSite, pwdInputs);
                 }
                 else if (pwdInputs.length === 2) {
-                    new NewAndVerifyPassword(thisSite, pwdInputs);
+                    new NewAndVerifyPassword(thisSite, pwdInputs, response);
                 }
                 else if (pwdInputs.length === 3) {
-                    new OldNewAndVerifyPassword(thisSite, pwdInputs);
+                    new OldNewAndVerifyPassword(thisSite, pwdInputs, response);
                 }
             }
         });

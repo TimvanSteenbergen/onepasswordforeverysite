@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Ik heb nog geen data gevonden.');
     }
     else {
-        console.log('Ik heb data gevonden.');
+        console.log('Ik heb userdata gevonden.');
         // document.getElementById('OPFES_InputGetUserData').hidden;
         OPFES_WorkWithUserData(userData);
     }

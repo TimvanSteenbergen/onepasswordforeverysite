@@ -53,9 +53,9 @@
                 } else if (pwdInputs.length === 1) { //Login form detected with only one passwordfield and the site is in the userData,
                     new Login(thisSite, pwdInputs);
                 } else if (pwdInputs.length === 2) { //Login form detected with two password-fields. Likely new and verify-password
-                    new NewAndVerifyPassword(thisSite, pwdInputs);
+                    new NewAndVerifyPassword(thisSite, pwdInputs, response);
                 } else if (pwdInputs.length === 3) { //Login form detected with three password-fields. Likely respectivly: old, new and verify-password
-                    new OldNewAndVerifyPassword(thisSite, pwdInputs);
+                    new OldNewAndVerifyPassword(thisSite, pwdInputs, response);
                 }
             }
         });

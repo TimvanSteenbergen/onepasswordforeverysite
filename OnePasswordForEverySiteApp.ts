@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (userData.sites.length === 0) { //then show the Upload-button
         console.log('Ik heb nog geen data gevonden.');
     } else { //then show the userData in the popup screen
-        console.log('Ik heb data gevonden.');
+        console.log('Ik heb userdata gevonden.');
         // document.getElementById('OPFES_InputGetUserData').hidden;
         OPFES_WorkWithUserData(userData);
     }

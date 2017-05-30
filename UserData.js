@@ -14,7 +14,7 @@ class UserData {
      *
      * @param key
      * @param value if this contains a stringified UserData-instance, a UserData-instance will get returned
-     * @returns {any}
+     * @returns {Site[]|any}
      */
     static reviver(key, value) {
         if (key !== "") {
@@ -64,7 +64,7 @@ class UserData {
             "use strict";
             let reader = new FileReader();
             reader.onload = function (e) {
-                console.log(`Loading the file. Event is: ${e}`);
+                console.log(`Loading your datafile. Event is: ${e}`);
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
                 let dataString = e.target.result;
                 let userData = JSON.parse(dataString, UserData.reviver);

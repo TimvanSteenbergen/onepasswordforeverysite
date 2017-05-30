@@ -24,7 +24,7 @@ class UserData implements IUserData {
      *
      * @param key
      * @param value if this contains a stringified UserData-instance, a UserData-instance will get returned
-     * @returns {any}
+     * @returns {Site[]|any}
      */
     static reviver(key, value): any {
         if (key !== "") {
@@ -87,7 +87,7 @@ class UserData implements IUserData {
             "use strict";
             let reader = new FileReader();
             reader.onload = function (e) {
-                console.log(`Loading the file. Event is: ${e}`);
+                console.log(`Loading your datafile. Event is: ${e}`);
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
                 let dataString: string = (<FileReader>e.target).result;
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);
@@ -181,7 +181,7 @@ class UserData implements IUserData {
                     "yourWebsiteLoginData.txt",
                     true
                 );
-                alert('This site is in your hands now, containing your user-id\'s and passwords\'. Keep it safe.')
+                alert('This site is in your hands now, containing your user-id\'s and passwords\'. Keep it safe.');
                 console.log('You have downloaded the userdata containing your user-id\'s and passwords\'.')
             }
             //@todo encrypt this exportData

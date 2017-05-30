@@ -3,6 +3,8 @@
  *
  * This is the PopupForm for webpages having three password-fields: old, new and verify.
  * We are trying to generate a new password, copy it to both fields and submit the form.
+ *
+ * Example sites: npmjs.com/login
  */
 class OldNewAndVerifyPassword extends NewAndVerifyPassword {
     constructor(thisSite, pwdInputs) {

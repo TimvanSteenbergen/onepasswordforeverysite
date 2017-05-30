@@ -15,6 +15,7 @@
       ],
       "js": [
         "CustomerBrowser.js",
+        "UserData.js",
         "LoginElement.js",
         "SiteService.js",
         "Site.js",
