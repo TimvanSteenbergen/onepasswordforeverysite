@@ -30,12 +30,10 @@
     }
     pwdInputs = getVisiblePwdInputFields();
     if (pwdInputs.length === 0) {
-        //There are no password-fields on this site, so no need for me to do anything.
         return;
     }
     else {
-        chrome.storage.local.get("_sites", function (response) {
-            //Login form detected, now determine the PopupFormType that has to get called
+        chrome.storage.local.get(null, function (response) {
             if (!response._sites || response._sites.length === 0) {
                 new NoUserData();
             }
@@ -52,10 +50,10 @@
                     new Login(thisSite, pwdInputs);
                 }
                 else if (pwdInputs.length === 2) {
-                    new NewAndVerifyPassword(thisSite, pwdInputs, response);
+                    new NewAndVerifyPassword(thisSite, pwdInputs);
                 }
                 else if (pwdInputs.length === 3) {
-                    new OldNewAndVerifyPassword(thisSite, pwdInputs, response);
+                    new OldNewAndVerifyPassword(thisSite, pwdInputs);
                 }
             }
         });

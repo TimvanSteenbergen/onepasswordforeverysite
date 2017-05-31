@@ -32,15 +32,13 @@
     }
 
     pwdInputs = getVisiblePwdInputFields();
-    if (pwdInputs.length === 0) {
-        //There are no password-fields on this site, so no need for me to do anything.
+    if (pwdInputs.length === 0) {//There are no password-fields on this page, so no need for me to do anything.
         return;
-    } else {
-        chrome.storage.local.get("_sites", function (response) {
-            //Login form detected, now determine the PopupFormType that has to get called
-            if (!response._sites || response._sites.length === 0) { //Login form detected, but no UserData is yet available to OPFES. User should upload or initiate userData
+    } else {//Login form detected...
+        chrome.storage.local.get(null, function (response) {
+            if (!response._sites || response._sites.length === 0) { //..., but no UserData is yet available to OPFES. User should upload or initiate userData
                 new NoUserData();
-            } else {
+            } else {//Login form detected AND userdata is available! Now determine the PopupFormType that has to get called
                 for (let site of response._sites) {
                     if (window.location.href.indexOf(site.domain) >= 0) {
                         thisSite = new Site(
@@ -53,9 +51,9 @@
                 } else if (pwdInputs.length === 1) { //Login form detected with only one passwordfield and the site is in the userData,
                     new Login(thisSite, pwdInputs);
                 } else if (pwdInputs.length === 2) { //Login form detected with two password-fields. Likely new and verify-password
-                    new NewAndVerifyPassword(thisSite, pwdInputs, response);
+                    new NewAndVerifyPassword(thisSite, pwdInputs);
                 } else if (pwdInputs.length === 3) { //Login form detected with three password-fields. Likely respectivly: old, new and verify-password
-                    new OldNewAndVerifyPassword(thisSite, pwdInputs, response);
+                    new OldNewAndVerifyPassword(thisSite, pwdInputs);
                 }
             }
         });
