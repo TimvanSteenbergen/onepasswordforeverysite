@@ -7,7 +7,7 @@
  * Example sites: sourcerers.nl/login
  */
 class NewAndVerifyPassword extends AbstractForm {
-    constructor(thisSite, pwdInputs, response) {
+    constructor(thisSite, pwdInputs) {
         super();
         this.thisSite = thisSite;
         // Now let me ask the Opfes-password, generate the password and put it in the new and verify passwordfields.
@@ -30,6 +30,7 @@ class NewAndVerifyPassword extends AbstractForm {
         if (opfesPassword !== null && opfesPassword !== "") {
             thisSite.setSequenceNr(thisSite.getSequenceNr());
             generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
+            console.log(`pwd: ${generatedPassword}`);
             pwdInputs[0].value = generatedPassword;
             pwdInputs[1].value = generatedPassword;
             submitButton = pwdInputs[0].form.querySelector('[type="submit"]'); //works at lots, for instance: gavelsnipe.com, npmjs.com

@@ -9,7 +9,7 @@
 class NewAndVerifyPassword extends AbstractForm {
     thisSite: Site;
 
-    constructor(thisSite, pwdInputs, response) {
+    constructor(thisSite, pwdInputs) {
         super();
         this.thisSite = thisSite;
 
@@ -35,6 +35,7 @@ class NewAndVerifyPassword extends AbstractForm {
         if (opfesPassword !== null && opfesPassword !== "") {
             thisSite.setSequenceNr(thisSite.getSequenceNr());
             generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
+            console.log(`pwd: ${generatedPassword}`);
             pwdInputs[0].value = generatedPassword;
             pwdInputs[1].value = generatedPassword;
             submitButton = <HTMLElement>pwdInputs[0].form.querySelector('[type="submit"]');//works at lots, for instance: gavelsnipe.com, npmjs.com
