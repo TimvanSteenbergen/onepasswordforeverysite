@@ -104,7 +104,7 @@
         //If on a loginpage of a domain that is not in the userData...
         if (!thisSite) {
             //...then tell the user to change her password and add this domain to the userData
-            let message = `I, Opfes, do see a login form, but you have not yet logged in to this site using my assistance. If you wish to do so, then: ` +
+            let message = `I, Opfes, do see a login form, but you have not yet logged in to ${(SiteService.getDomain(window.location.href))} using my assistance. If you wish to do so, then: ` +
                 `<ol>` +
                 `<li>login like you used to</li>` +
                 `<li>go to your account-settings to the option where you can change your password.</li>` +
