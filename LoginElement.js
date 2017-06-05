@@ -33,7 +33,7 @@
         return;
     }
     else {
-        chrome.storage.local.get(null, function (response) {
+        chrome.storage.local.get('_sites', function (response) {
             if (!response._sites || response._sites.length === 0) {
                 new NoUserData();
             }

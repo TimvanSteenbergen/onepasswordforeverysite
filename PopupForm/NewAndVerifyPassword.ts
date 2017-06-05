@@ -4,7 +4,7 @@
  * This is the PopupForm for webpages having two password-fields: new and verify.
  * We are trying to generate a new password, copy it to both fields and submit the form.
  *
- * Example sites: sourcerers.nl/login
+ * Example sites: sourcerers.nl/PopupForm
  */
 class NewAndVerifyPassword extends AbstractForm {
     thisSite: Site;
@@ -33,7 +33,7 @@ class NewAndVerifyPassword extends AbstractForm {
 
         AbstractForm.hidePopupForm();
         if (opfesPassword !== null && opfesPassword !== "") {
-            thisSite.setSequenceNr(thisSite.getSequenceNr());
+            thisSite.setSequenceNr(thisSite.getSequenceNr() + 1);
             generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
             console.log(`pwd: ${generatedPassword}`);
             pwdInputs[0].value = generatedPassword;
@@ -46,7 +46,7 @@ class NewAndVerifyPassword extends AbstractForm {
                 submitButton = <HTMLElement>pwdInputs[0].form.querySelector('[id*="submit"]');//works at for instance ...??
             }
             if (submitButton) { // If the submitbutton is found: click it!
-                SiteService.persist(thisSite);
+                SiteService.persist(thisSite);//Since you changed the sequencenr of this site, save it!
                 submitButton.click();
             }
         }

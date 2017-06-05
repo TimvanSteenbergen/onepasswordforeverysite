@@ -21,14 +21,14 @@ class SiteService {
         return true;
     }
     static persist(mySite) {
-        // let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
-        let userData = UserData.retrieve();
-        for (let site of userData["sites"]) {
-            if (mySite.getDomain() === site.getDomain()) {
-                site.setSequenceNr(mySite.getSequenceNr());
-            }
-        }
-        userData.persist();
+        // // let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
+        // let sites: Site[] = SiteService.getAll();
+        // for(let site of sites) {
+        //     if (mySite.getDomain() === site.getDomain()) {
+        //         site.setSequenceNr(mySite.getSequenceNr());
+        //     }
+        // }
+        // userData.persist();
         return true;
     }
     getByDomain(domain) {

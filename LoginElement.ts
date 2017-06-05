@@ -35,7 +35,7 @@
     if (pwdInputs.length === 0) {//There are no password-fields on this page, so no need for me to do anything.
         return;
     } else {//Login form detected...
-        chrome.storage.local.get(null, function (response) {
+        chrome.storage.local.get('_sites', function (response) {
             if (!response._sites || response._sites.length === 0) { //..., but no UserData is yet available to OPFES. User should upload or initiate userData
                 new NoUserData();
             } else {//Login form detected AND userdata is available! Now determine the PopupFormType that has to get called

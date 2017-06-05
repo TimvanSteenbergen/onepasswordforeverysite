@@ -36,10 +36,10 @@
         "*://*.opfes.com/runtests.html"
       ],
       "js": [
-        "SiteServiceTests.js"
+        "tests/SiteServiceTests.js"
       ],
       "css": [
-        "SiteServiceTests.css"
+        "tests/SiteServiceTests.css"
       ]
     }
   ],

@@ -1,16 +1,25 @@
 <!DOCTYPE html>
+<!-- These tests can be run:
+ - running a local webserver (for instance using php'2 version: php -S localhost:8000),
+ - then in the browser having the opfes-addon active,
+ - upload the userData from demodata:
+ - going to page: localhost:8000/tests  -->
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Tests for Opfes</title>
 </head>
 <body>
-<p>
-    Let's see if Opfes still does what she is supposed to do.</br>
-    <a href="tests\login.html">Login</a></br>
-    <a href="tests\login\regular.html">Login - Regular userid and password</a></br>
-    <a href="tests\newAndVerifyPassword.html">New and Verify password</a></br>
-    <a href="tests\login\regular.html">New and Verify password - Regular userid and password</a></br>
+<h1>Testingpage</h1>
+<p>Let's see if Opfes still does what she is supposed to do.</p>
+<p>Test the login forms:
+<ul>
+    <li>
+        <a href="tests\PopupForm\login.html">Login - Regular userid and password</a></br>
+        <a href="tests\PopupForm\newAndVerifyPassword.html">New and Verify password</a></br>
+    </li>
+</ul>
 </p>
 </body>
 </html>

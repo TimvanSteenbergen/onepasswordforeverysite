@@ -4,7 +4,7 @@
  * This is the PopupForm for webpages having three password-fields: old, new and verify.
  * We are trying to generate a new password, copy it to both fields and submit the form.
  *
- * Example sites: npmjs.com/login
+ * Example sites: npmjs.com/PopupForm
  */
 class OldNewAndVerifyPassword extends NewAndVerifyPassword {
     constructor(thisSite, pwdInputs) {
@@ -46,6 +46,7 @@ class OldNewAndVerifyPassword extends NewAndVerifyPassword {
                     alert('You will need to click the submit button yourself for this site. This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ' +
                         'See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.');
                 } //Does not work on ebay.nl...
+                // pwdInputs[0].form.submit(); //.. but this neither...
             }
         }
     }

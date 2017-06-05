@@ -1,5 +1,7 @@
+const userDataDefaultFileName = "yourUserData.json";
 class UserData {
     constructor(_sites) {
+        this._sites = _sites;
         this._sites = _sites;
     }
     get sites() {
@@ -42,9 +44,12 @@ class UserData {
      * @returns {any} if the stored value can get revived, a UserData instance is returned, otherwise the value itself is returned
      */
     static retrieve() {
-        console.log('Your localData is now retrieved from your browser\'s memory into Opfes\' memory.');
         let result = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
-        chrome.storage.local.get("_sites", function () { });
+        console.log('Your localData is now retrieved from your browser\'s memory into Opfes\' memory.\nThis is called from:\n');
+        console.trace();
+        // if (result['_sites'].length === 0){
+        chrome.storage.local.get("_sites", function () { }); //NB: Asynchronous call!!
+        // }
         return result;
     }
     /**
@@ -53,7 +58,7 @@ class UserData {
     persist() {
         let stringifiedUserData = JSON.stringify(this);
         localStorage.setItem("OPFES_UserData", stringifiedUserData);
-        chrome.storage.local.set(this); //Replaced the localStorage
+        // chrome.storage.local.set(this); //Replaced the localStorage
         console.log(`Your localData is now updated to ${stringifiedUserData}.`);
     }
     /**
@@ -64,7 +69,7 @@ class UserData {
             "use strict";
             let reader = new FileReader();
             reader.onload = function (e) {
-                console.log(`Loading your datafile. Event is: ${e}`);
+                console.log(`Loading your datafile. Event's target is: ${e.target}`);
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
                 let dataString = e.target.result;
                 let userData = JSON.parse(dataString, UserData.reviver);
@@ -96,7 +101,9 @@ class UserData {
     static download() {
         (function (view) {
             "use strict";
-            let document = view.document, get_blob = function () {
+            let document = view.document
+            // only get URL when necessary in case Blob.js hasn't defined it yet
+            , get_blob = function () {
                 return view.Blob;
             };
             let userData = UserData.retrieve();
@@ -104,7 +111,7 @@ class UserData {
             //@todo encrypt this exportData
             if (confirm('This will copy the sites and their related properties to a file for you to store on your local drive.')) {
                 let BB = get_blob();
-                saveAs(new BB([exportData], { type: "text/plain;charset=" + document.characterSet }), "yourWebsiteLoginData.txt", true);
+                saveAs(new BB([exportData], { type: "text/plain;charset=" + document.characterSet }), userDataDefaultFileName, true);
                 console.log('You have downloaded the userdata containing your user-id\'s but not your passwords\'.');
             }
             // });
@@ -116,7 +123,9 @@ class UserData {
     static downloadPasswords() {
         (function (view) {
             "use strict";
-            let document = view.document, get_blob = function () {
+            let document = view.document
+            // only get URL when necessary in case Blob.js hasn't defined it yet
+            , get_blob = function () {
                 return view.Blob;
             };
             let userData = UserData.retrieve();
@@ -138,7 +147,7 @@ class UserData {
                     passwordData.push({ site, sitePassword });
                 }
                 let exportData = JSON.stringify(passwordData);
-                saveAs(new BB([exportData], { type: "text/plain;charset=" + document.characterSet }), "yourWebsiteLoginData.txt", true);
+                saveAs(new BB([exportData], { type: "text/plain;charset=" + document.characterSet }), userDataDefaultFileName, true);
                 alert('This site is in your hands now, containing your user-id\'s and passwords\'. Keep it safe.');
                 console.log('You have downloaded the userdata containing your user-id\'s and passwords\'.');
             }
