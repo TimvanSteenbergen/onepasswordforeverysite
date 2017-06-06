@@ -86,7 +86,7 @@ class UserData implements IUserData {
     persist() {
         let stringifiedUserData: string = JSON.stringify(this);
         localStorage.setItem("OPFES_UserData", stringifiedUserData);
-        // chrome.storage.local.set(this); //Replaced the localStorage
+        chrome.storage.local.set(this); //Replaced the localStorage because localStorage can not be red from activeTab's page, only from the toolbarbutton-form
         console.log(`Your localData is now updated to ${stringifiedUserData}.`);
     }
 

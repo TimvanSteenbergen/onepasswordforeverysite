@@ -14,23 +14,6 @@
 (function () {
 
     let pwdInputs: HTMLInputElement[];
-
-    function getVisiblePwdInputFields(maxPwdInputs: number = 5) {
-        let inputElements: NodeListOf<HTMLInputElement> = document.getElementsByTagName("input");
-        let cnt: number = 0;
-        let pwdInputs: HTMLInputElement[] = [];
-        for (let i = 0; i < inputElements.length; i++) {
-            if (inputElements[i].type.toLowerCase() === `password`
-                && inputElements[i].id.substring(0, 5) !== `OPFES`
-                && !isHidden(inputElements[i])) {
-                // We found a password field! Let's add it to our collection:
-                pwdInputs[cnt++] = inputElements[i];
-                if (cnt > maxPwdInputs) return pwdInputs;
-            }
-        }
-        return pwdInputs;
-    }
-
     pwdInputs = getVisiblePwdInputFields();
     if (pwdInputs.length === 0) {//There are no password-fields on this page, so no need for me to do anything.
         return;
@@ -65,4 +48,21 @@
     function isHidden(el) { // Check if the password-input-field is hidden for the user
         return (el.offsetParent === null)
     }
+
+    function getVisiblePwdInputFields(maxPwdInputs: number = 5) {
+        let inputElements: NodeListOf<HTMLInputElement> = document.getElementsByTagName("input");
+        let cnt: number = 0;
+        let pwdInputs: HTMLInputElement[] = [];
+        for (let i = 0; i < inputElements.length; i++) {
+            if (inputElements[i].type.toLowerCase() === `password`
+                && inputElements[i].id.substring(0, 5) !== `OPFES`
+                && !isHidden(inputElements[i])) {
+                // We found a password field! Let's add it to our collection:
+                pwdInputs[cnt++] = inputElements[i];
+                if (cnt > maxPwdInputs) return pwdInputs;
+            }
+        }
+        return pwdInputs;
+    }
+
 })();

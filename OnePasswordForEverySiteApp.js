@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const specialCharacters = ["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
     let userData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
     if (userData.sites.length === 0) {
-        console.log('Ik heb nog geen data gevonden.');
+        console.log('I have not yet any userData in my memory.');
     }
     else {
-        console.log('Ik heb userdata gevonden.');
+        console.log('I have found userData in my memory.');
         // document.getElementById('OPFES_InputGetUserData').hidden;
         OPFES_WorkWithUserData(userData);
     }

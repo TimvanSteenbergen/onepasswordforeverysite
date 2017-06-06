@@ -59,16 +59,6 @@
       "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
       "lastUsed": "2017-03-27T09:08:23.998Z",
       "remark": "For all my running shoes"
-    },
-    {
-      "domain": "toernooi.nl",
-      "salt": "tovernarij",
-      "userId": "tim@tieka.nl",
-      "sequenceNr": 32,
-      "maxPwdChars": 10,
-      "allowedSpecialCharacters":"_-.",
-      "lastUsed": "2017-03-27T09:08:23.998Z",
-      "remark": "Sportstournaments"
     }
   ]
 }

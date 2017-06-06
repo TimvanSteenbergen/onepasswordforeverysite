@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
     if (userData.sites.length === 0) { //then show the Upload-button
-        console.log('Ik heb nog geen data gevonden.');
+        console.log('I have not yet any userData in my memory.');
     } else { //then show the userData in the popup screen
-        console.log('Ik heb userdata gevonden.');
+        console.log('I have found userData in my memory.');
         // document.getElementById('OPFES_InputGetUserData').hidden;
         OPFES_WorkWithUserData(userData);
     }
