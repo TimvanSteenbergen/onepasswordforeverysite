@@ -1,11 +1,18 @@
 /**
  * Created by Tim on 12-2-2017.
+ * 'Userdata' is in the browser's/app's memory and contains the user's sites-information as well as
+ * any other data like configuration settings that the user can have set (none so far, june '17)
+ *
+ * UserData can be im- or exported to a local file, default named 'yourUserData.json'
  */
 interface IUserData {
-    "sites": Site[],
+    sites: Site[],
     // TODO, when we start using this for apps as well, add:
     // "app": App[],
 }
+
+const userDataDefaultFileName: string = "yourUserData.json";
+
 class UserData implements IUserData {
     public get sites(): Site[] {
         return this._sites;
@@ -16,6 +23,7 @@ class UserData implements IUserData {
     }
 
     constructor(private _sites: Site[]) {
+        this._sites = _sites;
     }
 
     /**
@@ -24,7 +32,7 @@ class UserData implements IUserData {
      *
      * @param key
      * @param value if this contains a stringified UserData-instance, a UserData-instance will get returned
-     * @returns {any}
+     * @returns {Site[]|any}
      */
     static reviver(key, value): any {
         if (key !== "") {
@@ -63,9 +71,12 @@ class UserData implements IUserData {
      * @returns {any} if the stored value can get revived, a UserData instance is returned, otherwise the value itself is returned
      */
     static retrieve() {
-        console.log('Your localData is now retrieved from your browser\'s memory into Opfes\' memory.');
         let result = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
-        chrome.storage.local.get("_sites",function(){});
+        console.log('Your localData is now retrieved from your browser\'s memory into Opfes\' memory.\nThis is called from:\n');
+        console.trace();
+        // if (result['_sites'].length === 0){
+        chrome.storage.local.get("_sites",function(){}); //NB: Asynchronous call!!
+        // }
         return result;
     }
 
@@ -75,7 +86,7 @@ class UserData implements IUserData {
     persist() {
         let stringifiedUserData: string = JSON.stringify(this);
         localStorage.setItem("OPFES_UserData", stringifiedUserData);
-        chrome.storage.local.set(this); //Replaced the localStorage
+        // chrome.storage.local.set(this); //Replaced the localStorage
         console.log(`Your localData is now updated to ${stringifiedUserData}.`);
     }
 
@@ -87,7 +98,7 @@ class UserData implements IUserData {
             "use strict";
             let reader = new FileReader();
             reader.onload = function (e) {
-                console.log(`Loading the file. Event is: ${e}`);
+                console.log(`Loading your datafile. Event's target is: ${e.target}`);
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
                 let dataString: string = (<FileReader>e.target).result;
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);
@@ -134,7 +145,7 @@ class UserData implements IUserData {
                 let BB = get_blob();
                 saveAs(
                     new BB([exportData], {type: "text/plain;charset=" + document.characterSet}),
-                    "yourWebsiteLoginData.txt",
+                    userDataDefaultFileName,
                     true
                 );
                 console.log('You have downloaded the userdata containing your user-id\'s but not your passwords\'.')
@@ -178,10 +189,10 @@ class UserData implements IUserData {
                 let exportData: string = JSON.stringify(passwordData);
                 saveAs(
                     new BB([exportData], {type: "text/plain;charset=" + document.characterSet}),
-                    "yourWebsiteLoginData.txt",
+                    userDataDefaultFileName,
                     true
                 );
-                alert('This site is in your hands now, containing your user-id\'s and passwords\'. Keep it safe.')
+                alert('This site is in your hands now, containing your user-id\'s and passwords\'. Keep it safe.');
                 console.log('You have downloaded the userdata containing your user-id\'s and passwords\'.')
             }
             //@todo encrypt this exportData

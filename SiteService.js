@@ -20,6 +20,17 @@ class SiteService {
     add(site) {
         return true;
     }
+    static persist(mySite) {
+        // // let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
+        // let sites: Site[] = SiteService.getAll();
+        // for(let site of sites) {
+        //     if (mySite.getDomain() === site.getDomain()) {
+        //         site.setSequenceNr(mySite.getSequenceNr());
+        //     }
+        // }
+        // userData.persist();
+        return true;
+    }
     getByDomain(domain) {
         let site = new Site;
         getTheLocallyStoredSites();
@@ -33,7 +44,7 @@ class SiteService {
      * This function takes its parameters and returns a hashed password that:
      * - has length of 120 characters (unless you change the constant passwordLength)
      * - is made up of 64 different characters
-     * - includes at least one: uppercase, lowercase, integer and special character
+     * - includes at least two of each: uppercase, lowercase, integer and special character
      * @param site: Site
      * @param appPassword: string
      * @returns {string}

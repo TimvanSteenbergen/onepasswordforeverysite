@@ -8,15 +8,41 @@
     "default_popup": "OnePasswordForEverySiteApp.html",
     "default_title": "Hi, I'm OPFES.\nI will help you log in everywhere.\nYou will only need one password!\nI will not store any of your passwords anywhere!"
   },
-  "content_scripts": [{
-    "matches": ["<all_urls>"],
-    "js": ["CustomerBrowser.js", "LoginElement.js", "SiteService.js", "Site.js", "SHA512.js"],
-    "css": ["PasswordPopup.css"]
-  },{
-    "matches": ["*://*.opfes.com/runtests.html"],
-    "js": ["SiteServiceTests.js"],
-    "css": ["SiteServiceTests.css"]
-  }],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "CustomerBrowser.js",
+        "UserData.js",
+        "LoginElement.js",
+        "SiteService.js",
+        "Site.js",
+        "SHA512.js",
+        "PopupForm/AbstractForm.js",
+        "PopupForm/Login.js",
+        "PopupForm/UnknownSite.js",
+        "PopupForm/NoUserData.js",
+        "PopupForm/NewAndVerifyPassword.js",
+        "PopupForm/OldNewAndVerifyPassword.js"
+      ],
+      "css": [
+        "PasswordPopup.css"
+      ]
+    },
+    {
+      "matches": [
+        "*://*.opfes.com/runtests.html"
+      ],
+      "js": [
+        "tests/SiteServiceTests.js"
+      ],
+      "css": [
+        "tests/SiteServiceTests.css"
+      ]
+    }
+  ],
   "icons": {
     "19": "icons\/opfes_19.png",
     "32": "icons\/opfes_32.png",
