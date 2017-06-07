@@ -27,16 +27,13 @@ class Login extends AbstractForm {
                 userNameInputElement.value = userNameInputValue;
             }
             else {
-                // let pwdInput: HTMLInputElement = <HTMLInputElement>getVisiblePwdInputs(1)[0];
-                // alert(`You have logged in to this site before and you used user-id ${userNameInputValue}.
-                //         \nPlease enter ${userNameInputValue} in the username input-field.
-                //         \nThen enter your password in my password-field and click on my icon next to it.`);
                 alert('I have not been able to find the input field for the accountname/userid. ' +
                     'Please manually enter the accountname where possible. ');
                 return;
             }
         }
-        else { }
+        else {
+        }
         // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
         AbstractForm.showPopupForm(`On this site you have logged in previously with user-id ${thisSite.getUserId()}`, true);
         document.getElementById('OPFES_popup_password').focus();
@@ -93,7 +90,6 @@ class Login extends AbstractForm {
                     alert('You will need to click the submit button yourself for this site. This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ' +
                         'See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.');
                 } //Does not work on ebay.nl...
-                // pwdInputs[0].form.submit(); //.. but this neither...
             }
         }
     }

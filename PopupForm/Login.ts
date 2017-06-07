@@ -29,15 +29,13 @@ class Login extends AbstractForm {
             if (userNameInputElement) {
                 userNameInputElement.value = userNameInputValue;
             } else {
-                // let pwdInput: HTMLInputElement = <HTMLInputElement>getVisiblePwdInputs(1)[0];
-                // alert(`You have logged in to this site before and you used user-id ${userNameInputValue}.
-                //         \nPlease enter ${userNameInputValue} in the username input-field.
-                //         \nThen enter your password in my password-field and click on my icon next to it.`);
                 alert('I have not been able to find the input field for the accountname/userid. ' +
                     'Please manually enter the accountname where possible. ');
                 return;
             }
-        } else { /** Not possible, every site does have a value in field 'userid'; */}
+        } else {
+            /** Not possible, every site does have a value in field 'userid'; */
+        }
 
         // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
         AbstractForm.showPopupForm(`On this site you have logged in previously with user-id ${thisSite.getUserId()}`, true);

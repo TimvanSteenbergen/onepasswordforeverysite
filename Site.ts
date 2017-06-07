@@ -4,10 +4,10 @@
 interface ISite {
     getDomain();
     setDomain(value: string);
-    getSalt();
-    setSalt(value: string);
     getUserId();
     setUserId(value: string);
+    getSalt();
+    setSalt(value: string);
     getSequenceNr();
     setSequenceNr(value: number);
     getMaxPwdChars();
@@ -22,8 +22,8 @@ interface ISite {
 
 class Site implements ISite {
     constructor(private domain: string = '',
-                private salt: string = '',
                 private userId: string = '',
+                private salt: string = '',
                 private sequenceNr: number = 1,
                 private maxPwdChars: number = 120,
                 private allowedSpecialCharacters: string = '',
@@ -39,14 +39,6 @@ class Site implements ISite {
         this.domain = value;
     }
 
-    public getSalt(): string {
-        return this.salt;
-    }
-
-    public setSalt(value: string) {
-        this.salt = value;
-    }
-
     public getUserId(): string {
         return this.userId;
     }
@@ -55,6 +47,13 @@ class Site implements ISite {
         this.userId = value;
     }
 
+    public getSalt(): string {
+        return this.salt;
+    }
+
+    public setSalt(value: string) {
+        this.salt = value;
+    }
     public getSequenceNr(): number {
         return this.sequenceNr;
     }

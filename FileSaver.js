@@ -16,9 +16,7 @@ let saveAs = (function (view) {
     if (typeof view === "undefined" || typeof navigator !== "undefined" && /MSIE [1-9]\./.test(navigator.userAgent)) {
         return;
     }
-    let doc = view.document
-    // only get URL when necessary in case Blob.js hasn't overridden it yet
-    , get_URL = function () {
+    let doc = view.document, get_URL = function () {
         return view.URL || view.webkitURL || view;
     }, save_link = doc.createElementNS("http://www.w3.org/1999/xhtml", "a"), can_use_save_link = "download" in save_link, click = function (node) {
         let event = new MouseEvent("click");
@@ -27,9 +25,7 @@ let saveAs = (function (view) {
         (view.setImmediate || view.setTimeout)(function () {
             throw ex;
         }, 0);
-    }, force_saveable_type = "application/octet-stream"
-    // the Blob API is fundamentally broken as there is no "downloadfinished" event to subscribe to
-    , arbitrary_revoke_timeout = 1000 * 40 // in ms
+    }, force_saveable_type = "application/octet-stream", arbitrary_revoke_timeout = 1000 * 40 // in ms
     , revoke = function (file) {
         let revoker = function () {
             if (typeof file === "string") {
@@ -68,9 +64,7 @@ let saveAs = (function (view) {
         // First try a.download, then web filesystem, then object URLs
         let filesaver = this, type = blob.type, force = type === force_saveable_type, object_url, dispatch_all = function () {
             dispatch(filesaver, ["writestart", "progress", "write", "writeend"], '');
-        }
-        // on any filesys errors revert to saving with object URLs
-        , fs_error = function () {
+        }, fs_error = function () {
             if ((is_chrome_ios || (force && is_safari)) && view.FileReader) {
                 // Safari doesn't allow downloading of blob urls
                 let reader = new FileReader();

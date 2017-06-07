@@ -1,8 +1,8 @@
 class Site {
-    constructor(domain = '', salt = '', userId = '', sequenceNr = 1, maxPwdChars = 120, allowedSpecialCharacters = '', lastUsed = new Date(), remark = '') {
+    constructor(domain = '', userId = '', salt = '', sequenceNr = 1, maxPwdChars = 120, allowedSpecialCharacters = '', lastUsed = new Date(), remark = '') {
         this.domain = domain;
-        this.salt = salt;
         this.userId = userId;
+        this.salt = salt;
         this.sequenceNr = sequenceNr;
         this.maxPwdChars = maxPwdChars;
         this.allowedSpecialCharacters = allowedSpecialCharacters;
@@ -15,17 +15,17 @@ class Site {
     setDomain(value) {
         this.domain = value;
     }
-    getSalt() {
-        return this.salt;
-    }
-    setSalt(value) {
-        this.salt = value;
-    }
     getUserId() {
         return this.userId;
     }
     setUserId(value) {
         this.userId = value;
+    }
+    getSalt() {
+        return this.salt;
+    }
+    setSalt(value) {
+        this.salt = value;
     }
     getSequenceNr() {
         return this.sequenceNr;

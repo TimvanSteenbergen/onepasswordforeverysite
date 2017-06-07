@@ -46,7 +46,6 @@ class OldNewAndVerifyPassword extends NewAndVerifyPassword {
                     alert('You will need to click the submit button yourself for this site. This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ' +
                         'See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.');
                 } //Does not work on ebay.nl...
-                // pwdInputs[0].form.submit(); //.. but this neither...
             }
         }
     }

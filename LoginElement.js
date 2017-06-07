@@ -12,22 +12,6 @@
  */
 (function () {
     let pwdInputs;
-    function getVisiblePwdInputFields(maxPwdInputs = 5) {
-        let inputElements = document.getElementsByTagName("input");
-        let cnt = 0;
-        let pwdInputs = [];
-        for (let i = 0; i < inputElements.length; i++) {
-            if (inputElements[i].type.toLowerCase() === `password`
-                && inputElements[i].id.substring(0, 5) !== `OPFES`
-                && !isHidden(inputElements[i])) {
-                // We found a password field! Let's add it to our collection:
-                pwdInputs[cnt++] = inputElements[i];
-                if (cnt > maxPwdInputs)
-                    return pwdInputs;
-            }
-        }
-        return pwdInputs;
-    }
     pwdInputs = getVisiblePwdInputFields();
     if (pwdInputs.length === 0) {
         return;
@@ -40,7 +24,7 @@
             else {
                 for (let site of response._sites) {
                     if (window.location.href.indexOf(site.domain) >= 0) {
-                        thisSite = new Site(site.domain, site.salt, site.userId, site.sequenceNr, site.maxPwdChars, site.allowedSpecialCharacters, site.lastUsed, site.remark);
+                        thisSite = new Site(site.domain, site.userId, site.salt, site.sequenceNr, site.maxPwdChars, site.allowedSpecialCharacters, site.lastUsed, site.remark);
                     }
                 }
                 if (!thisSite) {
@@ -63,6 +47,22 @@
     // Returns a boolean
     function isHidden(el) {
         return (el.offsetParent === null);
+    }
+    function getVisiblePwdInputFields(maxPwdInputs = 5) {
+        let inputElements = document.getElementsByTagName("input");
+        let cnt = 0;
+        let pwdInputs = [];
+        for (let i = 0; i < inputElements.length; i++) {
+            if (inputElements[i].type.toLowerCase() === `password`
+                && inputElements[i].id.substring(0, 5) !== `OPFES`
+                && !isHidden(inputElements[i])) {
+                // We found a password field! Let's add it to our collection:
+                pwdInputs[cnt++] = inputElements[i];
+                if (cnt > maxPwdInputs)
+                    return pwdInputs;
+            }
+        }
+        return pwdInputs;
     }
 })();
 //# sourceMappingURL=LoginElement.js.map
