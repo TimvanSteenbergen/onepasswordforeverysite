@@ -2,8 +2,8 @@
   "_sites": [
     {
       "domain": "gavelsnipe.com",
-      "salt": "demo",
       "userId": "demo@opfes.com",
+      "salt": "demo",
       "sequenceNr": 1,
       "maxPwdChars": 120,
       "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
@@ -12,8 +12,8 @@
     },
     {
       "domain": "spelletjes.nl",
-      "salt": "demo",
       "userId": "opfes",
+      "salt": "demo",
       "sequenceNr": 1,
       "maxPwdChars": 20,
       "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
@@ -22,8 +22,8 @@
     },
     {
       "domain": "eversource.com",
-      "salt": "Can be any text",
       "userId": "opfesdemo",
+      "salt": "Can be any text",
       "sequenceNr": 1,
       "maxPwdChars": 25,
       "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
@@ -32,8 +32,8 @@
     },
     {
       "domain": "jetbrains.com",
-      "salt": "salt",
       "userId": "demo@opfes.com",
+      "salt": "salt",
       "sequenceNr": 2,
       "maxPwdChars": 120,
       "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
@@ -42,8 +42,8 @@
     },
     {
       "domain": "amazon.co.uk",
-      "salt": "salt",
       "userId": "demo@opfes.com",
+      "salt": "salt",
       "sequenceNr": 1,
       "maxPwdChars": 120,
       "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
@@ -52,8 +52,8 @@
     },
     {
       "domain": "nike.com",
-      "salt": "demo",
       "userId": "demo@opfes.com",
+      "salt": "demo",
       "sequenceNr": 1,
       "maxPwdChars": 36,
       "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",

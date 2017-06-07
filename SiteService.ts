@@ -322,14 +322,5 @@ class SiteService implements ISiteService{
             cutOff=3;
         }
         return domainParts.slice(domainParts.length-cutOff, domainParts.length).join(".");
-
-        // let domain = url.match(/:\/\/(.[^/]+)/)[1];
-        // //remove the sub-domain(s)
-        // let numberOfDotsInDomain = (domain.match(/\./g) || []).length;
-        // for (let dot = 1; dot < numberOfDotsInDomain; dot++) {
-        //     domain = domain.substr(domain.indexOf('.') + 1, domain.length);
-        // }
-        // return domain;
     }
-
 }
