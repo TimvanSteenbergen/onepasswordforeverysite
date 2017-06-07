@@ -24,7 +24,7 @@
             else {
                 for (let site of response._sites) {
                     if (window.location.href.indexOf(site.domain) >= 0) {
-                        thisSite = new Site(site.domain, site.salt, site.userId, site.sequenceNr, site.maxPwdChars, site.allowedSpecialCharacters, site.lastUsed, site.remark);
+                        thisSite = new Site(site.domain, site.userId, site.salt, site.sequenceNr, site.maxPwdChars, site.allowedSpecialCharacters, site.lastUsed, site.remark);
                     }
                 }
                 if (!thisSite) {

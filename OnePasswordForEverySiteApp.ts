@@ -29,29 +29,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    document.getElementById('OPFES_InputDomainToggle').addEventListener('click', function () {
+    (<HTMLInputElement>document.getElementById('OPFES_InputDomainToggle')).addEventListener('click', function () {
         // showTheLocallyStoredData(userData);
         toggleChangability.call(this);
     });
-    document.getElementById('OPFES_InputUserIdToggle').addEventListener('click', function () {
+    (<HTMLInputElement>document.getElementById('OPFES_InputUserIdToggle')).addEventListener('click', function () {
         toggleChangability.call(this);
     });
-    document.getElementById('OPFES_InputSaltToggle').addEventListener('click', function () {
+    (<HTMLInputElement>document.getElementById('OPFES_InputSaltToggle')).addEventListener('click', function () {
         toggleChangability.call(this);
     });
-    document.getElementById('OPFES_SelectSequenceNrToggle').addEventListener('click', function () {
+    (<HTMLSelectElement>document.getElementById('OPFES_SelectSequenceNrToggle')).addEventListener('click', function () {
         toggleChangability.call(this);
     });
-    document.getElementById('OPFES_SelectMaxPwdCharsToggle').addEventListener('click', function () {
+    (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdCharsToggle')).addEventListener('click', function () {
         toggleChangability.call(this);
     });
-    document.getElementById('OPFES_InputAllowedSpecialCharactersToggle').addEventListener('click', function () {
+    (<HTMLInputElement>document.getElementById('OPFES_InputAllowedSpecialCharactersToggle')).addEventListener('click', function () {
         toggleChangability.call(this);
     });
-    document.getElementById('OPFES_InputRemarkToggle').addEventListener('click', function () {
+    (<HTMLInputElement>document.getElementById('OPFES_InputRemarkToggle')).addEventListener('click', function () {
         toggleChangability.call(this);
     });
-    document.getElementById('OPFES_InputAppPasswordShowHide').addEventListener('click', function () {
+    (<HTMLInputElement>document.getElementById('OPFES_InputAppPasswordShowHide')).addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 8);
         let elementToToggle = document.getElementById(elementId);
         if (this.value == 'Show') {

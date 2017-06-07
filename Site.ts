@@ -39,7 +39,6 @@ class Site implements ISite {
         this.domain = value;
     }
 
-
     public getUserId(): string {
         return this.userId;
     }

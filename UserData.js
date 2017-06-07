@@ -30,7 +30,7 @@ class UserData {
             } //the source array of sites
             for (let key in sitesArray) {
                 // let remark: string = (sitesArray[key]["remark"]) ? sitesArray[key]["remark"] : "asdf";
-                let site = new Site(sitesArray[key]["domain"], sitesArray[key]["salt"], sitesArray[key]["userId"], sitesArray[key]["sequenceNr"], sitesArray[key]["maxPwdChars"], sitesArray[key]["allowedSpecialCharacters"], new Date(sitesArray[key]["lastUsed"]), sitesArray[key]["remark"]);
+                let site = new Site(sitesArray[key]["domain"], sitesArray[key]["userId"], sitesArray[key]["salt"], sitesArray[key]["sequenceNr"], sitesArray[key]["maxPwdChars"], sitesArray[key]["allowedSpecialCharacters"], new Date(sitesArray[key]["lastUsed"]), sitesArray[key]["remark"]);
                 sites.push(site);
             }
         }
@@ -74,11 +74,11 @@ class UserData {
                 let dataString = e.target.result;
                 let userData = JSON.parse(dataString, UserData.reviver);
                 let sites = userData.sites;
-                let dataTableHTML = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>salt</td><td>userid</td><td>seq.nr</td><td>#chars</td><td>used at</td></ts><td>remark</td></thead>";
+                let dataTableHTML = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>userid</td><td>salt</td><td>seq.nr</td><td>#chars</td><td>used at</td></ts><td>remark</td></thead>";
                 for (let site of sites) {
                     dataTableHTML += `<tr><td>${site.getDomain()}</td>
-                                      <td>${site.getSalt()}</td>
                                       <td>${site.getUserId()}</td>
+                                      <td>${site.getSalt()}</td>
                                       <td>${site.getSequenceNr()}</td>
                                       <td>${site.getMaxPwdChars()}</td>
                                       <td>${site.getAllowedSpecialCharacters()}</td>
@@ -101,9 +101,7 @@ class UserData {
     static download() {
         (function (view) {
             "use strict";
-            let document = view.document
-            // only get URL when necessary in case Blob.js hasn't defined it yet
-            , get_blob = function () {
+            let document = view.document, get_blob = function () {
                 return view.Blob;
             };
             let userData = UserData.retrieve();
@@ -123,9 +121,7 @@ class UserData {
     static downloadPasswords() {
         (function (view) {
             "use strict";
-            let document = view.document
-            // only get URL when necessary in case Blob.js hasn't defined it yet
-            , get_blob = function () {
+            let document = view.document, get_blob = function () {
                 return view.Blob;
             };
             let userData = UserData.retrieve();
