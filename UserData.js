@@ -58,7 +58,7 @@ class UserData {
     persist() {
         let stringifiedUserData = JSON.stringify(this);
         localStorage.setItem("OPFES_UserData", stringifiedUserData);
-        // chrome.storage.local.set(this); //Replaced the localStorage
+        chrome.storage.local.set(this); //Replaced the localStorage
         console.log(`Your localData is now updated to ${stringifiedUserData}.`);
     }
     /**
