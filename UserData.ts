@@ -73,20 +73,21 @@ class UserData implements IUserData {
     static retrieve() {
         let result = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
         console.log('Your localData is now retrieved from your browser\'s memory into Opfes\' memory.\nThis is called from:\n');
-        console.trace();
+        // console.trace();
         // if (result['_sites'].length === 0){
-        chrome.storage.local.get("_sites",function(){}); //NB: Asynchronous call!!
+        // chrome.storage.local.get("_sites",function(){}); //NB: Asynchronous call!!
         // }
         return result;
     }
 
     /**
-     * Store the userData to the LocalStorage
+     * Store the userData to the LocalStorage, for using in the toolbar-form
+     * and to chrome.storage.local for use in the popupform, which cannot access the LocalStorage
      */
     persist() {
         let stringifiedUserData: string = JSON.stringify(this);
         localStorage.setItem("OPFES_UserData", stringifiedUserData);
-        chrome.storage.local.set(this); //Replaced the localStorage
+        chrome.storage.local.set(this); //Copied of the localStorage
         console.log(`Your localData is now updated to ${stringifiedUserData}.`);
     }
 
@@ -104,7 +105,7 @@ class UserData implements IUserData {
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);
                 let sites: Site[] = userData.sites;
 
-                let dataTableHTML: string = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>userid</td><td>salt</td><td>seq.nr</td><td>#chars</td><td>used at</td></ts><td>remark</td></thead>";
+                let dataTableHTML: string = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>userid</td><td>salt</td><td>seq.nr</td><td>#chars</td><td>allowed</td><td>used at</td></ts><td>remark</td></thead>";
                 for (let site of sites) {
                     dataTableHTML += `<tr><td>${site.getDomain()}</td>
                                       <td>${site.getUserId()}</td>
