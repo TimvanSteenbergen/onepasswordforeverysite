@@ -124,7 +124,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                             document.getElementById('OPFES_InputSalt').setAttribute('disabled', "disabled");
                         }
                         if (site.getSequenceNr() != 0) {
-                            document.getElementById('OPFES_SelectSequenceNr').setAttribute('value', (site.getSequenceNr() + ""));
+                            (<HTMLSelectElement>document.getElementById('OPFES_SelectSequenceNr')).selectedIndex = site.getSequenceNr();
                             document.getElementById('OPFES_SelectSequenceNr').setAttribute('disabled', "disabled");
                         }
                         (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdChars')).selectedIndex = site.getMaxPwdChars();
