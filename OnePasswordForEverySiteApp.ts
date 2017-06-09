@@ -24,8 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
         let elementToToggle = document.getElementById(elementId);
         if (elementToToggle.hasAttribute('disabled')) {
             elementToToggle.removeAttribute('disabled');
+            elementToToggle.focus();
         } else {
             elementToToggle.setAttribute("disabled", "disabled");
+            document.getElementById('#OPFES_InputAppPassword').focus();
         }
     }
 
@@ -215,11 +217,28 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
         userData.persist();
 
         let sitePassword = SiteService.getSitePassword(site, inputValueAppPassword);
-        window.alert('Your password for this site for this user-id is:\n\n' + sitePassword + '\n\n To copy the password to your clipboard: Ctrl+C, Enter');
         let passwordElement = ourPopup.getElementById('OPFES_InputSitePassword');
         passwordElement.setAttribute("value", sitePassword);
-        // Insert the sitePassword in the password-input field in the document
-        // insertPwd(sitePassword, passwordElement);
-
+        (<HTMLInputElement>passwordElement).select();
+        (<HTMLInputElement>passwordElement).focus();
+        let customerBrowser = get_browser();
+        let customerBrowserName = customerBrowser.name.toLowerCase().replace(/[\s_.]/g, '');//Set in lowercase and remove any spaces, underscores and dots.
+        if (customerBrowserName === `operamini` || customerBrowserName === `androidbrowser`) {//see http://caniuse.com/#search=execcommand. These two don't support execCommand yet
+            window.prompt(
+                `This is your password for this site for this user-id.\n\nTo copy the password to your clipboard: Ctrl+C or Cmd+C , Enter`,
+                sitePassword
+            );
+        } else {
+        // The execCommand('copy') does not seem to function in the toolbarForm.
+        //     let successful = document.execCommand('copy');
+        //     if (successful){
+        //         window.alert(`Your password for this site for this user-id is:\n\n${sitePassword}\n\n It is copied to your clipboard. You can paste it in your password-field.`);
+        //     } else {
+                window.prompt(
+                    `This is your password for this site for this user-id.\n\nTo copy the password to your clipboard: Ctrl+C or Cmd+C , Enter`,
+                    sitePassword
+                );
+        //     }
+        }
     }, false);
 };

@@ -152,4 +152,9 @@ local.properties
 /event_page/manifest.json
 /event_page/
 /event_page/sample.js
-/demodata/myUserData.json
+.idea/
+*.js.map
+demodata/myUserData.json
+demodata/myUserDataInclusive.json
+icons/opfes_19.pdn
+tests/*.js.map

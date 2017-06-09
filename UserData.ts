@@ -99,6 +99,7 @@ class UserData implements IUserData {
             "use strict";
             let reader = new FileReader();
             reader.onload = function (e) {
+                if(!window.confirm(`This will overwrite your current userdata.`)){return}//Popup is part of a bugfix. See https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/51
                 console.log(`Loading your datafile. Event's target is: ${e.target}`);
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
                 let dataString: string = (<FileReader>e.target).result;
