@@ -15,7 +15,7 @@ class AbstractForm {
         popupForm.innerHTML =
             `<h1 id="OPFES_popup_title">Hi, Opfes here.</h1>` +
                 `<p id='OPFES_popup_message'></p>` +
-                `<p id='OPFES_popup_password_element'>Enter your Opfes-password to log in: <input id='OPFES_popup_password' type='password' placeholder='____'>` +
+                `<p id='OPFES_popup_password_element'>Enter your Opfes-password to log in: <input id='OPFES_popup_password' type='password' placeholder=''>` +
                 `   <input id='OPFES_popup_submit' type='submit' value='Login'></p>` +
                 `<p><input id='OPFES_popup_cancel' type='button' value='Close this popup'></p>`;
         document.body.appendChild(popupForm);

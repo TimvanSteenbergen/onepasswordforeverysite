@@ -1,6 +1,9 @@
 /**
  * Created by tvansteenbergen on 2017-03-09.
  * This get_browser function tells me what type of browser you are using.
+ * Return:
+ *  Name
+ *  Version
  */
 function get_browser() {
     let ua = navigator.userAgent, tem, M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];

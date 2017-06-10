@@ -125,12 +125,12 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                             document.getElementById('OPFES_InputSalt').setAttribute('value', site.getSalt());
                             document.getElementById('OPFES_InputSalt').setAttribute('disabled', "disabled");
                         }
+                        (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdChars')).selectedIndex = site.getMaxPwdChars() - 1;
+                        document.getElementById('OPFES_SelectMaxPwdChars').setAttribute('disabled', "disabled");
                         if (site.getSequenceNr() != 0) {
-                            (<HTMLSelectElement>document.getElementById('OPFES_SelectSequenceNr')).selectedIndex = site.getSequenceNr();
+                            (<HTMLSelectElement>document.getElementById('OPFES_SelectSequenceNr')).selectedIndex = site.getSequenceNr() - 1;
                             document.getElementById('OPFES_SelectSequenceNr').setAttribute('disabled', "disabled");
                         }
-                        (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdChars')).selectedIndex = site.getMaxPwdChars();
-                        document.getElementById('OPFES_SelectMaxPwdChars').setAttribute('disabled', "disabled");
                         if (site.getRemark() != "") {
                             document.getElementById('OPFES_InputRemark').setAttribute('value', site.getRemark());
                             document.getElementById('OPFES_InputRemark').setAttribute('disabled', "disabled");
