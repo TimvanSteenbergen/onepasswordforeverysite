@@ -36,7 +36,7 @@ class AbstractForm {
         })
     }
 
-    static showPopupForm(shortMessage = '', message = '', vpos: string = '0', hpos: string = '0', showSubmitPassword = false) {
+    static showPopupForm(shortMessage = '', message = '', vpos: string = '0', hpos: string = '0', showSubmitPassword:boolean = false) {
         if (vpos != '0' || hpos != '0') {
             document.getElementById('OPFES_popup_form').style.top = vpos;
             document.getElementById('OPFES_popup_form').style.right = hpos;
