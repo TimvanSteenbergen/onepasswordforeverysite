@@ -28,7 +28,7 @@
         "PopupForm/OldNewAndVerifyPassword.js"
       ],
       "css": [
-        "PasswordPopup.css"
+        "css/PopupForm.css"
       ]
     },
     {
@@ -39,7 +39,7 @@
         "tests/SiteServiceTests.js"
       ],
       "css": [
-        "tests/SiteServiceTests.css"
+        "css/SiteServiceTests.css"
       ]
     }
   ],
