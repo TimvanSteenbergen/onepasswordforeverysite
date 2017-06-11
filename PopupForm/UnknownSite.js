@@ -9,14 +9,15 @@ class UnknownSite extends AbstractForm {
      */
     constructor() {
         super();
-        let message = `Unknown Site: I, Opfes, do see a login form, but you have not yet logged in to ${(SiteService.getDomain(window.location.href))} using my assistance. If you wish to do so, then: ` +
+        let shortMessage = `Opfes asks: Can I help you to log in?`;
+        let message = `I, Opfes, recognize this page as a login form, but you have not yet logged in to this ${(SiteService.getDomain(window.location.href))} using my assistance. If you wish to do so, then: ` +
             `<ol>` +
             `<li>login like you used to</li>` +
             `<li>go to your account-settings to the option where you can change your password.</li>` +
             `<li>enter your old password</li>` +
             `<li>Let me help you to generate and enter a new strong and safe password</li>` +
             `</ol>`;
-        AbstractForm.showPopupForm(message, false);
+        AbstractForm.showPopupForm(shortMessage, message, '0', '0', false);
     }
 }
 //# sourceMappingURL=UnknownSite.js.map
