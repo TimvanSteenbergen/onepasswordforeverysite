@@ -7,8 +7,8 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 50%;
-    height: 80px;
+    width: 33%;
+    height: auto;
     padding: 2px;
     border: 1px dotted brown;
     background-color: sandybrown;
@@ -22,10 +22,11 @@
 }
 
 #OPFES_popup_form p {
-    padding-bottom: 15px;
 }
 
-#OPFES_popup_form #OPFES_popup_read_more {
+#OPFES_popup_form #OPFES_popup_read_more_block,
+#OPFES_popup_form #OPFES_popup_read_less
+{
     display: none;
 }
 
