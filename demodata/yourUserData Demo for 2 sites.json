@@ -6,6 +6,7 @@
       "salt": "demo",
       "sequenceNr": 1,
       "maxPwdChars": 120,
+      "allowedSpecialCharacters": "/~@#%^()_+-=.:?!{}",
       "lastUsed": "2017-05-13T07:23:40.291Z",
       "remark": "Demo-account"
     },
@@ -15,6 +16,7 @@
       "salt": "demo",
       "sequenceNr": 1,
       "maxPwdChars": 20,
+      "allowedSpecialCharacters": "/~@#%^()_+-=.:?!{}",
       "lastUsed": "2017-05-13T07:36:02.294Z",
       "remark": "Dutch site for games."
     }
