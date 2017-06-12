@@ -21,30 +21,29 @@ class Login extends AbstractForm {
                 userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=Id]');
             }
             if (!userNameInputElement) {
-                userNameInputElement = getVisibleUserIdElement('input');
+                userNameInputElement = getVisibleUserIdElement('input[type!="password"');
+            }
+            if (!userNameInputElement) {
+                alert('I have not been able to find the input field for the accountname/userid. ' +
+                    'Please manually enter the accountname where possible. ');
             }
             if (userNameInputElement) {
                 userNameInputElement.value = userNameInputValue;
-            }
-            else {
-                alert('I have not been able to find the input field for the accountname/userid. ' +
-                    'Please manually enter the accountname where possible. ');
-                return;
             }
         }
         else {
             /** Not possible, every site does have a value in field 'userid'; */
         }
         // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
-        let shortMessage = `Opfes asks: Can I help you to log in?`;
-        let message = `On this site you have logged in previously with user-id ${thisSite.getUserId()}`;
+        let shortMessage = ``;
+        let message = `On this site you have logged in previously with user-id ${thisSite.getUserId()}. ` +
+            `After you have entered your Opfes-password, I will generate your password for this site, ` +
+            `put it in the password-inputfield and press the submit-button. If all goes well ` +
+            `you will then be logged in to this site.`;
         /**todo
          * Determine the place of the passwordbox here and pass it on to the showPopupForm
          */
-        let popupLeft = window.innerWidth - 306 -
-            document.getElementById(pwdInputs[0].name).getBoundingClientRect().right;
-        let popupTop = document.getElementById(pwdInputs[0].name).getBoundingClientRect().top;
-        AbstractForm.showPopupForm(shortMessage, message, `${popupTop}px`, `${popupLeft}px`, true);
+        AbstractForm.showPopupForm(shortMessage, message, pwdInputs[0], true);
         document.getElementById('OPFES_popup_password').focus();
         document.getElementById('OPFES_popup_password').addEventListener('keydown', function (e) {
             if (e.which == 13 || e.keyCode == 13) {
@@ -90,6 +89,15 @@ class Login extends AbstractForm {
             }
             if (!submitButton) {
                 submitButton = pwdInputs[0].form.querySelector('[id*="submit"]'); //works at for instance ...??
+            }
+            if (!submitButton) {
+                submitButton = document.querySelector('[type="submit"]');
+            }
+            if (!submitButton) {
+                submitButton = document.querySelector('[class*="submit"]'); //works at for instance jetbrains.com
+            }
+            if (!submitButton) {
+                submitButton = document.querySelector('[id*="submit"]'); //works at for instance ...??
             }
             if (submitButton) {
                 if (thisSite.getDomain() !== 'ebay.nl') {

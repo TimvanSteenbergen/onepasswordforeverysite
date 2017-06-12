@@ -13,14 +13,15 @@ class AbstractForm {
         let popupForm: HTMLDivElement = <HTMLDivElement>document.createElement(`div`);
         popupForm.id = "OPFES_popup_form";
         popupForm.innerHTML =
-            `<p><span id='OPFES_popup_short_message'></span>
-                <a id="OPFES_popup_read_more" href="#"> read more...</a>
-                <a id="OPFES_popup_read_less" href="#"> read less...</a>
-                <input id='OPFES_popup_cancel' type='button' value='x'></p>` +
+            `<p><span id='OPFES_popup_short_message'></span>` +
+            `<input id='OPFES_popup_cancel' type='button' value='x'>` +
+                `<span id='OPFES_popup_password_element'>Enter your Opfes-password to log in: <input id='OPFES_popup_password' type='password' placeholder=''>` +
+                `   <input id='OPFES_popup_submit' type='submit' value='Login'></span>` +
+                `<a id="OPFES_popup_read_more" href="#"> read more...</a>` +
+                `<a id="OPFES_popup_read_less" href="#"> read less...</a>` +
+            `</p>` +
             `<div id="OPFES_popup_read_more_block">
                 <p id='OPFES_popup_message'></p>` +
-                `<p id='OPFES_popup_password_element'>Enter your Opfes-password to log in: <input id='OPFES_popup_password' type='password' placeholder=''>` +
-                `   <input id='OPFES_popup_submit' type='submit' value='Login'></p>` +
             `</div>`;
         document.body.appendChild(popupForm);
 
@@ -36,10 +37,21 @@ class AbstractForm {
         })
     }
 
-    static showPopupForm(shortMessage = '', message = '', vpos: string = '0', hpos: string = '0', showSubmitPassword:boolean = false) {
-        if (vpos != '0' || hpos != '0') {
-            document.getElementById('OPFES_popup_form').style.top = vpos;
-            document.getElementById('OPFES_popup_form').style.right = hpos;
+    static showPopupForm(shortMessage = '', message = '', passwordInputElement: HTMLInputElement = null, showSubmitPassword:boolean = false) {
+        let popupForm = (<HTMLFormElement>document.getElementById('OPFES_popup_form'));
+        if (passwordInputElement == null) {
+            popupForm.style.top = '0';
+            popupForm.style.right = '0';
+        } else {
+            // let passwordInputElement = (<HTMLInputElement>document.getElementById(passwordInputElement));
+            if (passwordInputElement){
+                popupForm.style.top = `${passwordInputElement.getBoundingClientRect().top}px`;
+                popupForm.style.left = `${passwordInputElement.getBoundingClientRect().right}px`;
+            } else {
+                popupForm.style.top = `50px`;
+                popupForm.style.left = `45%`;
+            }
+
         }
         document.getElementById('OPFES_popup_short_message').innerHTML = shortMessage;
         document.getElementById('OPFES_popup_message').innerHTML = message;
