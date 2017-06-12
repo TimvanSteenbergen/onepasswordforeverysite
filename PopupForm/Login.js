@@ -33,9 +33,18 @@ class Login extends AbstractForm {
             }
         }
         else {
+            /** Not possible, every site does have a value in field 'userid'; */
         }
         // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
-        AbstractForm.showPopupForm(`On this site you have logged in previously with user-id ${thisSite.getUserId()}`, true);
+        let shortMessage = `Opfes asks: Can I help you to log in?`;
+        let message = `On this site you have logged in previously with user-id ${thisSite.getUserId()}`;
+        /**todo
+         * Determine the place of the passwordbox here and pass it on to the showPopupForm
+         */
+        let popupLeft = window.innerWidth - 306 -
+            document.getElementById(pwdInputs[0].name).getBoundingClientRect().right;
+        let popupTop = document.getElementById(pwdInputs[0].name).getBoundingClientRect().top;
+        AbstractForm.showPopupForm(shortMessage, message, `${popupTop}px`, `${popupLeft}px`, true);
         document.getElementById('OPFES_popup_password').focus();
         document.getElementById('OPFES_popup_password').addEventListener('keydown', function (e) {
             if (e.which == 13 || e.keyCode == 13) {
@@ -90,6 +99,7 @@ class Login extends AbstractForm {
                     alert('You will need to click the submit button yourself for this site. This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ' +
                         'See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.');
                 } //Does not work on ebay.nl...
+                // pwdInputs[0].form.submit(); //.. but this neither...
             }
         }
     }

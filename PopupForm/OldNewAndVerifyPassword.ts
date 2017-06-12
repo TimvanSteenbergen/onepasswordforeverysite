@@ -11,7 +11,9 @@ class OldNewAndVerifyPassword extends NewAndVerifyPassword {
         super(thisSite, pwdInputs);
 
         // Now let me ask the Opfes-password, generate the password and put it in the new and verify passwordfields.
-        AbstractForm.showPopupForm(`Let's create a new password for userid '${thisSite.getUserId()}'`, true);
+        let shortMessage = `Opfes says: get a new password for userid '${thisSite.getUserId()}'`;
+        let message = ``;
+        AbstractForm.showPopupForm(shortMessage, message, '0', '0', true);
         document.getElementById('OPFES_popup_password').focus();
         document.getElementById('OPFES_popup_password').addEventListener('keydown', function (e) {
             if (e.which == 13 || e.keyCode == 13) {

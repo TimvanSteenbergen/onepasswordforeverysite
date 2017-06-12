@@ -10,7 +10,9 @@ class OldNewAndVerifyPassword extends NewAndVerifyPassword {
     constructor(thisSite, pwdInputs) {
         super(thisSite, pwdInputs);
         // Now let me ask the Opfes-password, generate the password and put it in the new and verify passwordfields.
-        AbstractForm.showPopupForm(`Let's create a new password for userid '${thisSite.getUserId()}'`, true);
+        let shortMessage = `Opfes says: get a new password for userid '${thisSite.getUserId()}'`;
+        let message = ``;
+        AbstractForm.showPopupForm(shortMessage, message, '0', '0', true);
         document.getElementById('OPFES_popup_password').focus();
         document.getElementById('OPFES_popup_password').addEventListener('keydown', function (e) {
             if (e.which == 13 || e.keyCode == 13) {
@@ -46,6 +48,7 @@ class OldNewAndVerifyPassword extends NewAndVerifyPassword {
                     alert('You will need to click the submit button yourself for this site. This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ' +
                         'See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.');
                 } //Does not work on ebay.nl...
+                // pwdInputs[0].form.submit(); //.. but this neither...
             }
         }
     }

@@ -10,6 +10,7 @@ class NoUserData extends AbstractForm {
      */
     constructor() {
         super();
+        let shortMessage: string = 'Opfes says: Upload your userdata.';
         let message: string =
             `<p>NoUserData: I, Opfes, do see a login form, but you have not yet uploaded your user-data. </p>` +
             `<p>If you are new to Opfes and this is your first website on which you want to use Opfes, then follow these steps: ` +
@@ -28,6 +29,6 @@ class NoUserData extends AbstractForm {
             `<li>And click 'Open'.</li>` +
             `</ul>` +
             `Then refresh this web-page and log in the Opfes way.</p>`;
-        AbstractForm.showPopupForm(message, false);
+        AbstractForm.showPopupForm(shortMessage, message, '0', '0', false);
     }
 }

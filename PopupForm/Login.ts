@@ -38,7 +38,18 @@ class Login extends AbstractForm {
         }
 
         // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
-        AbstractForm.showPopupForm(`On this site you have logged in previously with user-id ${thisSite.getUserId()}`, true);
+        let shortMessage: string = `Opfes asks: Can I help you to log in?`;
+        let message: string = `On this site you have logged in previously with user-id ${thisSite.getUserId()}`;
+
+        /**todo
+         * Determine the place of the passwordbox here and pass it on to the showPopupForm
+         */
+        let popupLeft = window.innerWidth - 306 -
+            (<HTMLInputElement>document.getElementById(pwdInputs[0].name)).getBoundingClientRect().right;
+        let popupTop =
+            (<HTMLInputElement>document.getElementById(pwdInputs[0].name)).getBoundingClientRect().top;
+
+        AbstractForm.showPopupForm(shortMessage, message, `${popupTop}px`, `${popupLeft}px` , true);
         document.getElementById('OPFES_popup_password').focus();
         document.getElementById('OPFES_popup_password').addEventListener('keydown', function (e) {
             if (e.which == 13 || e.keyCode == 13) {
