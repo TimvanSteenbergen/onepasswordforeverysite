@@ -22,6 +22,7 @@ class AbstractForm {
             `</p>` +
             `<div id="OPFES_popup_read_more_block">
                 <p id='OPFES_popup_message'></p>` +
+                `<p>For more information go to <a href="opfes.com">Opfes.com</a>` +
             `</div>`;
         document.body.appendChild(popupForm);
 
