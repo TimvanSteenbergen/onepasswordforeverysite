@@ -98,7 +98,17 @@ class UserData implements IUserData {
         (function (view) {
             "use strict";
             let reader = new FileReader();
+            for (let i=1;i<1000000000;i++){
+                if (i%10000000==0){
+                    console.log('i is nu: ' + i + ' en het is ' + new Date());
+                }
+            }
             reader.onload = function (e) {
+                for (let i=1;i<1000000000;i++){
+                    if (i%10000000==0){
+                        console.log('i is nu: ' + i + ' en het is ' + new Date());
+                    }
+                }
                 if(!window.confirm(`This will overwrite your current userdata.`)){return}//Popup is part of a bugfix. See https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/51
                 console.log(`Loading your datafile. Event's target is: ${e.target}`);
                 // todo cast e.target to its type: let data = (<FileReader>e.target).result;
@@ -123,9 +133,21 @@ class UserData implements IUserData {
                 localStoredUserDataElement.innerHTML = dataTableHTML;
                 userData.persist();
             };
+            for (let i=1;i<1000000000;i++){
+                if (i%10000000==0){
+                    console.log('i is nu: ' + i + ' en het is ' + new Date());
+                }
+            }
+
             reader.readAsText(file);//attempts to read the file in question.
             // console.log('The File ' + file.name + ' is now uploaded to your localData');
         }(self));
+        for (let i=1;i<1000000000;i++){
+            if (i%10000000==0){
+                console.log('i is nu: ' + i + ' en het is ' + new Date());
+            }
+        }
+
     }
 
     /**
