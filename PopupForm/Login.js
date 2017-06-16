@@ -6,6 +6,11 @@
 class Login extends AbstractForm {
     constructor(thisSite, pwdInputs) {
         super();
+        if (pwdInputs.length > 1) {
+            console.log('Error in Login-form-detection: This loginForm should only have one passwordfield.');
+            return;
+        }
+        let pwdInput = pwdInputs[0];
         let userNameInputValue = thisSite.getUserId();
         if (userNameInputValue !== '') {
             //todo: Make Finding the username-inputfield as smart as possible
@@ -35,7 +40,7 @@ class Login extends AbstractForm {
             /** Not possible, every site does have a value in field 'userid'; */
         }
         // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
-        let shortMessage = ``;
+        let shortMessage = `Enter your Opfes-password to log in: `;
         let message = `On this site you have logged in previously with user-id ${thisSite.getUserId()}. ` +
             `After you have entered your Opfes-password, I will generate your password for this site, ` +
             `put it in the password-inputfield and press the submit-button. If all goes well ` +
@@ -43,15 +48,15 @@ class Login extends AbstractForm {
         /**todo
          * Determine the place of the passwordbox here and pass it on to the showPopupForm
          */
-        AbstractForm.showPopupForm(shortMessage, message, pwdInputs[0], true);
+        AbstractForm.showPopupForm(shortMessage, message, pwdInput, true);
         document.getElementById('OPFES_popup_password').focus();
         document.getElementById('OPFES_popup_password').addEventListener('keydown', function (e) {
             if (e.which == 13 || e.keyCode == 13) {
-                Login.generatePasswordAndLogin(thisSite, pwdInputs);
+                Login.generatePasswordAndLogin(thisSite, pwdInput);
             }
         });
         document.getElementById('OPFES_popup_submit').addEventListener('click', function () {
-            Login.generatePasswordAndLogin(thisSite, pwdInputs);
+            Login.generatePasswordAndLogin(thisSite, pwdInput);
         });
         //This function returns the userNameInputElement. The first visible inputElement in the password-wrapping form
         function getVisibleUserIdElement(selectorString) {
@@ -74,31 +79,16 @@ class Login extends AbstractForm {
             return (el.offsetParent === null);
         }
     }
-    static generatePasswordAndLogin(thisSite, pwdInputs) {
+    static generatePasswordAndLogin(thisSite, pwdInput) {
         let opfesPassword = document.getElementById('OPFES_popup_password').value;
         let submitButton;
         let generatedPassword;
         AbstractForm.hidePopupForm();
         if (opfesPassword !== null && opfesPassword !== "") {
             generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
-            pwdInputs[0].value = generatedPassword;
+            pwdInput.value = generatedPassword;
             // alert (generatedPassword);
-            submitButton = pwdInputs[0].form.querySelector('[type="submit"]'); //works at lots, for instance: gavelsnipe.com, npmjs.com
-            if (!submitButton) {
-                submitButton = pwdInputs[0].form.querySelector('[class*="submit"]'); //works at for instance jetbrains.com
-            }
-            if (!submitButton) {
-                submitButton = pwdInputs[0].form.querySelector('[id*="submit"]'); //works at for instance ...??
-            }
-            if (!submitButton) {
-                submitButton = document.querySelector('[type="submit"]');
-            }
-            if (!submitButton) {
-                submitButton = document.querySelector('[class*="submit"]'); //works at for instance jetbrains.com
-            }
-            if (!submitButton) {
-                submitButton = document.querySelector('[id*="submit"]'); //works at for instance ...??
-            }
+            submitButton = this.getSubmitButton(pwdInput);
             if (submitButton) {
                 if (thisSite.getDomain() !== 'ebay.nl') {
                     submitButton.click();
