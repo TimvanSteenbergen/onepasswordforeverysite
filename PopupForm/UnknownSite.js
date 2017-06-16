@@ -17,7 +17,7 @@ class UnknownSite extends AbstractForm {
             `<li>enter your old password</li>` +
             `<li>Let me help you to generate and enter a new strong and safe password</li>` +
             `</ol>`;
-        AbstractForm.showPopupForm(shortMessage, message, '0', '0', false);
+        AbstractForm.showPopupForm(shortMessage, message, null, false);
     }
 }
 //# sourceMappingURL=UnknownSite.js.map

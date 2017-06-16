@@ -7,7 +7,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 330px;
+    width: 340px;
     height: auto;
     padding: 2px;
     border: 1px dotted brown;
@@ -40,7 +40,7 @@
 
 #OPFES_popup_form input#OPFES_popup_password {
     width: 150px;
-    padding: 0px;
+    padding: 0;
     margin: 0;
 }
 

@@ -123,9 +123,16 @@ class UserData implements IUserData {
                 localStoredUserDataElement.innerHTML = dataTableHTML;
                 userData.persist();
             };
+
             reader.readAsText(file);//attempts to read the file in question.
             // console.log('The File ' + file.name + ' is now uploaded to your localData');
         }(self));
+        // for (let i=1;i<1000000000;i++){
+        //     if (i%10000000==0){
+        //         console.log('i is nu: ' + i + ' en het is ' + new Date());
+        //     }
+        // }
+
     }
 
     /**

@@ -27,7 +27,7 @@ class NoUserData extends AbstractForm {
             `<li>And click 'Open'.</li>` +
             `</ul>` +
             `Then refresh this web-page and log in the Opfes way.</p>`;
-        AbstractForm.showPopupForm(shortMessage, message, '0', '0', false);
+        AbstractForm.showPopupForm(shortMessage, message, null, false);
     }
 }
 //# sourceMappingURL=NoUserData.js.map
