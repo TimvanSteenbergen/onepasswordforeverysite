@@ -77,46 +77,37 @@ class AbstractForm {
      */
     static getSubmitButton(pwdInput) {
         let submitButton;
-        let submitButtons = [];
-        // Check the form surrounding the password-field...
+        // Try to find the submit-button on the form surrounding the password-field...
         if (pwdInput.form) {
-            let selectedElements = pwdInput.form.querySelectorAll('input[type="submit"]');
-            for (let element of selectedElements) {
-                submitButtons.push(element);
-            }
-            if (submitButtons.length == 1) {
-                // Only one button here, so that is the one! Return it.
-                submitButton = submitButtons[0];
+            submitButton = this.getSubmitButtonFrom(pwdInput.form, pwdInput);
+            if (submitButton) {
                 return submitButton;
-            }
-            else if (submitButtons.length >= 2) {
-                submitButton = this.getClosestSubmitButton(submitButtons, pwdInput);
-                if (submitButton !== null) {
-                    // Selected one of the buttons to be the related submitButton, so that is the one! Return it.
-                    return submitButton;
-                }
             }
         }
         // Seems like no submitButton is found yet... Next attempt:
-        // Check the submit-buttons in the entire page,
-        let selectedElements = document.querySelectorAll('input[type="submit"]');
+        // Try to find the submit-buttons in the entire page,
+        submitButton = this.getSubmitButtonFrom(document, pwdInput);
+        if (submitButton) {
+            return submitButton;
+        }
+        //No button determined! Should never arrive here but Murphy learns us that eventually we will. So let's handle this situation
+        return null;
+    }
+    static getSubmitButtonFrom(thisElement, pwdInput) {
+        let submitButtons = [];
+        let selectedElements = thisElement.querySelectorAll('[type="submit"],[class*="submit"],[id*="submit"]');
+        let submitButton = null;
         for (let element of selectedElements) {
             submitButtons.push(element);
         }
         if (submitButtons.length == 1) {
-            // Only one button here, then that is the one! Return it.
+            // Only one button here, so that is the one! Return it.
             submitButton = submitButtons[0];
-            return submitButton;
         }
         else if (submitButtons.length >= 2) {
             submitButton = this.getClosestSubmitButton(submitButtons, pwdInput);
-            if (submitButton !== null) {
-                // Selected one of the buttons to be the related submitButton, so that is the one! Return it.
-                return submitButton;
-            }
         }
-        //No button determined! Should never arrive here but Murphy learns us that eventually we will. So let's handle this situation
-        return null;
+        return submitButton;
     }
     static getClosestSubmitButton(eligibleButtons, closeToThis) {
         let top = closeToThis.getBoundingClientRect().top;
