@@ -29,7 +29,7 @@ class Login extends AbstractForm {
                 userNameInputElement = <HTMLInputElement>getVisibleUserIdElement('input[type="text"][id*=Id]');
             }
             if (!userNameInputElement) {
-                userNameInputElement = <HTMLInputElement>getVisibleUserIdElement('input[type!="password"');
+                userNameInputElement = <HTMLInputElement>getVisibleUserIdElement('input[type="text"]');
             }
             if (!userNameInputElement) {
                 alert('I have not been able to find the input field for the accountname/userid. ' +

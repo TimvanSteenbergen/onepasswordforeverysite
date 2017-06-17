@@ -16,7 +16,7 @@
       "js": [
         "CustomerBrowser.js",
         "UserData.js",
-        "LoginElement.js",
+        "PopupForm/Factory.js",
         "SiteService.js",
         "Site.js",
         "SHA512.js",
