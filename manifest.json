@@ -5,7 +5,7 @@
   "version": "1.0",
   "browser_action": {
     "default_icon": "icons\/opfes_19.png",
-    "default_popup": "OnePasswordForEverySiteApp.html",
+    "default_popup": "ToolbarForm.html",
     "default_title": "Hi. I'm Opfes. I will help you to log in everywhere.\nYou will only need to remember one password.\nYou will have maximum password safety.\n"
   },
   "content_scripts": [
@@ -15,17 +15,17 @@
       ],
       "js": [
         "CustomerBrowser.js",
-        "UserData.js",
-        "WebPageWithPassword/Factory.js",
-        "SiteService.js",
         "Site.js",
+        "SiteService.js",
         "SHA512.js",
+        "UserData.js",
         "WebPageWithPassword/AbstractForm.js",
+        "WebPageWithPassword/Factory.js",
         "WebPageWithPassword/Login.js",
-        "WebPageWithPassword/UnknownSite.js",
-        "WebPageWithPassword/NoUserData.js",
         "WebPageWithPassword/NewAndVerifyPassword.js",
-        "WebPageWithPassword/OldNewAndVerifyPassword.js"
+        "WebPageWithPassword/NoUserData.js",
+        "WebPageWithPassword/OldNewAndVerifyPassword.js",
+        "WebPageWithPassword/UnknownSite.js"
       ],
       "css": [
         "css/PopupForm.css"
@@ -51,8 +51,8 @@
   },
   "web_accessible_resources": [
     "icons\/opfes_19.png",
-    "icons\/opfes_32.png",
-    "icons\/opfes_19_unset_opfes.png"
+    "icons\/opfes_19_unset_opfes.png",
+    "icons\/opfes_32.png"
   ],
   "permissions": [
     "activeTab",
