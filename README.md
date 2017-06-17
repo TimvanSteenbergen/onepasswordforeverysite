@@ -1,5 +1,5 @@
 # One password for every site
-<p>This ia a browser-extension that will enable you to need only one password to log into any website!<br/>
+<p>This ia a browser-extension that will enable you to need only one password to login to any website!<br/>
 This browser-extension will make it unnecessary to remember a lot of passwords.<br/>
 This browser-extension will make it unnecessary to trust Google, Microsoft or any passwordmanagement-tool with all your userids and passwords.<br/>
 Looking for the simplest and safest solution to manager your userid's and passwords? You found it!
