@@ -16,16 +16,16 @@
       "js": [
         "CustomerBrowser.js",
         "UserData.js",
-        "PopupForm/Factory.js",
+        "WebPageWithPassword/Factory.js",
         "SiteService.js",
         "Site.js",
         "SHA512.js",
-        "PopupForm/AbstractForm.js",
-        "PopupForm/Login.js",
-        "PopupForm/UnknownSite.js",
-        "PopupForm/NoUserData.js",
-        "PopupForm/NewAndVerifyPassword.js",
-        "PopupForm/OldNewAndVerifyPassword.js"
+        "WebPageWithPassword/AbstractForm.js",
+        "WebPageWithPassword/Login.js",
+        "WebPageWithPassword/UnknownSite.js",
+        "WebPageWithPassword/NoUserData.js",
+        "WebPageWithPassword/NewAndVerifyPassword.js",
+        "WebPageWithPassword/OldNewAndVerifyPassword.js"
       ],
       "css": [
         "css/PopupForm.css"

@@ -1,10 +1,10 @@
 /**
  * Created by tvansteenbergen on 2017-03-09.
  *
- * This is the PopupForm for webpages having two password-fields: new and verify.
+ * This is the WebPageWithPassword for webpages having two password-fields: new and verify.
  * We are trying to generate a new password, copy it to both fields and submit the form.
  *
- * Example sites: sourcerers.nl/PopupForm
+ * Example sites: sourcerers.nl/WebPageWithPassword
  */
 class NewAndVerifyPassword extends AbstractForm {
     thisSite: Site;

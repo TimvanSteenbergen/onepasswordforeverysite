@@ -7,7 +7,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 340px;
+    width: auto;
     height: auto;
     padding: 2px;
     border: 1px dotted brown;
@@ -22,6 +22,7 @@
 }
 
 #OPFES_popup_form p {
+    font-size: 14px;
 }
 
 #OPFES_popup_form #OPFES_popup_read_more_block,
