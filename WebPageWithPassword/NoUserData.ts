@@ -12,7 +12,8 @@ class NoUserData extends AbstractForm {
         super();
         let shortMessage: string = 'Opfes says: Upload your userdata.';
         let message: string =
-            `<p>NoUserData: I, Opfes, do see a login form, but you have not yet uploaded your user-data. </p>` +
+            `<p>NoUserData: I, Opfes, do see a ${(SiteService.getDomain(window.location.href))} login-form, but you have not yet uploaded your user-data. </p>` +
+            `<p></p>` +
             `<p>If you are new to Opfes and this is your first website on which you want to use Opfes, then follow these steps: ` +
             `<ul>` +
             `<li>Login like you use to;</li>` +

@@ -1,15 +1,16 @@
 # One password for every site
-Using this extension you only need one password to log into any website!<br/> 
-Tired of having to remember a lot of passwords? Yes?<br/>
-Uncomfortable with trusting Google, Microsoft or any passwordmanagement-tool with all your userids and passwords? Yes?<br/>
-Looking for the simplest and safest solution? Yes?<br/>
-You found it!
+<p>This ia a browser-extension that will enable you to need only one password to log into any website!<br/>
+This browser-extension will make it unnecessary to remember a lot of passwords.<br/>
+This browser-extension will make it unnecessary to trust Google, Microsoft or any passwordmanagement-tool with all your userids and passwords.<br/>
+Looking for the simplest and safest solution to manager your userid's and passwords? You found it!
+</p>
 
 This browser-extension allows you to use one password for every site! All you have to remember is one short and simple password.
-<h2>No password stored anywhere</h2>
-This extension will not store any password at all. Not locally on your pc, not in any cookie, not anywhere online. 
-Your password only gets stored where it belongs: at the site where you are logging into. But that is of no concern to this extension.
-Never will this extension request any of your passwords, simply because it does not need to and it does not want to.
+##No password stored anywhere
+<p>This extension will not store any password at all. Not locally on your pc, not in any cookie, not anywhere online.
+   Your password only gets stored where it belongs: at the site where you are logging into. But that is of no concern to this extension.
+   Never will this extension request any of your passwords, simply because it does not need to and it does not want to.
+</p>
 
 <h2>100% Open source</h2>
 <p>Every bit of code is out in the open, for everyone to see. No hidden functions or tricks possible. 
@@ -26,10 +27,11 @@ This results in extra security because fully opensource code can get monitored b
     one gets any bit of information about your one-and-only password.</p>
 
 <h2>What does gets stored? And where?</h2>
-This extension can store per domainname: your userid, a <a href="#" title="A salt can be used for extra security. Using a salt prevents the hased value to get found in some rainbowtable">salt</a>, a sequencenumber and a remark. These are all optional.</br>
+<p>This extension can store per domainname: your userid, a <a href="#" title="A salt can be used for extra security. Using a salt prevents the hased value to get found in some rainbowtable">salt</a>, a sequencenumber and a remark. These are all optional.</br>
 Also per domain these informational fields: used at, a remark.</br>
 This data is stored in the webappsstore.sqlite file in the profile folder of your browser. Usually this file only
- available with administrator rights, which is why it is also showed in the extension itself
+ available with administrator rights, which is why it is also shown in the extension itself.
+ </p>
 
 <h2>Salted Security</h2>
 <p>Your password gets hashed using the domainname, your userid for this particular site, a sequencenumber, your password and a salt for this domain.

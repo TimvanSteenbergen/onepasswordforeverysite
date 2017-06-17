@@ -1,12 +1,12 @@
 {
   "manifest_version": 2,
   "name": "OnePasswordForEverySite Browser extension",
-  "description": "Hi. I'm Opfes. I am a tool that help you to log in to any site. You will have to remember one password only. You will have maximum password safety.",
+  "description": "Hi. I'm Opfes. I will that help you to log in to any site. You will have to remember one password only. You will have maximum password safety.",
   "version": "1.0",
   "browser_action": {
     "default_icon": "icons\/opfes_19.png",
     "default_popup": "OnePasswordForEverySiteApp.html",
-    "default_title": "Hi. I'm Opfes. I am a tool help you log in everywhere.\nYou will only need to remember one password.\nYou will have maximum password safety.\n"
+    "default_title": "Hi. I'm Opfes. I will help you to log in everywhere.\nYou will only need to remember one password.\nYou will have maximum password safety.\n"
   },
   "content_scripts": [
     {
