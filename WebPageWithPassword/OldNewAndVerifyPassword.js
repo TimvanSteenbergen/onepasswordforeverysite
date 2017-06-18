@@ -4,7 +4,10 @@
  * This is the WebPageWithPassword for webpages having three password-fields: old, new and verify.
  * We are trying to generate a new password, copy it to both fields and submit the form.
  *
- * Example sites: npmjs.com/WebPageWithPassword
+ * Example sites:
+ * - npmjs.com
+ * - toernooi.nl when changing your password.
+ *
  */
 class OldNewAndVerifyPassword extends NewAndVerifyPassword {
     constructor(thisSite, pwdInputs) {
