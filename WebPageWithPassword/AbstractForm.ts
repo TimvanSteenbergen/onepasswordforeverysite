@@ -66,27 +66,37 @@ class AbstractForm {
             }
 
         }
-        document.getElementById('OPFES_popup_short_message').innerHTML = shortMessage;
-        document.getElementById('OPFES_popup_message').innerHTML = message;
-        document.getElementById('OPFES_popup_password_element').style.display = (showSubmitPassword) ? 'block' : 'none';
-        document.getElementById('OPFES_popup_form').style.display = 'block';
+        (<HTMLElement>document.getElementById('OPFES_popup_short_message')).innerHTML = shortMessage;
+        (<HTMLElement>document.getElementById('OPFES_popup_message')).innerHTML = message;
+        (<HTMLElement>document.getElementById('OPFES_popup_password_element')).style.display = (showSubmitPassword) ? 'block' : 'none';
+        (<HTMLElement>document.getElementById('OPFES_popup_form')).style.display = 'block';
     }
 
+    /**
+     * This function hides the popupForm entirely. Of course this function is used by the Form's close-button
+     */
     static hidePopupForm(): string {
         document.getElementById('OPFES_popup_form').style.display = 'none';
         return '';
     }
 
+    /**
+     * This function unhides the longer message in the popupForm
+     */
     static readMore() {
-        document.getElementById('OPFES_popup_read_more_block').style.display = 'block';
-        document.getElementById('OPFES_popup_read_more').style.display = 'none';
-        document.getElementById('OPFES_popup_read_less').style.display = 'inline';
+        (<HTMLElement>document.getElementById('OPFES_popup_read_more_block')).style.display = 'block';
+        (<HTMLElement>document.getElementById('OPFES_popup_read_more')).style.display = 'none';
+        (<HTMLElement>document.getElementById('OPFES_popup_read_less')).style.display = 'inline';
+        (<HTMLElement>document.getElementById('OPFES_popup_form')).style.width = 'auto';
     }
 
+    /**
+     * This function hides the longer message in the popupForm
+     */
     static readLess() {
-        document.getElementById('OPFES_popup_read_more_block').style.display = 'none';
-        document.getElementById('OPFES_popup_read_more').style.display = 'inline';
-        document.getElementById('OPFES_popup_read_less').style.display = 'none';
+        (<HTMLElement>document.getElementById('OPFES_popup_read_more_block')).style.display = 'none';
+        (<HTMLElement>document.getElementById('OPFES_popup_read_more')).style.display = 'inline';
+        (<HTMLElement>document.getElementById('OPFES_popup_read_less')).style.display = 'none';
     }
 
     /**
