@@ -136,13 +136,17 @@ class AbstractForm {
     /**
      * This function looks for the submitButton in the given parent-element, next to the given passwordField
      *
-     * @param thisElement The Form or entire document in which the search for the submitButton will take place
+     * @param thisElement ParentElement, The Form or entire document in which the search for the submitButton will take place
      * @param pwdInput HTMLInputElement The element next to which the submitButton will be
      * @returns {null}
      */
     static getSubmitButtonFrom(thisElement, pwdInput) {
         let submitButtons = [];
-        let selectedElements = thisElement.querySelectorAll('[type="submit"],[class*="submit"],[id*="submit"]');
+        let selectedElements = thisElement.querySelectorAll(`[id*="submit"]` +
+            `[type="submit"],` +
+            `[class*="submit"],` +
+            `[class*="login-button"],` //Used by: Joomla-sites
+        );
         let submitButton = null;
         for (let element of selectedElements) {
             if (element.id != 'OPFES_popup_submit') {
