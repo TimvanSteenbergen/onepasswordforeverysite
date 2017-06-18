@@ -40,7 +40,8 @@ class Login extends AbstractForm {
                 userNameInputElement.value = userNameInputValue;
             }
         } else {
-            /** Not possible, every site does have a value in field 'userid'; */
+            /** Not possible, every site does have a value in field 'userid';
+             * At least that's what I think right now. Will probably stand corrected in the near future...*/
         }
 
         // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
@@ -89,8 +90,9 @@ class Login extends AbstractForm {
         let opfesPassword: string = (<HTMLInputElement>document.getElementById('OPFES_popup_password')).value;
         let submitButton: HTMLElement;
         let generatedPassword: string;
+        let shortMessage: string;
+        let message: string;
 
-        AbstractForm.hidePopupForm();
         if (opfesPassword !== null && opfesPassword !== "") {
             generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
             pwdInput.value = generatedPassword;
@@ -98,12 +100,21 @@ class Login extends AbstractForm {
             submitButton = this.getSubmitButton(pwdInput);
             if (submitButton) { // If the submitbutton is found: click it!
                 if (thisSite.getDomain() !== 'ebay.nl') {
+                    AbstractForm.hidePopupForm();
                     submitButton.click();
                 } else {
-                    alert('You will need to click the submit button yourself for this site. This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ' +
-                        'See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.')
+                    message = (`You will need to click the submit button yourself for this site. This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ` +
+                        `See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.`);
+                    AbstractForm.changeMessages('', message, null, false);
                 }//Does not work on ebay.nl...
                 // pwdInputs[0].form.submit(); //.. but this neither...
+            } else {
+                shortMessage = (`Sorry! I have not been able to find the submit-button. You will have to click it yourself.`);
+                    message = (`Your userid and password are ready to login. All you have to do is click the submit button yourself.<br>` +
+                    `<br>` +
+                    `Can you please inform me about this via <a href="https://opfes.com/bugreport">https://opfes.com/bugreport</a> ` +
+                `so I can try to solve this issue.`);
+                AbstractForm.changeMessages(shortMessage, message, null, false);
             }
         }
     }

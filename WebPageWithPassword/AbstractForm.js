@@ -69,6 +69,23 @@ class AbstractForm {
         document.getElementById('OPFES_popup_form').style.display = 'block';
     }
     /**
+     * This function refreshes the popupForm and sets the texts and buttons on it.
+     *
+     * @param shortMessage string Text that will get shown on the first line
+     * @param message string Text that will get shown on the 'read more...'-part of the popupForm
+     * @param passwordInputElement HTMLInputElement The element into which the password can get entered.
+     * @param showSubmitPassword boolean Show or hide the passwordField and Login-button
+     */
+    static changeMessages(shortMessage = '', message = '', passwordInputElement = null, showSubmitPassword = false) {
+        document.getElementById('OPFES_popup_short_message').innerHTML = shortMessage;
+        document.getElementById('OPFES_popup_message').innerHTML = message;
+        document.getElementById('OPFES_popup_password_element').style.display = (showSubmitPassword) ? 'block' : 'none';
+        document.getElementById('OPFES_popup_form').style.display = 'block';
+        if (shortMessage == '') {
+            this.readMore();
+        }
+    }
+    /**
      * This function hides the popupForm entirely. Of course this function is used by the Form's close-button
      */
     static hidePopupForm() {
@@ -128,7 +145,9 @@ class AbstractForm {
         let selectedElements = thisElement.querySelectorAll('[type="submit"],[class*="submit"],[id*="submit"]');
         let submitButton = null;
         for (let element of selectedElements) {
-            submitButtons.push(element);
+            if (element.id != 'OPFES_popup_submit') {
+                submitButtons.push(element);
+            }
         }
         if (submitButtons.length == 1) {
             // Only one button here, so that is the one! Return it.

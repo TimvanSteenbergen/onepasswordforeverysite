@@ -4,7 +4,9 @@
  * This is the WebPageWithPassword for webpages having two password-fields: new and verify.
  * We are trying to generate a new password, copy it to both fields and submit the form.
  *
- * Example sites: sourcerers.nl/WebPageWithPassword
+ * Example sites:
+ * - fsfe.org: Log in an go to Application Settings
+ * - sourcerers.nl
  */
 class NewAndVerifyPassword extends AbstractForm {
     constructor(thisSite, pwdInputs) {
