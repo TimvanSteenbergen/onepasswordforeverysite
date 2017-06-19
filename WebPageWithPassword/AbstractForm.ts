@@ -156,10 +156,10 @@ class AbstractForm {
     private static getSubmitButtonFrom(thisElement, pwdInput: HTMLInputElement) {
         let submitButtons: HTMLInputElement[] = [];
         let selectedElements = thisElement.querySelectorAll(
-            `[id*="submit"]` +
+            `[id*="submit"],` +
             `[type="submit"],` +
             `[class*="submit"],` +
-            `[class*="login-button"],` //Used by: Joomla-sites
+            `[class*="login-button"]` //Used by: Joomla-sites
         );
         let submitButton = null;
         for (let element of selectedElements) {
