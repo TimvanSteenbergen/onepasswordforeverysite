@@ -89,7 +89,7 @@ class AbstractForm {
      * This function hides the popupForm entirely. Of course this function is used by the Form's close-button
      */
     static hidePopupForm() {
-        document.getElementById('OPFES_popup_form').style.display = 'none';
+        document.getElementById('OPFES_popup_form').remove();
         return '';
     }
     /**
@@ -197,6 +197,14 @@ class AbstractForm {
         }
         //No button determined! Should never arrive here but Murphy learns us that eventually we will. So let's handle this situation
         return null;
+    }
+    static submitButtonNotFound() {
+        let shortMessage = (`Sorry! I have not been able to find the submit-button. You will have to click it yourself.`);
+        let message = (`Your userid and password are ready to login. All you have to do is click the submit button yourself.<br>` +
+            `<br>` +
+            `Can you please inform me about this via <a href="https://opfes.com/bugreport">https://opfes.com/bugreport</a> ` +
+            `so I can try to solve this issue.`);
+        AbstractForm.changeMessages(shortMessage, message, null, false);
     }
 }
 //# sourceMappingURL=AbstractForm.js.map

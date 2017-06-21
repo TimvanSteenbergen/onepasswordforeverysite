@@ -101,12 +101,7 @@ class Login extends AbstractForm {
                 // pwdInputs[0].form.submit(); //.. but this neither...
             }
             else {
-                shortMessage = (`Sorry! I have not been able to find the submit-button. You will have to click it yourself.`);
-                message = (`Your userid and password are ready to login. All you have to do is click the submit button yourself.<br>` +
-                    `<br>` +
-                    `Can you please inform me about this via <a href="https://opfes.com/bugreport">https://opfes.com/bugreport</a> ` +
-                    `so I can try to solve this issue.`);
-                AbstractForm.changeMessages(shortMessage, message, null, false);
+                this.submitButtonNotFound();
             }
         }
     }
