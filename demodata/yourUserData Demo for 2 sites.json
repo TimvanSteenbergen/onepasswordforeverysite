@@ -31,26 +31,5 @@
   ],
   "_opfes_settings": {
     "language": "English"
-  },
-  "_bookmark_groups": [
-    {
-      "id": 1,
-      "parent_id": 0,
-      "name": "Searchengine DuckDuckGo"
-    }
-  ],
-  "_bookmarks": [
-    {
-      "id": 1,
-      "group_id": 1,
-      "url": "http://duckduckgo.com",
-      "name": "Searchengine DuckDuckGo"
-    },
-    {
-      "id": 2,
-      "group_id": 1,
-      "url": "https://del.icio.us/popular/typescript",
-      "name": "Del.icio.us populars"
-    }
-  ]
+  }
 }
