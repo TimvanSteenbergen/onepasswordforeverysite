@@ -3,7 +3,7 @@
     {
       "domain": "gavelsnipe.com",
       "subDomain": "",
-      "domainFromWhichThePasswordIsGenerated": "",
+      "domainForPasswordGeneration": "",
       "userId": "demo@opfes.com",
       "salt": "demo",
       "sequenceNr": 1,
@@ -17,7 +17,7 @@
     {
       "domain": "spelletjes.nl",
       "subDomain": "",
-      "domainFromWhichThePasswordIsGenerated": "",
+      "domainForPasswordGeneration": "",
       "userId": "opfes",
       "salt": "demo",
       "sequenceNr": 1,
@@ -31,7 +31,7 @@
     {
       "domain": "eversource.com",
       "subDomain": "",
-      "domainFromWhichThePasswordIsGenerated": "",
+      "domainForPasswordGeneration": "",
       "userId": "opfesdemo",
       "salt": "Can be any text",
       "sequenceNr": 1,
@@ -45,7 +45,7 @@
     {
       "domain": "jetbrains.com",
       "subDomain": "",
-      "domainFromWhichThePasswordIsGenerated": "",
+      "domainForPasswordGeneration": "",
       "userId": "demo@opfes.com",
       "salt": "salt",
       "sequenceNr": 2,
@@ -59,7 +59,7 @@
     {
       "domain": "amazon.co.uk",
       "subDomain": "",
-      "domainFromWhichThePasswordIsGenerated": "",
+      "domainForPasswordGeneration": "",
       "userId": "demo@opfes.com",
       "salt": "salt",
       "sequenceNr": 1,
@@ -73,7 +73,7 @@
     {
       "domain": "nike.com",
       "subDomain": "",
-      "domainFromWhichThePasswordIsGenerated": "",
+      "domainForPasswordGeneration": "",
       "userId": "demo@opfes.com",
       "salt": "demo",
       "sequenceNr": 1,
