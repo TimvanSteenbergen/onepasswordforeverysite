@@ -1,15 +1,19 @@
 /**
  * Created by tvansteenbergen on 2017-03-09.
  *
- * This is the template Form used by every other PopupForm. It contains functions used by all of them:
+ * This is the template Form used by every other WebPageWithPassword. It contains functions used by all of them:
  */
 class NoUserData extends AbstractForm {
+
     /**
      * Simply set the message and show the popupForm
      */
     constructor() {
         super();
-        let message = `<p>NoUserData: I, Opfes, do see a login form, but you have not yet uploaded your user-data. </p>` +
+        let shortMessage: string = 'Opfes says: Upload your userdata.';
+        let message: string =
+            `<p>NoUserData: I, Opfes, do see a ${(SiteService.getDomain(window.location.href))} login-form, but you have not yet uploaded your user-data. </p>` +
+            `<p></p>` +
             `<p>If you are new to Opfes and this is your first website on which you want to use Opfes, then follow these steps: ` +
             `<ul>` +
             `<li>Login like you use to;</li>` +
@@ -26,7 +30,6 @@ class NoUserData extends AbstractForm {
             `<li>And click 'Open'.</li>` +
             `</ul>` +
             `Then refresh this web-page and log in the Opfes way.</p>`;
-        AbstractForm.showPopupForm(message, false);
+        AbstractForm.showPopupForm(shortMessage, message, null, false);
     }
 }
-//# sourceMappingURL=NoUserData.js.map

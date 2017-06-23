@@ -1,12 +1,12 @@
 {
   "manifest_version": 2,
   "name": "OnePasswordForEverySite Browser extension",
-  "description": "Hi, I'm Opfes, helping you to log in to every site with one password. Without storing any of your passwords at all!",
+  "description": "Hi. I'm Opfes. I will that help you to log in to any site. You will have to remember one password only. You will have maximum password safety.",
   "version": "1.0",
   "browser_action": {
     "default_icon": "icons\/opfes_19.png",
-    "default_popup": "OnePasswordForEverySiteApp.html",
-    "default_title": "Hi, I'm OPFES.\nI will help you log in everywhere.\nYou will only need one password!\nI will not store any of your passwords anywhere!"
+    "default_popup": "ToolbarForm.html",
+    "default_title": "Hi. I'm Opfes. I will help you to log in everywhere.\nYou will only need to remember one password.\nYou will have maximum password safety.\n"
   },
   "content_scripts": [
     {
@@ -15,20 +15,20 @@
       ],
       "js": [
         "CustomerBrowser.js",
-        "UserData.js",
-        "LoginElement.js",
-        "SiteService.js",
         "Site.js",
+        "SiteService.js",
         "SHA512.js",
-        "PopupForm/AbstractForm.js",
-        "PopupForm/Login.js",
-        "PopupForm/UnknownSite.js",
-        "PopupForm/NoUserData.js",
-        "PopupForm/NewAndVerifyPassword.js",
-        "PopupForm/OldNewAndVerifyPassword.js"
+        "UserData.js",
+        "WebPageWithPassword/AbstractForm.js",
+        "WebPageWithPassword/Factory.js",
+        "WebPageWithPassword/Login.js",
+        "WebPageWithPassword/NewAndVerifyPassword.js",
+        "WebPageWithPassword/NoUserData.js",
+        "WebPageWithPassword/OldNewAndVerifyPassword.js",
+        "WebPageWithPassword/UnknownSite.js"
       ],
       "css": [
-        "PasswordPopup.css"
+        "css/PopupForm.css"
       ]
     },
     {
@@ -39,7 +39,7 @@
         "tests/SiteServiceTests.js"
       ],
       "css": [
-        "tests/SiteServiceTests.css"
+        "css/SiteServiceTests.css"
       ]
     }
   ],
@@ -51,8 +51,8 @@
   },
   "web_accessible_resources": [
     "icons\/opfes_19.png",
-    "icons\/opfes_32.png",
-    "icons\/opfes_19_unset_opfes.png"
+    "icons\/opfes_19_unset_opfes.png",
+    "icons\/opfes_32.png"
   ],
   "permissions": [
     "activeTab",

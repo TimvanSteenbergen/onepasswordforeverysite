@@ -161,167 +161,21 @@ class SiteService implements ISiteService{
     }
 
     /**
-     *
-     * @param domainParts
-     * @returns {boolean}
-     * @see stackoverflow.com/questions/569137
-     */
-    static isSecondLevelDomainPresent(domainParts) {
-        /* These are TLDs that have an SLD */
-        let tlds = {
-            "cy":true,
-            "ro":true,
-            "ke":true,
-            "kh":true,
-            "ki":true,
-            "cr":true,
-            "km":true,
-            "kn":true,
-            "kr":true,
-            "ck":true,
-            "cn":true,
-            "kw":true,
-            "rs":true,
-            "ca":true,
-            "kz":true,
-            "rw":true,
-            "ru":true,
-            "za":true,
-            "zm":true,
-            "bz":true,
-            "je":true,
-            "uy":true,
-            "bs":true,
-            "br":true,
-            "jo":true,
-            "us":true,
-            "bh":true,
-            "bo":true,
-            "bn":true,
-            "bb":true,
-            "ba":true,
-            "ua":true,
-            "eg":true,
-            "ec":true,
-            "et":true,
-            "er":true,
-            "es":true,
-            "pl":true,
-            // "in":true, see www.amazon.it
-            "ph":true,
-            "il":true,
-            "pe":true,
-            "co":true,
-            "pa":true,
-            "id":true,
-            "py":true,
-            "ug":true,
-            "ky":true,
-            "ir":true,
-            "pt":true,
-            "pw":true,
-            "iq":true,
-            // "it":true, see www.amazon.it
-            "pr":true,
-            "sh":true,
-            "sl":true,
-            "sn":true,
-            "sa":true,
-            "sb":true,
-            "sc":true,
-            "sd":true,
-            "se":true,
-            "hk":true,
-            "sg":true,
-            "sy":true,
-            "sz":true,
-            "st":true,
-            "sv":true,
-            "om":true,
-            "th":true,
-            "ve":true,
-            "tz":true,
-            "vn":true,
-            "vi":true,
-            "pk":true,
-            "fk":true,
-            "fj":true,
-            "fr":true,
-            "ni":true,
-            "ng":true,
-            "nf":true,
-            "re":true,
-            "na":true,
-            "qa":true,
-            "tw":true,
-            "nr":true,
-            "np":true,
-            "ac":true,
-            "af":true,
-            "ae":true,
-            "ao":true,
-            "al":true,
-            "yu":true,
-            "ar":true,
-            "tj":true,
-            "at":true,
-            "au":true,
-            "ye":true,
-            "mv":true,
-            "mw":true,
-            "mt":true,
-            "mu":true,
-            "tr":true,
-            "mz":true,
-            "tt":true,
-            "mx":true,
-            "my":true,
-            "mg":true,
-            "me":true,
-            "mc":true,
-            "ma":true,
-            "mn":true,
-            "mo":true,
-            "ml":true,
-            "mk":true,
-            "do":true,
-            "dz":true,
-            "ps":true,
-            "lr":true,
-            "tn":true,
-            "lv":true,
-            "ly":true,
-            "lb":true,
-            "lk":true,
-            "gg":true,
-            "uk":true,
-            "gn":true,
-            "gh":true,
-            "gt":true,
-            "gu":true,
-            "jp":true,
-            "gr":true,
-            "nz":true
-        };
-
-        return typeof tlds[domainParts[domainParts.length - 1]] != "undefined";
-    }
-    /**
-     * This function will abstract the domain-part from the url
-     * @param url an Location.href-type, http://xxx.yyy.zzz/something
-     * @returns {string}
+     * This function gets the domainname from the url, which needs to be an Location.href-type.
+     * Can't use "window.location.host" because this will return the domain of the ToolbarForm: ToolbarForm.html
+     * @param url an Location.href-type, http://www.xxx.yyy.zzz/something or http://subdomain.xxx.yyy.zzz/something
+     * @returns {string} will return xxx.yyy.zzz
      */
     static getDomain(url: string)
-//This function gets the domainname from the url, which needs to be an Location.href-type.
-//Can't use "window.location.host" because this will return the domain of the OnePasswordForEverySiteApp.html
-//@todo: solve issue #27, www.amazon.co.uk -> now co.uk instead of amazon.co.uk
-    {   let domain = url.match(/:\/\/(.[^/]+)/)[1];
+    {
+        let domain = url.match(/:\/\/(.[^/]+)/)[1];
         let domainParts = domain.split(".");
-        let cutOff: number = 2;
-        if (SiteService.isSecondLevelDomainPresent(domainParts)) {
-            cutOff=3;
+        if (domainParts.length === 1) {
+            return domainParts[0];
+        } else if (domainParts.length === 2) {
+            return domainParts[0] + "." + domainParts[1];
+        } else {
+            return domainParts.slice(1, domainParts.length).join(".");
         }
-        return domainParts.slice(1, domainParts.length).join(".");
-        // return domainParts.slice(domainParts.length-cutOff, domainParts.length).join(".");
     }
 }
