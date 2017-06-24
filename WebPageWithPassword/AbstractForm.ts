@@ -146,6 +146,25 @@ class AbstractForm {
         return null;
     }
 
+    protected getUsernameElement(userid:string = '', passwordElement: HTMLInputElement = null){
+
+        //todo: Make Finding the username-inputfield as smart as possible
+        //... and put it in the user-id inputfield
+        let userNameInputElement: HTMLInputElement = <HTMLInputElement>getVisibleUserIdElement('input[type="text"][id*=user]');
+        if (!userNameInputElement) {
+            userNameInputElement = <HTMLInputElement>getVisibleUserIdElement('input[type="text"][id*=User]');
+        }
+        if (!userNameInputElement) {
+            userNameInputElement = <HTMLInputElement>getVisibleUserIdElement('input[type="text"][id*=id]');
+        }
+        if (!userNameInputElement) {
+            userNameInputElement = <HTMLInputElement>getVisibleUserIdElement('input[type="text"][id*=Id]');
+        }
+        if (!userNameInputElement) {
+            userNameInputElement = <HTMLInputElement>getVisibleUserIdElement('input[type="text"]');
+        }
+
+    }
     /**
      * This function looks for the submitButton in the given parent-element, next to the given passwordField
      *

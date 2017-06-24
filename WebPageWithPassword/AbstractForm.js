@@ -133,6 +133,23 @@ class AbstractForm {
         //No button determined! Should never arrive here but Murphy learns us that eventually we will. So let's handle this situation
         return null;
     }
+    getUsernameElement(userid = '', passwordElement = null) {
+        //todo: Make Finding the username-inputfield as smart as possible
+        //... and put it in the user-id inputfield
+        let userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=user]');
+        if (!userNameInputElement) {
+            userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=User]');
+        }
+        if (!userNameInputElement) {
+            userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=id]');
+        }
+        if (!userNameInputElement) {
+            userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=Id]');
+        }
+        if (!userNameInputElement) {
+            userNameInputElement = getVisibleUserIdElement('input[type="text"]');
+        }
+    }
     /**
      * This function looks for the submitButton in the given parent-element, next to the given passwordField
      *

@@ -15,19 +15,8 @@ class Login extends AbstractForm {
         if (userNameInputValue !== '') {
             //todo: Make Finding the username-inputfield as smart as possible
             //... and put it in the user-id inputfield
-            let userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=user]');
-            if (!userNameInputElement) {
-                userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=User]');
-            }
-            if (!userNameInputElement) {
-                userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=id]');
-            }
-            if (!userNameInputElement) {
-                userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=Id]');
-            }
-            if (!userNameInputElement) {
-                userNameInputElement = getVisibleUserIdElement('input[type="text"]');
-            }
+            let userNameInputElement = this.getVisibleUserIdElement('input[type="text"][id*=user], input[type="text"][id*=User], ' +
+                'input[type="text"][id*=id], input[type="text"][id*=Id], input[type="text"]', pwdInput);
             if (!userNameInputElement) {
                 alert('I have not been able to find the input field for the accountname/userid. ' +
                     'Please manually enter the accountname where possible. ');
@@ -37,8 +26,6 @@ class Login extends AbstractForm {
             }
         }
         else {
-            /** Not possible, every site does have a value in field 'userid';
-             * At least that's what I think right now. Will probably stand corrected in the near future...*/
         }
         // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
         let shortMessage = `Enter your Opfes-password to log in: `;
@@ -56,26 +43,26 @@ class Login extends AbstractForm {
         document.getElementById('OPFES_popup_submit').addEventListener('click', function () {
             Login.generatePasswordAndLogin(thisSite, pwdInput);
         });
-        //This function returns the userNameInputElement. The first visible inputElement in the password-wrapping form
-        function getVisibleUserIdElement(selectorString) {
-            // Get the form wrapping the passwordfield
-            let loginForm = pwdInputs[0].form;
-            //Todo Kill Annie
-            let inputElements = loginForm.querySelectorAll(selectorString);
-            if (inputElements) {
-                for (let i = 0; i < inputElements.length; i++) {
-                    if (!isHidden(inputElements[i])) {
-                        // We found a password field! Let's add it to our collection:
-                        return inputElements[i];
-                    }
+    }
+    //This function returns the userNameInputElement. The first visible inputElement in the password-wrapping form
+    getVisibleUserIdElement(selectorString, pwdElement) {
+        // Get the form wrapping the passwordfield
+        let loginForm = pwdElement.form;
+        //Todo Kill Annie
+        let inputElements = loginForm.querySelectorAll(selectorString);
+        if (inputElements) {
+            for (let i = 0; i < inputElements.length; i++) {
+                if (!this.isHidden(inputElements[i])) {
+                    // We found a password field! Let's add it to our collection:
+                    return inputElements[i];
                 }
             }
         }
-        // This function checks if the given element is visible
-        // Returns a boolean
-        function isHidden(el) {
-            return (el.offsetParent === null);
-        }
+    }
+    // This function checks if the given element is visible
+    // Returns a boolean
+    isHidden(el) {
+        return (el.offsetParent === null);
     }
     static generatePasswordAndLogin(thisSite, pwdInput) {
         let opfesPassword = document.getElementById('OPFES_popup_password').value;
@@ -98,7 +85,6 @@ class Login extends AbstractForm {
                         `See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.`);
                     AbstractForm.changeMessages('', message, null, false);
                 } //Does not work on ebay.nl...
-                // pwdInputs[0].form.submit(); //.. but this neither...
             }
             else {
                 this.submitButtonNotFound();

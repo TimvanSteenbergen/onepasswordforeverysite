@@ -136,7 +136,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                             document.getElementById('OPFES_InputRemark').setAttribute('disabled', "disabled");
                         }
                         if (site.getAllowedSpecialCharacters() != "") {
-                            document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('value', (site.getAllowedSpecialCharacters()));
+                            document.getElementById('OPFES_InpAllowedSpecialCharacters').setAttribute('value', (site.getAllowedSpecialCharacters()));
                             document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('disabled', "disabled");
                         }
                     }
