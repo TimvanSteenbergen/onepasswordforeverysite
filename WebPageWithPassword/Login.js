@@ -15,17 +15,22 @@ class Login extends AbstractForm {
         if (userNameInputValue !== '') {
             //todo: Make Finding the username-inputfield as smart as possible
             //... and put it in the user-id inputfield
-            let userNameInputElement = this.getVisibleUserIdElement('input[type="text"][id*=user], input[type="text"][id*=User], ' +
-                'input[type="text"][id*=id], input[type="text"][id*=Id], input[type="text"]', pwdInput);
+            let userNameInputElement = this.getVisibleUserIdElement('input[type="text"][id*=user], ' +
+                'input[type="text"][id*=User], ' +
+                'input[type="text"][id*=id], ' +
+                'input[type="text"][id*=Id], ' +
+                'input[type="text"]', pwdInput);
             if (!userNameInputElement) {
-                alert('I have not been able to find the input field for the accountname/userid. ' +
-                    'Please manually enter the accountname where possible. ');
+                // Appearently the username is already stored somewhere else, not in a HTMLInputElement
+                // so there is no need to worry about it.
             }
             if (userNameInputElement) {
                 userNameInputElement.value = userNameInputValue;
             }
         }
         else {
+            /** Not possible, every site does have a value in field 'userid';
+             * At least that's what I think right now. Will probably stand corrected in the near future...*/
         }
         // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
         let shortMessage = `Enter your Opfes-password to log in: `;
@@ -81,10 +86,12 @@ class Login extends AbstractForm {
                     submitButton.click();
                 }
                 else {
-                    message = (`You will need to click the submit button yourself for this site. This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ` +
-                        `See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.`);
-                    AbstractForm.changeMessages('', message, null, false);
+                    shortMessage = `You will need to click the submit button yourself for this site. `;
+                    message = `This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ` +
+                        `See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.`;
+                    AbstractForm.changeMessages(shortMessage, message, null, false);
                 } //Does not work on ebay.nl...
+                // pwdInputs[0].form.submit(); //.. but this neither...
             }
             else {
                 this.submitButtonNotFound();

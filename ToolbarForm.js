@@ -212,6 +212,7 @@ let OPFES_WorkWithUserData = function (userData) {
             //         window.alert(`Your password for this site for this user-id is:\n\n${sitePassword}\n\n It is copied to your clipboard. You can paste it in your password-field.`);
             //     } else {
             window.prompt(`This is your password for this site for this user-id.\n\nTo copy the password to your clipboard: Ctrl+C or Cmd+C , Enter`, sitePassword);
+            //     }
         }
     }, false);
 };

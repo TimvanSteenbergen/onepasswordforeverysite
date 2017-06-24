@@ -63,3 +63,8 @@ This data is stored in the webappsstore.sqlite file in the profile folder of you
 ## Contribute to Opfes
 If you want to contribute, please do so by solving any of our issues on https://github.com/TimvanSteenbergen/onepasswordforeverysite and commit your changes, create a pull request. 
 Becoming a opfes-contributor you can send an email to info@opfes.com giving your github-account. I will add you.
+
+
+# Collegues
+- keypass, a standalone project
+- lastpass, a Firefox addon
