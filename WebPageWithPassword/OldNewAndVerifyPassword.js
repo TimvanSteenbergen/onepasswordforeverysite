@@ -9,9 +9,9 @@
  * - toernooi.nl when changing your password.
  *
  */
-class OldNewAndVerifyPassword extends NewAndVerifyPassword {
+class OldNewAndVerifyPassword extends AbstractForm {
     constructor(thisSite, pwdInputs) {
-        super(thisSite, pwdInputs);
+        super();
         if (pwdInputs.length != 3) {
             console.log('Error in Password-change-form-detection: This Password-change-form should have three password-fields.');
             return;
@@ -28,11 +28,11 @@ class OldNewAndVerifyPassword extends NewAndVerifyPassword {
         document.getElementById('OPFES_popup_password').addEventListener('keydown', function (e) {
             if (e.which == 13 || e.keyCode == 13) {
                 OldNewAndVerifyPassword.generatedPasswordAndPutInCurrent(thisSite, pwdInputs[0]);
-                NewAndVerifyPassword.generatePasswordAndSave(thisSite, [pwdInputs[1], pwdInputs[2]]);
+                NewAndVerifyPassword.generatePasswordAndSubmit(thisSite, [pwdInputs[1], pwdInputs[2]]);
             }
         });
         document.getElementById('OPFES_popup_submit').addEventListener('click', function () {
-            NewAndVerifyPassword.generatePasswordAndSave(thisSite, pwdInputs);
+            NewAndVerifyPassword.generatePasswordAndSubmit(thisSite, pwdInputs);
         });
     }
     static generatedPasswordAndPutInCurrent(thisSite, pwdInput) {

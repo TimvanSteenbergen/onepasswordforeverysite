@@ -133,23 +133,6 @@ class AbstractForm {
         //No button determined! Should never arrive here but Murphy learns us that eventually we will. So let's handle this situation
         return null;
     }
-    getUsernameElement(userid = '', passwordElement = null) {
-        //todo: Make Finding the username-inputfield as smart as possible
-        //... and put it in the user-id inputfield
-        let userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=user]');
-        if (!userNameInputElement) {
-            userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=User]');
-        }
-        if (!userNameInputElement) {
-            userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=id]');
-        }
-        if (!userNameInputElement) {
-            userNameInputElement = getVisibleUserIdElement('input[type="text"][id*=Id]');
-        }
-        if (!userNameInputElement) {
-            userNameInputElement = getVisibleUserIdElement('input[type="text"]');
-        }
-    }
     /**
      * This function looks for the submitButton in the given parent-element, next to the given passwordField
      *
@@ -222,6 +205,38 @@ class AbstractForm {
             `Can you please inform me about this via <a href="https://opfes.com/bugreport">https://opfes.com/bugreport</a> ` +
             `so I can try to solve this issue.`);
         AbstractForm.changeMessages(shortMessage, message, null, false);
+    }
+    static generatePasswordAndSubmit(thisSite, pwdInputs) {
+        let opfesPassword = document.getElementById('OPFES_popup_password').value;
+        let submitButton;
+        let generatedPassword;
+        let shortMessage;
+        let message;
+        if (opfesPassword !== null && opfesPassword !== "") {
+            generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
+            let pwdInput = null;
+            for (pwdInput of pwdInputs) {
+                pwdInput.value = generatedPassword;
+            }
+            // alert (generatedPassword);
+            submitButton = this.getSubmitButton(pwdInputs[0]);
+            if (submitButton) {
+                if (thisSite.getDomain() !== 'ebay.nl') {
+                    AbstractForm.hidePopupForm();
+                    submitButton.click();
+                }
+                else {
+                    shortMessage = `You will need to click the submit button yourself for this site. `;
+                    message = `This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ` +
+                        `See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.`;
+                    AbstractForm.changeMessages(shortMessage, message, null, false);
+                } //Does not work on ebay.nl...
+                // pwdInputs[0].form.submit(); //.. but this neither...
+            }
+            else {
+                this.submitButtonNotFound();
+            }
+        }
     }
 }
 //# sourceMappingURL=AbstractForm.js.map

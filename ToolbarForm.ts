@@ -31,6 +31,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    /**
+     * This function checks the characters input by the user as one of the AllowedSpecialCharacters.
+     */
+    function inputValidationForAllowedSpecialCharacters() {
+        let inputValue: String = this.value;
+        let letter:string = ``;
+        for (letter of inputValue){
+            if (specialCharacters.indexOf(letter) === -1){
+                alert(`You tried to add a '${letter}', but the only possible characters in this field are ${specialCharacters}`);
+                this.value = this.attributes['value'].value;
+                return;
+            }
+        }
+    }
     (<HTMLInputElement>document.getElementById('OPFES_InputDomainToggle')).addEventListener('click', function () {
         // showTheLocallyStoredData(userData);
         toggleChangability.call(this);
@@ -46,6 +60,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdCharsToggle')).addEventListener('click', function () {
         toggleChangability.call(this);
+    });
+    (<HTMLInputElement>document.getElementById('OPFES_InputAllowedSpecialCharacters')).addEventListener('keyup', function () {
+        inputValidationForAllowedSpecialCharacters.call(this);
     });
     (<HTMLInputElement>document.getElementById('OPFES_InputAllowedSpecialCharactersToggle')).addEventListener('click', function () {
         toggleChangability.call(this);
@@ -136,7 +153,7 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                             document.getElementById('OPFES_InputRemark').setAttribute('disabled', "disabled");
                         }
                         if (site.getAllowedSpecialCharacters() != "") {
-                            document.getElementById('OPFES_InpAllowedSpecialCharacters').setAttribute('value', (site.getAllowedSpecialCharacters()));
+                            document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('value', (site.getAllowedSpecialCharacters()));
                             document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('disabled', "disabled");
                         }
                     }
@@ -188,7 +205,15 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
      * show the password in a popup and save the (changed) domain-data to the LocalStorage,
      * N.B. of course not saving the password!
      */
+    document.getElementById('OPFES_InputAppPassword').addEventListener('keydown', function (e) {
+        if (e.which == 13 || e.keyCode == 13) {
+            loginFromToolbar();
+        }
+    }, false);
     document.getElementById('OPFES_LoginButton').addEventListener('click', function () {
+        loginFromToolbar();
+    }, false);
+    function loginFromToolbar() {
         let ourPopup = document;
         let site = new Site(
             (<HTMLInputElement>ourPopup.getElementById('OPFES_InputDomain')).value,
@@ -229,16 +254,36 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                 sitePassword
             );
         } else {
-        // The execCommand('copy') does not seem to function in the toolbarForm.
-        //     let successful = document.execCommand('copy');
-        //     if (successful){
-        //         window.alert(`Your password for this site for this user-id is:\n\n${sitePassword}\n\n It is copied to your clipboard. You can paste it in your password-field.`);
-        //     } else {
+            // The execCommand('copy') does not seem to function in the toolbarForm.
+            let successful = copyTextToClipboard(sitePassword);
+            if (successful && false) {
+                // window.alert(`Your password for this site for this user-id is:\n\n${sitePassword}\n\n It is copied to your clipboard. You can paste it in your password-field.`);
+            } else {
                 window.prompt(
                     `This is your password for this site for this user-id.\n\nTo copy the password to your clipboard: Ctrl+C or Cmd+C , Enter`,
                     sitePassword
                 );
-        //     }
+            }
         }
-    }, false);
+    }
 };
+
+/**
+ * This function is supposed to copy the password to the clipboard, but is does not yet work at all.
+ * Problem is that document.execCommand returns true while not having copied the text to the clipboard!
+ * @param text
+ */
+function copyTextToClipboard(text) {
+    try {
+        let copyFrom: HTMLTextAreaElement = <HTMLTextAreaElement>document.createElement("copyFrom");
+        copyFrom.setAttribute("value", text);
+        (<HTMLBodyElement>document.querySelector('body')).appendChild(copyFrom);
+        copyFrom.focus();
+        document.execCommand('copy', true);
+        copyFrom.remove();
+        return true;
+    }
+    catch (ex) {
+        return false;
+    }
+}

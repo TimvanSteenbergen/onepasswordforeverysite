@@ -29,34 +29,12 @@ class NewAndVerifyPassword extends AbstractForm {
         document.getElementById('OPFES_popup_password').focus();
         document.getElementById('OPFES_popup_password').addEventListener('keydown', function (e) {
             if (e.which == 13 || e.keyCode == 13) {
-                NewAndVerifyPassword.generatePasswordAndSave(thisSite, pwdInputs);
+                NewAndVerifyPassword.generatePasswordAndSubmit(thisSite, pwdInputs);
             }
         });
         document.getElementById('OPFES_popup_submit').addEventListener('click', function () {
             thisSite.setSequenceNr(thisSite.getSequenceNr() + 1);
-            NewAndVerifyPassword.generatePasswordAndSave(thisSite, pwdInputs);
+            NewAndVerifyPassword.generatePasswordAndSubmit(thisSite, pwdInputs);
         });
-    }
-
-    protected static generatePasswordAndSave(thisSite: Site, pwdInputs) {
-        let opfesPassword: string = (<HTMLInputElement>document.getElementById('OPFES_popup_password')).value;
-        let submitButton: HTMLElement;
-        let generatedPassword: string;
-
-        AbstractForm.hidePopupForm();
-        if (opfesPassword !== null && opfesPassword !== "") {
-            generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
-            console.log(`pwd: ${generatedPassword}`);
-            pwdInputs[0].value = generatedPassword;
-            pwdInputs[1].value = generatedPassword;
-            submitButton = this.getSubmitButton(pwdInputs[0]);
-            if (submitButton) { // If the submitbutton is found: click it!
-                SiteService.persist(thisSite);//Since you changed the sequencenr of this site, save it!
-                alert('Please via the ToolbarButton: manually increase the Sequencenumber by 1. See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/58"> github</a>');
-                submitButton.click();
-            } else {
-                this.submitButtonNotFound();
-            }
-        }
     }
 }

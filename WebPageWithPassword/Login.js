@@ -24,7 +24,7 @@ class Login extends AbstractForm {
                 // Appearently the username is already stored somewhere else, not in a HTMLInputElement
                 // so there is no need to worry about it.
             }
-            if (userNameInputElement) {
+            else {
                 userNameInputElement.value = userNameInputValue;
             }
         }
@@ -42,18 +42,17 @@ class Login extends AbstractForm {
         document.getElementById('OPFES_popup_password').focus();
         document.getElementById('OPFES_popup_password').addEventListener('keydown', function (e) {
             if (e.which == 13 || e.keyCode == 13) {
-                Login.generatePasswordAndLogin(thisSite, pwdInput);
+                Login.generatePasswordAndSubmit(thisSite, pwdInputs);
             }
         });
         document.getElementById('OPFES_popup_submit').addEventListener('click', function () {
-            Login.generatePasswordAndLogin(thisSite, pwdInput);
+            Login.generatePasswordAndSubmit(thisSite, pwdInputs);
         });
     }
     //This function returns the userNameInputElement. The first visible inputElement in the password-wrapping form
     getVisibleUserIdElement(selectorString, pwdElement) {
-        // Get the form wrapping the passwordfield
+        // Get the form wrapping the password field
         let loginForm = pwdElement.form;
-        //Todo Kill Annie
         let inputElements = loginForm.querySelectorAll(selectorString);
         if (inputElements) {
             for (let i = 0; i < inputElements.length; i++) {
@@ -68,35 +67,6 @@ class Login extends AbstractForm {
     // Returns a boolean
     isHidden(el) {
         return (el.offsetParent === null);
-    }
-    static generatePasswordAndLogin(thisSite, pwdInput) {
-        let opfesPassword = document.getElementById('OPFES_popup_password').value;
-        let submitButton;
-        let generatedPassword;
-        let shortMessage;
-        let message;
-        if (opfesPassword !== null && opfesPassword !== "") {
-            generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
-            pwdInput.value = generatedPassword;
-            // alert (generatedPassword);
-            submitButton = this.getSubmitButton(pwdInput);
-            if (submitButton) {
-                if (thisSite.getDomain() !== 'ebay.nl') {
-                    AbstractForm.hidePopupForm();
-                    submitButton.click();
-                }
-                else {
-                    shortMessage = `You will need to click the submit button yourself for this site. `;
-                    message = `This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ` +
-                        `See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.`;
-                    AbstractForm.changeMessages(shortMessage, message, null, false);
-                } //Does not work on ebay.nl...
-                // pwdInputs[0].form.submit(); //.. but this neither...
-            }
-            else {
-                this.submitButtonNotFound();
-            }
-        }
     }
 }
 //# sourceMappingURL=Login.js.map
