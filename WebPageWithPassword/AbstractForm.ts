@@ -94,7 +94,7 @@ class AbstractForm {
      * This function hides the popupForm entirely. Of course this function is used by the Form's close-button
      */
     static hidePopupForm(): string {
-        document.getElementById('OPFES_popup_form').style.display = 'none';
+        document.getElementById('OPFES_popup_form').remove();
         return '';
     }
 
@@ -156,10 +156,10 @@ class AbstractForm {
     private static getSubmitButtonFrom(thisElement, pwdInput: HTMLInputElement) {
         let submitButtons: HTMLInputElement[] = [];
         let selectedElements = thisElement.querySelectorAll(
-            `[id*="submit"]` +
+            `[id*="submit"],` +
             `[type="submit"],` +
             `[class*="submit"],` +
-            `[class*="login-button"],` //Used by: Joomla-sites
+            `[class*="login-button"]` //Used by: Joomla-sites
         );
         let submitButton = null;
         for (let element of selectedElements) {
@@ -215,5 +215,46 @@ class AbstractForm {
 
         //No button determined! Should never arrive here but Murphy learns us that eventually we will. So let's handle this situation
         return null;
+    }
+
+    protected static submitButtonNotFound() {
+        let shortMessage = (`Sorry! I have not been able to find the submit-button. You will have to click it yourself.`);
+        let message = (`Your userid and password are ready to login. All you have to do is click the submit button yourself.<br>` +
+        `<br>` +
+        `Can you please inform me about this via <a href="https://opfes.com/bugreport">https://opfes.com/bugreport</a> ` +
+        `so I can try to solve this issue.`);
+        AbstractForm.changeMessages(shortMessage, message, null, false);
+    }
+
+    protected static generatePasswordAndSubmit(thisSite, pwdInputs) {
+        let opfesPassword: string = (<HTMLInputElement>document.getElementById('OPFES_popup_password')).value;
+        let submitButton: HTMLElement;
+        let generatedPassword: string;
+        let shortMessage: string;
+        let message: string;
+
+        if (opfesPassword !== null && opfesPassword !== "") {
+            generatedPassword = SiteService.getSitePassword(thisSite, opfesPassword);
+            let pwdInput:HTMLInputElement = null;
+            for (pwdInput of pwdInputs) {
+                pwdInput.value = generatedPassword;
+            }
+            // alert (generatedPassword);
+            submitButton = this.getSubmitButton(pwdInputs[0]);
+            if (submitButton) { // If the submitbutton is found: click it!
+                if (thisSite.getDomain() !== 'ebay.nl') {
+                    AbstractForm.hidePopupForm();
+                    submitButton.click();
+                } else {
+                    shortMessage = `You will need to click the submit button yourself for this site. `;
+                    message = `This is a known bug in the Ebay.nl-site. Feel free to contribute to this tool by solving it. ` +
+                        `See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.`;
+                    AbstractForm.changeMessages(shortMessage, message, null, false);
+                }//Does not work on ebay.nl...
+                // pwdInputs[0].form.submit(); //.. but this neither...
+            } else {
+                this.submitButtonNotFound();
+            }
+        }
     }
 }

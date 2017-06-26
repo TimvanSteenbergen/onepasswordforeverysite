@@ -37,7 +37,7 @@ class UserData implements IUserData {
     static reviver(key, value): any {
         if (key !== "") {
             return value;
-        }//Even better: create a sanitizer for value that checks if the value has the format needed for reviving a UserData Object
+        }//@Todo: create a sanitizer for checking if each value has the format needed for reviving a UserData Object
         let sites: Site[] = []; //the target array of sites
         if (value !== '' && value !== null) {
             let sitesArray: String[] = value._sites; //the source array of sites
@@ -142,12 +142,6 @@ class UserData implements IUserData {
             reader.readAsText(file);//attempts to read the file in question.
             // console.log('The File ' + file.name + ' is now uploaded to your localData');
         }(self));
-        // for (let i=1;i<1000000000;i++){
-        //     if (i%10000000==0){
-        //         console.log('i is nu: ' + i + ' en het is ' + new Date());
-        //     }
-        // }
-
     }
 
     /**

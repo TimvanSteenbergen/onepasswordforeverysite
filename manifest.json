@@ -57,6 +57,8 @@
   "permissions": [
     "activeTab",
     "storage",
-    "tabs"
+    "tabs",
+    "clipboardRead",
+    "clipboardWrite"
   ]
 }
