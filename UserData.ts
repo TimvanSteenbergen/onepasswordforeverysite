@@ -14,6 +14,7 @@ interface IUserData {
 const userDataDefaultFileName: string = "yourUserData.json";
 
 class UserData implements IUserData {
+
     public get sites(): Site[] {
         return this._sites;
     }
@@ -41,7 +42,7 @@ class UserData implements IUserData {
         let sites: Site[] = []; //the target array of sites
         if (value !== '' && value !== null) {
             let sitesArray: String[] = value._sites; //the source array of sites
-            if (sitesArray == undefined) {
+            if (sitesArray === undefined) {
                 sitesArray = value.sites
             } //the source array of sites
             for (let key in sitesArray) {
@@ -72,10 +73,8 @@ class UserData implements IUserData {
      */
     static retrieve() {
         let result = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
-        console.log(`
-            Your localData is now retrieved from your browser's memory into Opfes' memory.
-            This is called from:
-        `);
+        console.log(`Your localData is now retrieved from your browser's memory into OPFES memory.
+        This is called from:`);
         // console.trace();
         // if (result['_sites'].length === 0){
         // chrome.storage.local.get("_sites",function(){}); //NB: Asynchronous call!!
@@ -104,13 +103,17 @@ class UserData implements IUserData {
             reader.onload = function (e) {
                 if(!window.confirm(`This will overwrite your current userdata.`)){return}//Popup is part of a bugfix. See https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/51
                 console.log(`Loading your datafile. Event's target is: ${e.target}`);
-                // todo cast e.target to its type: let data = (<FileReader>e.target).result;
+                // TODO cast e.target to its type: let data = (<FileReader>e.target).result;
+                // TODO decrypt input file with decrypyion function
+                // (NOTE: SHA512 does not have decryption function nor encryption function require secret key for later decryption
+                // , didn't have enough time to check all functionality of SHA512.ts please leave note for this)
                 let dataString: string = (<FileReader>e.target).result;
+                console.log(dataString);
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);
                 let sites: Site[] = userData.sites;
 
                 let dataTableHTML: string = `
-                    <table id='locallyStoredUserData' border='1px solid brown' style="background-color: red; color: white">
+                    <table id='locallyStoredUserData' border='1px solid brown'>
                         <thead>
                             <td>domain</td>
                             <td>userid</td>
@@ -120,18 +123,20 @@ class UserData implements IUserData {
                             <td>allowed</td>
                             <td>used at</td>
                             <td>remark</td>
-                        </thead>`;
+                        </thead>
+                    `;
                 for (let site of sites) {
                     dataTableHTML += `
-                        <tr><td>${site.getDomain()}</td>
-                                      <td>${site.getUserId()}</td>
-                                      <td>${site.getSalt()}</td>
-                                      <td>${site.getSequenceNr()}</td>
-                                      <td>${site.getMaxPwdChars()}</td>
-                                      <td>${site.getAllowedSpecialCharacters()}</td>
-                                      <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth() + 1}-${site.getLastUsed().getDate()}</td>
-                                      <td>${site.getRemark()}</td>
-                                   </tr>`;
+                        <tr>
+                            <td>${site.getDomain()}</td>
+                            <td>${site.getUserId()}</td>
+                            <td>${site.getSalt()}</td>
+                            <td>${site.getSequenceNr()}</td>
+                            <td>${site.getMaxPwdChars()}</td>
+                            <td>${site.getAllowedSpecialCharacters()}</td>
+                            <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth() + 1}-${site.getLastUsed().getDate()}</td>
+                            <td>${site.getRemark()}</td>
+                        </tr>`;
                 }
                 dataTableHTML += '</table>';
                 let localStoredUserDataElement = document.getElementById('OPFES_localStoredUserData');
@@ -153,14 +158,15 @@ class UserData implements IUserData {
             let userData: UserData = UserData.retrieve();
             //@todo encrypt this exportData
             if (confirm(`This will copy the sites and their related properties to a file for you to store on your local drive.`)) {
-                let data = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(userData))}`;
-                let downloadSitesLink = document.createElement('a');
+                let data = `text/json;charset=utf-8,${encodeURIComponent(SHA512(JSON.stringify(userData)))}`;
+                let downloadSitesLink: HTMLElement = document.createElement('a');
                 downloadSitesLink.href = `data:${data}`;
-                downloadSitesLink.download = "data.json";
+                downloadSitesLink.download = "sitePassword.json";
                 downloadSitesLink.click();
-                console.log(`You have downloaded the userdata containing your user-id's but not your passwords.`)
+                console.log(`You have downloaded the user data containing your user-id's but not your passwords.`)
             }
-            // });
+            // });+
+
         }(self));
     }
 
@@ -170,12 +176,6 @@ class UserData implements IUserData {
     static downloadPasswords() {
         (function (view) {
             "use strict";
-
-            let document = view.document
-                // only get URL when necessary in case Blob.js hasn't defined it yet
-                , get_blob = function () {
-                    return view.Blob;
-                };
             let userData: UserData = UserData.retrieve();
             let sites: Site[] = userData.sites;
             let sitePassword: string;
@@ -185,24 +185,19 @@ class UserData implements IUserData {
                 alert('First enter your password in the field "Your only password".');
                 return;
             }
-            if (confirm(`This will give you a file containing your user-id and password for the sites that you have visited.
-            This is useful for your own peace of mind and if you need your password without having OPFES helping you.
-            On the other hand: downloading this file is a security-risc.
-            Anyone stealing this file can use your user-id\'s and passwords on your sites.`)
+            if (confirm(
+                    'This will give you a file containing your user-id and password for the sites that you have visited. ' +
+                    'This is useful for your own peace of mind and if you need your password without having OPFES helping you. ' +
+                    'On the other hand: downloading this file is a security-risc. ' +
+                    'Anyone stealing this file can use your user-id\'s and passwords on your sites.')
             ) {
-                let BB = get_blob();
-                for (let site of sites) {
-                    sitePassword = SiteService.getSitePassword(site, yourOnlyPassword);
-                    passwordData.push({site, sitePassword});
-                }
-                let exportData: string = JSON.stringify(passwordData);
-                saveAs(
-                    new BB([exportData], {type: "text/plain;charset=" + document.characterSet}),
-                    userDataDefaultFileName,
-                    true
-                );
-                alert(`This site is in your hands now, containing your user-id's and passwords'. Keep it safe.`);
-                console.log(`You have downloaded the userdata containing your user-id's and passwords.`)
+                let data = `text/json;charset=utf-8,${encodeURIComponent(SHA512(JSON.stringify(passwordData)))}`;
+                let downloadSitesLink = document.createElement('a');
+                downloadSitesLink.href = `data:${data}`;
+                downloadSitesLink.download = "sitePassword.json";
+                downloadSitesLink.click();
+                alert('This site is in your hands now, containing your user-id\'s and passwords\'. Keep it safe.');
+                console.log('You have downloaded the userdata containing your user-id\'s and passwords\'.')
             }
             //@todo encrypt this exportData
             // });
