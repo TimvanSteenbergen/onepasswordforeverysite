@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>One password for every site</title>
-    <link type="text/css" rel="stylesheet" href="OnePasswordForEverySiteApp.css"/>
-    <script src="OnePasswordForEverySiteApp.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/ToolbarForm.css"/>
+    <script src="ToolbarForm.js"></script>
     <script src="SHA512.js"></script>
 </head>
 <body style="background-color: lightgray;">
@@ -196,6 +196,7 @@
                    title="Change the max number of password characters that is allowed by this site."/>
         </td>
         <td><input id="OPFES_InputAllowedSpecialCharacters" value="/~@#%^()_+-=.:?!{}"
+                   validationMessage="Da is nie goe nie"
                    placeholder="Allowed Special Characters" maxlength="18"/>
             <input id="OPFES_InputAllowedSpecialCharactersToggle" type="button" value="Change"
                    title="Need to change the allowed special characters you need for this site? This button enables you to do so."/>
@@ -268,7 +269,6 @@ For more detailed information about One-password-for-every-site app, visit <a
     Without the salt it would be possible to take the generated password for this site-you-are-trying-to-login-to and
     find out what your-only-password is. Either by brute forcing or via rainbow-tables.<br/>
     The salt is unknown to the site-you-re-trying-to-login-to and thus makes that impossible.</p>
-<script src="Blob.js"></script>
 <script src="CustomerBrowser.js"></script>
 <script src="FileSaver.js"></script>
 <script src="UserData.js"></script>

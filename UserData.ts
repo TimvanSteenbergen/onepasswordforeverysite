@@ -37,7 +37,7 @@ class UserData implements IUserData {
     static reviver(key, value): any {
         if (key !== "") {
             return value;
-        }//Even better: create a sanitizer for value that checks if the value has the format needed for reviving a UserData Object
+        }//@Todo: create a sanitizer for checking if each value has the format needed for reviving a UserData Object
         let sites: Site[] = []; //the target array of sites
         if (value !== '' && value !== null) {
             let sitesArray: String[] = value._sites; //the source array of sites
@@ -72,7 +72,10 @@ class UserData implements IUserData {
      */
     static retrieve() {
         let result = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
-        console.log('Your localData is now retrieved from your browser\'s memory into Opfes\' memory.\nThis is called from:\n');
+        console.log(`
+            Your localData is now retrieved from your browser's memory into Opfes' memory.
+            This is called from:
+        `);
         // console.trace();
         // if (result['_sites'].length === 0){
         // chrome.storage.local.get("_sites",function(){}); //NB: Asynchronous call!!
@@ -106,9 +109,21 @@ class UserData implements IUserData {
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);
                 let sites: Site[] = userData.sites;
 
-                let dataTableHTML: string = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>userid</td><td>salt</td><td>seq.nr</td><td>#chars</td><td>allowed</td><td>used at</td></ts><td>remark</td></thead>";
+                let dataTableHTML: string = `
+                    <table id='locallyStoredUserData' border='1px solid brown' style="background-color: red; color: white">
+                        <thead>
+                            <td>domain</td>
+                            <td>userid</td>
+                            <td>salt</td>
+                            <td>seq.nr</td>
+                            <td>#chars</td>
+                            <td>allowed</td>
+                            <td>used at</td>
+                            <td>remark</td>
+                        </thead>`;
                 for (let site of sites) {
-                    dataTableHTML += `<tr><td>${site.getDomain()}</td>
+                    dataTableHTML += `
+                        <tr><td>${site.getDomain()}</td>
                                       <td>${site.getUserId()}</td>
                                       <td>${site.getSalt()}</td>
                                       <td>${site.getSequenceNr()}</td>
@@ -123,6 +138,7 @@ class UserData implements IUserData {
                 localStoredUserDataElement.innerHTML = dataTableHTML;
                 userData.persist();
             };
+
             reader.readAsText(file);//attempts to read the file in question.
             // console.log('The File ' + file.name + ' is now uploaded to your localData');
         }(self));
@@ -134,23 +150,15 @@ class UserData implements IUserData {
     static download() {
         (function (view) {
             "use strict";
-            let document = view.document
-                // only get URL when necessary in case Blob.js hasn't defined it yet
-                , get_blob = function () {
-                    return view.Blob;
-                };
-
             let userData: UserData = UserData.retrieve();
-            let exportData: string = JSON.stringify(userData);
             //@todo encrypt this exportData
-            if (confirm('This will copy the sites and their related properties to a file for you to store on your local drive.')) {
-                let BB = get_blob();
-                saveAs(
-                    new BB([exportData], {type: "text/plain;charset=" + document.characterSet}),
-                    userDataDefaultFileName,
-                    true
-                );
-                console.log('You have downloaded the userdata containing your user-id\'s but not your passwords\'.')
+            if (confirm(`This will copy the sites and their related properties to a file for you to store on your local drive.`)) {
+                let data = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(userData))}`;
+                let downloadSitesLink = document.createElement('a');
+                downloadSitesLink.href = `data:${data}`;
+                downloadSitesLink.download = "data.json";
+                downloadSitesLink.click();
+                console.log(`You have downloaded the userdata containing your user-id's but not your passwords.`)
             }
             // });
         }(self));
@@ -177,11 +185,10 @@ class UserData implements IUserData {
                 alert('First enter your password in the field "Your only password".');
                 return;
             }
-            if (confirm(
-                    'This will give you a file containing your user-id and password for the sites that you have visited. ' +
-                    'This is useful for your own peace of mind and if you need your password without having OPFES helping you. ' +
-                    'On the other hand: downloading this file is a security-risc. ' +
-                    'Anyone stealing this file can use your user-id\'s and passwords on your sites.')
+            if (confirm(`This will give you a file containing your user-id and password for the sites that you have visited.
+            This is useful for your own peace of mind and if you need your password without having OPFES helping you.
+            On the other hand: downloading this file is a security-risc.
+            Anyone stealing this file can use your user-id\'s and passwords on your sites.`)
             ) {
                 let BB = get_blob();
                 for (let site of sites) {
@@ -194,8 +201,8 @@ class UserData implements IUserData {
                     userDataDefaultFileName,
                     true
                 );
-                alert('This site is in your hands now, containing your user-id\'s and passwords\'. Keep it safe.');
-                console.log('You have downloaded the userdata containing your user-id\'s and passwords\'.')
+                alert(`This site is in your hands now, containing your user-id's and passwords'. Keep it safe.`);
+                console.log(`You have downloaded the userdata containing your user-id's and passwords.`)
             }
             //@todo encrypt this exportData
             // });
