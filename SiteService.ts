@@ -162,7 +162,7 @@ class SiteService implements ISiteService{
 
     /**
      * This function gets the domainname from the url, which needs to be an Location.href-type.
-     * Can't use "window.location.host" because this will return the domain of the ToolbarForm: OnePasswordForEverySiteApp.html
+     * Can't use "window.location.host" because this will return the domain of the ToolbarForm: ToolbarForm.html
      * @param url an Location.href-type, http://www.xxx.yyy.zzz/something or http://subdomain.xxx.yyy.zzz/something
      * @returns {string} will return xxx.yyy.zzz
      */
