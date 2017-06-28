@@ -5,6 +5,23 @@
  *
  * UserData can be im- or exported to a local file, default named 'yourUserData.json'
  */
+var polyglot = new Polyglot();
+// import {en} from "./translations/en";
+var en = {
+    "OPFES_TITLE": "OPFES - One password for every site",
+    "COPY_FILE": "Copy File",
+    "DATA": "Data",
+    "DOWNLOAD_DATA": "This will copy the sites and their related properties to a file for you to store on your local drive"
+}
+
+var fr = {
+    "OPFES_TITLE": "OPFES - Un mot de passe pour chaque site",
+    "COPY_FILE": "Copier un fichier",
+    "DATA": "Les données"
+    "DOWNLOAD_DATA": "Cela copiera les sites et leurs propriétés connexes dans un fichier que vous devez stocker sur votre lecteur local"
+}
+var lang = en;
+
 interface IUserData {
     sites: Site[],
     // TODO, when we start using this for apps as well, add:
@@ -152,7 +169,9 @@ class UserData implements IUserData {
             "use strict";
             let userData: UserData = UserData.retrieve();
             //@todo encrypt this exportData
-            if (confirm(`This will copy the sites and their related properties to a file for you to store on your local drive.`)) {
+            polyglot.extend(lang);
+
+            if (confirm(`${polyglot.t("DOWNLOAD_DATA")}.`)) {
                 let data = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(userData))}`;
                 let downloadSitesLink = document.createElement('a');
                 downloadSitesLink.href = `data:${data}`;
@@ -161,6 +180,16 @@ class UserData implements IUserData {
                 console.log(`You have downloaded the userdata containing your user-id's but not your passwords.`)
             }
             // });
+        }(self));
+    }
+
+    /**
+     * This function downloads the UserData to your local pc
+     */
+    static changeLanguage() {
+        (function (view) {
+            "use strict";
+            lang = fr;
         }(self));
     }
 
