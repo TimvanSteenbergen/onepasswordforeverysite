@@ -1,3 +1,25 @@
+/**
+ * Created by Tim on 12-2-2017.
+ * 'Userdata' is in the browser's/app's memory and contains the user's sites-information as well as
+ * any other data like configuration settings that the user can have set (none so far, june '17)
+ *
+ * UserData can be im- or exported to a local file, default named 'yourUserData.json'
+ */
+var polyglot = new Polyglot();
+// import {en} from "./translations/en";
+var en = {
+    "OPFES_TITLE": "OPFES - One password for every site",
+    "COPY_FILE": "Copy File",
+    "DATA": "Data",
+    "DOWNLOAD_DATA": "This will copy the sites and their related properties to a file for you to store on your local drive"
+};
+var fr = {
+    "OPFES_TITLE": "OPFES - Un mot de passe pour chaque site",
+    "COPY_FILE": "Copier un fichier",
+    "DATA": "Les données",
+    "DOWNLOAD_DATA": "Cela copiera les sites et leurs propriétés connexes dans un fichier que vous devez stocker sur votre lecteur local"
+};
+var lang = en;
 const userDataDefaultFileName = "yourUserData.json";
 class UserData {
     constructor(_sites) {
@@ -45,7 +67,14 @@ class UserData {
      */
     static retrieve() {
         let result = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
-        console.log('Your localData is now retrieved from your browser\'s memory into Opfes\' memory.\nThis is called from:\n');
+        console.log(`
+            Your localData is now retrieved from your browser's memory into Opfes' memory.
+            This is called from:
+        `);
+        // console.trace();
+        // if (result['_sites'].length === 0){
+        // chrome.storage.local.get("_sites",function(){}); //NB: Asynchronous call!!
+        // }
         return result;
     }
     /**
@@ -74,9 +103,21 @@ class UserData {
                 let dataString = e.target.result;
                 let userData = JSON.parse(dataString, UserData.reviver);
                 let sites = userData.sites;
-                let dataTableHTML = "<table id='locallyStoredUserData' border='1px solid brown'><thead><td>domain</td><td>userid</td><td>salt</td><td>seq.nr</td><td>#chars</td><td>allowed</td><td>used at</td></ts><td>remark</td></thead>";
+                let dataTableHTML = `
+                    <table id='locallyStoredUserData' border='1px solid brown' style="background-color: red; color: white">
+                        <thead>
+                            <td>domain</td>
+                            <td>userid</td>
+                            <td>salt</td>
+                            <td>seq.nr</td>
+                            <td>#chars</td>
+                            <td>allowed</td>
+                            <td>used at</td>
+                            <td>remark</td>
+                        </thead>`;
                 for (let site of sites) {
-                    dataTableHTML += `<tr><td>${site.getDomain()}</td>
+                    dataTableHTML += `
+                        <tr><td>${site.getDomain()}</td>
                                       <td>${site.getUserId()}</td>
                                       <td>${site.getSalt()}</td>
                                       <td>${site.getSequenceNr()}</td>
@@ -101,20 +142,27 @@ class UserData {
     static download() {
         (function (view) {
             "use strict";
-            let document = view.document
-            // only get URL when necessary in case Blob.js hasn't defined it yet
-            , get_blob = function () {
-                return view.Blob;
-            };
             let userData = UserData.retrieve();
-            let exportData = JSON.stringify(userData);
             //@todo encrypt this exportData
-            if (confirm('This will copy the sites and their related properties to a file for you to store on your local drive.')) {
-                let BB = get_blob();
-                saveAs(new BB([exportData], { type: "text/plain;charset=" + document.characterSet }), userDataDefaultFileName, true);
-                console.log('You have downloaded the userdata containing your user-id\'s but not your passwords\'.');
+            polyglot.extend(lang);
+            if (confirm(`${polyglot.t("DOWNLOAD_DATA")}.`)) {
+                let data = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(userData))}`;
+                let downloadSitesLink = document.createElement('a');
+                downloadSitesLink.href = `data:${data}`;
+                downloadSitesLink.download = "data.json";
+                downloadSitesLink.click();
+                console.log(`You have downloaded the userdata containing your user-id's but not your passwords.`);
             }
             // });
+        }(self));
+    }
+    /**
+     * This function downloads the UserData to your local pc
+     */
+    static changeLanguage() {
+        (function (view) {
+            "use strict";
+            lang = fr;
         }(self));
     }
     /**
@@ -137,10 +185,10 @@ class UserData {
                 alert('First enter your password in the field "Your only password".');
                 return;
             }
-            if (confirm('This will give you a file containing your user-id and password for the sites that you have visited. ' +
-                'This is useful for your own peace of mind and if you need your password without having OPFES helping you. ' +
-                'On the other hand: downloading this file is a security-risc. ' +
-                'Anyone stealing this file can use your user-id\'s and passwords on your sites.')) {
+            if (confirm(`This will give you a file containing your user-id and password for the sites that you have visited.
+            This is useful for your own peace of mind and if you need your password without having OPFES helping you.
+            On the other hand: downloading this file is a security-risc.
+            Anyone stealing this file can use your user-id\'s and passwords on your sites.`)) {
                 let BB = get_blob();
                 for (let site of sites) {
                     sitePassword = SiteService.getSitePassword(site, yourOnlyPassword);
@@ -148,8 +196,8 @@ class UserData {
                 }
                 let exportData = JSON.stringify(passwordData);
                 saveAs(new BB([exportData], { type: "text/plain;charset=" + document.characterSet }), userDataDefaultFileName, true);
-                alert('This site is in your hands now, containing your user-id\'s and passwords\'. Keep it safe.');
-                console.log('You have downloaded the userdata containing your user-id\'s and passwords\'.');
+                alert(`This site is in your hands now, containing your user-id's and passwords'. Keep it safe.`);
+                console.log(`You have downloaded the userdata containing your user-id's and passwords.`);
             }
             //@todo encrypt this exportData
             // });

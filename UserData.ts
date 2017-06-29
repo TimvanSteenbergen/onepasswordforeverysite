@@ -12,14 +12,14 @@ var en = {
     "COPY_FILE": "Copy File",
     "DATA": "Data",
     "DOWNLOAD_DATA": "This will copy the sites and their related properties to a file for you to store on your local drive"
-}
+};
 
 var fr = {
     "OPFES_TITLE": "OPFES - Un mot de passe pour chaque site",
     "COPY_FILE": "Copier un fichier",
-    "DATA": "Les données"
+    "DATA": "Les données",
     "DOWNLOAD_DATA": "Cela copiera les sites et leurs propriétés connexes dans un fichier que vous devez stocker sur votre lecteur local"
-}
+};
 var lang = en;
 
 interface IUserData {

@@ -10,6 +10,10 @@ body{
     background-color: rgb(235, 235, 228);
 }
 
+#OPFES_Language{
+    float: right;
+}
+
 table{
     border-spacing: 0;
 }
