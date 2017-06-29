@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', function () {
         OPFES_WorkWithUserData(userData);
     }
 
+    function changeLanguage(){
+        alert('Another language');
+    }
+
     function toggleChangability() {
         // showTheLocallyStoredData(userData);
         let elementId = this.id.substr(0, this.id.length - 6);
@@ -45,6 +49,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
+    (<HTMLInputElement>document.getElementById('OPFES_Language')).addEventListener('change', function () {
+        changeLanguage.call(this);
+    });
     (<HTMLInputElement>document.getElementById('OPFES_InputDomainToggle')).addEventListener('click', function () {
         // showTheLocallyStoredData(userData);
         toggleChangability.call(this);
