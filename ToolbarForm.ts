@@ -99,6 +99,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }, false);
 
     /**
+     * This links the UserData-download function to the export button
+     */
+    document.getElementById("OPFES_ChangeLanguageToFranceButton").addEventListener("click", function (event) {
+        event.preventDefault();
+        UserData.changeLanguage();
+    }, false);
+
+    /**
      * This links the Password-download function to the export button
      */
     document.getElementById("OPFES_CopyPasswordsToDiskButton").addEventListener("click", function (event) {

@@ -17,7 +17,7 @@
         <td>salt</td>
         <td>seq.nr
             <!--<input id="OPFES_SelectSequenceNrInformation" type="button" value="i"-->
-                   <!--title="The sequence number makes it possible to generate a next password for this domain-uid-salt combination. This is mainly useful when the website requires you to change your password."/>-->
+            <!--title="The sequence number makes it possible to generate a next password for this domain-uid-salt combination. This is mainly useful when the website requires you to change your password."/>-->
         </td>
         <td>#chars</td>
         <td>allowed<input id="OPFES_InputAllowedSpecialCharactersInformation" type="button" value="i"
@@ -245,6 +245,13 @@
                title="Keep a copy of all your passwords in a separate file, if you think this is really necessary. The passwords will get generated using the your only password."
                type="button"
                value="CopyToDisk"/></p>
+
+    <p><label for="OPFES_ChangeLanguageToFranceButton">Change to France:</label>
+        <input id="OPFES_ChangeLanguageToFranceButton"
+               title="Change to France"
+               type="button"
+               value="ChangeToFrance"/></p>
+
 </section>
 
 <h2>Read more...</h2>
@@ -269,6 +276,8 @@ For more detailed information about One-password-for-every-site app, visit <a
     Without the salt it would be possible to take the generated password for this site-you-are-trying-to-login-to and
     find out what your-only-password is. Either by brute forcing or via rainbow-tables.<br/>
     The salt is unknown to the site-you-re-trying-to-login-to and thus makes that impossible.</p>
+
+<script src="node_modules/node-polyglot/build/polyglot.min.js"></script>
 <script src="CustomerBrowser.js"></script>
 <script src="FileSaver.js"></script>
 <script src="UserData.js"></script>
