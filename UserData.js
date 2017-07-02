@@ -25,7 +25,7 @@ class UserData {
         let sites = []; //the target array of sites
         if (value !== '' && value !== null) {
             let sitesArray = value._sites; //the source array of sites
-            if (sitesArray == undefined) {
+            if (sitesArray === undefined) {
                 sitesArray = value.sites;
             } //the source array of sites
             for (let key in sitesArray) {
@@ -36,7 +36,6 @@ class UserData {
         }
         return new UserData(sites);
         // TODO, when we start using this for apps as well, change this to:
-        // return new UserData(sites, apps);
     }
     /**
      * This function retrieves the current userData from the localStorage.
@@ -45,14 +44,8 @@ class UserData {
      */
     static retrieve() {
         let result = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
-        console.log(`
-            Your localData is now retrieved from your browser's memory into Opfes' memory.
-            This is called from:
-        `);
-        // console.trace();
-        // if (result['_sites'].length === 0){
-        // chrome.storage.local.get("_sites",function(){}); //NB: Asynchronous call!!
-        // }
+        console.log(`Your localData is now retrieved from your browser's memory into OPFES memory.
+        This is called from:`);
         return result;
     }
     /**
@@ -77,12 +70,55 @@ class UserData {
                     return;
                 } //Popup is part of a bugfix. See https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/51
                 console.log(`Loading your datafile. Event's target is: ${e.target}`);
-                // todo cast e.target to its type: let data = (<FileReader>e.target).result;
-                let dataString = e.target.result;
+                // TODO cast e.target to its type: let data = (<FileReader>e.target).result;
+                // TODO decrypt input file with decryption function
+                // (NOTE: SHA512 does not have decryption function nor encryption function require secret key for later decryption
+                // , didn't have enough time to check all functionality of SHA512.ts please leave note for this)
+                let dataStringEncrypted = e.target.result;
+                console.log(dataStringEncrypted);
+                let key = window.crypto.subtle.generateKey({
+                    name: "AES-CBC",
+                    length: 256,
+                }, false, //whether the key is extractable (i.e. can be used in exportKey)
+                ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+                )
+                    .then(function (key) {
+                    //returns a key object
+                    console.log(key);
+                });
+                let dataString = window.crypto.subtle.decrypt({
+                    name: "AES-CTR",
+                    counter: new ArrayBuffer(16),
+                    length: 128,
+                }, key, //from generateKey or importKey above
+                dataStringEncrypted //ArrayBuffer of the data
+                )
+                    .then(function (decrypted) {
+                    //returns an ArrayBuffer containing the decrypted data
+                    console.log(new Uint8Array(decrypted));
+                })
+                    .catch(function (err) {
+                    console.error(err);
+                });
+                // window.crypto.subtle.decrypt(
+                //     {
+                //         name: "AES-CBC",
+                //         iv: ArrayBuffer(16), //The initialization vector you used to encrypt
+                //     },
+                //     key, //from generateKey or importKey above
+                //     dataStringEncrypted //ArrayBuffer of the data
+                // )
+                //     .then(function(decrypted){
+                //         //returns an ArrayBuffer containing the decrypted data
+                //         console.log(new Uint8Array(decrypted));
+                //     })
+                //     .catch(function(err){
+                //         console.error(err);
+                //     });
                 let userData = JSON.parse(dataString, UserData.reviver);
                 let sites = userData.sites;
                 let dataTableHTML = `
-                    <table id='locallyStoredUserData' border='1px solid brown' style="background-color: red; color: white">
+                    <table id='locallyStoredUserData' border='1px solid brown'>
                         <thead>
                             <td>domain</td>
                             <td>userid</td>
@@ -92,18 +128,20 @@ class UserData {
                             <td>allowed</td>
                             <td>used at</td>
                             <td>remark</td>
-                        </thead>`;
+                        </thead>
+                    `;
                 for (let site of sites) {
                     dataTableHTML += `
-                        <tr><td>${site.getDomain()}</td>
-                                      <td>${site.getUserId()}</td>
-                                      <td>${site.getSalt()}</td>
-                                      <td>${site.getSequenceNr()}</td>
-                                      <td>${site.getMaxPwdChars()}</td>
-                                      <td>${site.getAllowedSpecialCharacters()}</td>
-                                      <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth() + 1}-${site.getLastUsed().getDate()}</td>
-                                      <td>${site.getRemark()}</td>
-                                   </tr>`;
+                        <tr>
+                            <td>${site.getDomain()}</td>
+                            <td>${site.getUserId()}</td>
+                            <td>${site.getSalt()}</td>
+                            <td>${site.getSequenceNr()}</td>
+                            <td>${site.getMaxPwdChars()}</td>
+                            <td>${site.getAllowedSpecialCharacters()}</td>
+                            <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth() + 1}-${site.getLastUsed().getDate()}</td>
+                            <td>${site.getRemark()}</td>
+                        </tr>`;
                 }
                 dataTableHTML += '</table>';
                 let localStoredUserDataElement = document.getElementById('OPFES_localStoredUserData');
@@ -121,16 +159,43 @@ class UserData {
         (function (view) {
             "use strict";
             let userData = UserData.retrieve();
-            //@todo encrypt this exportData
             if (confirm(`This will copy the sites and their related properties to a file for you to store on your local drive.`)) {
-                let data = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(userData))}`;
+                //@todo encrypt this exportData
+                let key = window.crypto.subtle.generateKey({
+                    name: "AES-CBC",
+                    length: 256,
+                }, false, //whether the key is extractable (i.e. can be used in exportKey)
+                ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+                )
+                    .then(function (key) {
+                    //returns a key object
+                    console.log(key);
+                });
+                let userDataEncrypted = window.crypto.subtle.encrypt({
+                    name: "AES-CTR",
+                    //Don't re-use counters!
+                    //Always use a new counter every time your encrypt!
+                    counter: new Uint8Array(16),
+                    length: 128,
+                }, key, //from generateKey or importKey above
+                userData //ArrayBuffer of data you want to encrypt
+                )
+                    .then(function (encrypted) {
+                    //returns an ArrayBuffer containing the encrypted data
+                    console.log(new Uint8Array(encrypted));
+                })
+                    .catch(function (err) {
+                    console.error(err);
+                });
+                // AES.encrypt(userData);//http://www.movable-type.co.uk/scripts/aes.html
+                let data = `text/json;charset=utf-8,${encodeURIComponent(SHA512(JSON.stringify(userDataEncrypted)))}`;
                 let downloadSitesLink = document.createElement('a');
                 downloadSitesLink.href = `data:${data}`;
-                downloadSitesLink.download = "data.json";
+                downloadSitesLink.download = "sitePassword.json";
                 downloadSitesLink.click();
-                console.log(`You have downloaded the userdata containing your user-id's but not your passwords.`);
+                console.log(`You have downloaded the user data containing your user-id's but not your passwords.`);
             }
-            // });
+            // });+
         }(self));
     }
     /**
@@ -139,9 +204,6 @@ class UserData {
     static downloadPasswords() {
         (function (view) {
             "use strict";
-            let document = view.document, get_blob = function () {
-                return view.Blob;
-            };
             let userData = UserData.retrieve();
             let sites = userData.sites;
             let sitePassword;
@@ -151,19 +213,17 @@ class UserData {
                 alert('First enter your password in the field "Your only password".');
                 return;
             }
-            if (confirm(`This will give you a file containing your user-id and password for the sites that you have visited.
-            This is useful for your own peace of mind and if you need your password without having OPFES helping you.
-            On the other hand: downloading this file is a security-risc.
-            Anyone stealing this file can use your user-id\'s and passwords on your sites.`)) {
-                let BB = get_blob();
-                for (let site of sites) {
-                    sitePassword = SiteService.getSitePassword(site, yourOnlyPassword);
-                    passwordData.push({ site, sitePassword });
-                }
-                let exportData = JSON.stringify(passwordData);
-                saveAs(new BB([exportData], { type: "text/plain;charset=" + document.characterSet }), userDataDefaultFileName, true);
-                alert(`This site is in your hands now, containing your user-id's and passwords'. Keep it safe.`);
-                console.log(`You have downloaded the userdata containing your user-id's and passwords.`);
+            if (confirm('This will give you a file containing your user-id and password for the sites that you have visited. ' +
+                'This is useful for your own peace of mind and if you need your password without having OPFES helping you. ' +
+                'On the other hand: downloading this file is a security-risc. ' +
+                'Anyone stealing this file can use your user-id\'s and passwords on your sites.')) {
+                let data = `text/json;charset=utf-8,${encodeURIComponent(SHA512(JSON.stringify(passwordData)))}`;
+                let downloadSitesLink = document.createElement('a');
+                downloadSitesLink.href = `data:${data}`;
+                downloadSitesLink.download = "sitePassword.json";
+                downloadSitesLink.click();
+                alert('This site is in your hands now, containing your user-id\'s and passwords\'. Keep it safe.');
+                console.log('You have downloaded the userdata containing your user-id\'s and passwords\'.');
             }
             //@todo encrypt this exportData
             // });

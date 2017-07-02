@@ -18,6 +18,7 @@
         "Site.js",
         "SiteService.js",
         "SHA512.js",
+        "AES.js",
         "UserData.js",
         "WebPageWithPassword/AbstractForm.js",
         "WebPageWithPassword/Factory.js",

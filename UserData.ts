@@ -63,7 +63,6 @@ class UserData implements IUserData {
         return new UserData(sites);
 
         // TODO, when we start using this for apps as well, change this to:
-        // return new UserData(sites, apps);
     }
 
     /**
@@ -75,10 +74,6 @@ class UserData implements IUserData {
         let result = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
         console.log(`Your localData is now retrieved from your browser's memory into OPFES memory.
         This is called from:`);
-        // console.trace();
-        // if (result['_sites'].length === 0){
-        // chrome.storage.local.get("_sites",function(){}); //NB: Asynchronous call!!
-        // }
         return result;
     }
 
@@ -104,11 +99,55 @@ class UserData implements IUserData {
                 if(!window.confirm(`This will overwrite your current userdata.`)){return}//Popup is part of a bugfix. See https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/51
                 console.log(`Loading your datafile. Event's target is: ${e.target}`);
                 // TODO cast e.target to its type: let data = (<FileReader>e.target).result;
-                // TODO decrypt input file with decrypyion function
+                // TODO decrypt input file with decryption function
                 // (NOTE: SHA512 does not have decryption function nor encryption function require secret key for later decryption
                 // , didn't have enough time to check all functionality of SHA512.ts please leave note for this)
-                let dataString: string = (<FileReader>e.target).result;
-                console.log(dataString);
+                let dataStringEncrypted: string = (<FileReader>e.target).result;
+                console.log(dataStringEncrypted);
+                let key = window.crypto.subtle.generateKey(
+                    {
+                        name: "AES-CBC",
+                        length: 256, //can be  128, 192, or 256
+                    },
+                    false, //whether the key is extractable (i.e. can be used in exportKey)
+                    ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+                )
+                    .then(function (key) {
+                        //returns a key object
+                        console.log(key);
+                    });
+                let dataString: string =
+                    window.crypto.subtle.decrypt(
+                        {
+                            name: "AES-CTR",
+                            counter: new ArrayBuffer(16), //The same counter you used to encrypt
+                            length: 128, //The same length you used to encrypt
+                        },
+                        key, //from generateKey or importKey above
+                        dataStringEncrypted //ArrayBuffer of the data
+                    )
+                        .then(function(decrypted){
+                            //returns an ArrayBuffer containing the decrypted data
+                            console.log(new Uint8Array(decrypted));
+                        })
+                        .catch(function(err){
+                            console.error(err);
+                        });
+                // window.crypto.subtle.decrypt(
+                //     {
+                //         name: "AES-CBC",
+                //         iv: ArrayBuffer(16), //The initialization vector you used to encrypt
+                //     },
+                //     key, //from generateKey or importKey above
+                //     dataStringEncrypted //ArrayBuffer of the data
+                // )
+                //     .then(function(decrypted){
+                //         //returns an ArrayBuffer containing the decrypted data
+                //         console.log(new Uint8Array(decrypted));
+                //     })
+                //     .catch(function(err){
+                //         console.error(err);
+                //     });
                 let userData: UserData = JSON.parse(dataString, UserData.reviver);
                 let sites: Site[] = userData.sites;
 
@@ -156,9 +195,47 @@ class UserData implements IUserData {
         (function (view) {
             "use strict";
             let userData: UserData = UserData.retrieve();
-            //@todo encrypt this exportData
             if (confirm(`This will copy the sites and their related properties to a file for you to store on your local drive.`)) {
-                let data = `text/json;charset=utf-8,${encodeURIComponent(SHA512(JSON.stringify(userData)))}`;
+                //@todo encrypt this exportData
+                let key = window.crypto.subtle.generateKey(
+                    {
+                        name: "AES-CBC",
+                        length: 256, //can be  128, 192, or 256
+                    },
+                    false, //whether the key is extractable (i.e. can be used in exportKey)
+                    ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+                )
+                    .then(function(key){
+                        //returns a key object
+                        console.log(key);
+                    });
+
+                let userDataEncrypted =
+                    window.crypto.subtle.encrypt(
+                        {
+                            name: "AES-CTR",
+                            //Don't re-use counters!
+                            //Always use a new counter every time your encrypt!
+                            counter: new Uint8Array(16),
+                            length: 128, //can be 1-128
+                            // name: "AES-CBC",
+                            // //Don't re-use initialization vectors!
+                            // //Always generate a new iv every time your encrypt!
+                            // iv: window.crypto.getRandomValues(new Uint8Array(16)),
+                        },
+                        key, //from generateKey or importKey above
+                        userData //ArrayBuffer of data you want to encrypt
+                    )
+                        .then(function(encrypted){
+                            //returns an ArrayBuffer containing the encrypted data
+                            console.log(new Uint8Array(encrypted));
+                        })
+                        .catch(function(err){
+                            console.error(err);
+                        });
+
+                // AES.encrypt(userData);//http://www.movable-type.co.uk/scripts/aes.html
+                let data = `text/json;charset=utf-8,${encodeURIComponent(SHA512(JSON.stringify(userDataEncrypted)))}`;
                 let downloadSitesLink: HTMLElement = document.createElement('a');
                 downloadSitesLink.href = `data:${data}`;
                 downloadSitesLink.download = "sitePassword.json";

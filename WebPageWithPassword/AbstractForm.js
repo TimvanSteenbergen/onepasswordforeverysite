@@ -231,6 +231,7 @@ class AbstractForm {
                         `See <a href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/38">Issue 38</a>.`;
                     AbstractForm.changeMessages(shortMessage, message, null, false);
                 } //Does not work on ebay.nl...
+                // pwdInputs[0].form.submit(); //.. but this neither...
             }
             else {
                 this.submitButtonNotFound();
