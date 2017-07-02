@@ -21,16 +21,12 @@ class Login extends AbstractForm {
                 'input[type="text"][id*=Id], ' +
                 'input[type="text"]', pwdInput);
             if (!userNameInputElement) {
-                // Appearently the username is already stored somewhere else, not in a HTMLInputElement
-                // so there is no need to worry about it.
             }
             else {
                 userNameInputElement.value = userNameInputValue;
             }
         }
         else {
-            /** Not possible, every site does have a value in field 'userid';
-             * At least that's what I think right now. Will probably stand corrected in the near future...*/
         }
         // then let me ask the Opfes-password, generate the password and put it in the passwordfield.
         let shortMessage = `Enter your Opfes-password to log in: `;
