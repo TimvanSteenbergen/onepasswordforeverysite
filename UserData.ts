@@ -6,20 +6,23 @@
  * UserData can be im- or exported to a local file, default named 'yourUserData.json'
  */
 var polyglot = new Polyglot();
-// import {en} from "./translations/en";
+// import { en } from "./translations/en";
+import { fr } from "./translations/fr";
+
 var en = {
     "OPFES_TITLE": "OPFES - One password for every site",
     "COPY_FILE": "Copy File",
     "DATA": "Data",
     "DOWNLOAD_DATA": "This will copy the sites and their related properties to a file for you to store on your local drive"
-};
+}
 
-var fr = {
-    "OPFES_TITLE": "OPFES - Un mot de passe pour chaque site",
-    "COPY_FILE": "Copier un fichier",
-    "DATA": "Les données",
-    "DOWNLOAD_DATA": "Cela copiera les sites et leurs propriétés connexes dans un fichier que vous devez stocker sur votre lecteur local"
-};
+
+// var fr = {
+//     "OPFES_TITLE": "OPFES - Un mot de passe pour chaque site",
+//     "COPY_FILE": "Copier un fichier",
+//     "DATA": "Les données",
+//     "DOWNLOAD_DATA": "Cela copiera les sites et leurs propriétés connexes dans un fichier que vous devez stocker sur votre lecteur local"
+// }
 var lang = en;
 
 interface IUserData {
@@ -115,126 +118,111 @@ class UserData implements IUserData {
      * This function uploads the UserData from your local pc into memory
      */
     static upload(file: File) {
-        (function (view) {
-            "use strict";
-            let reader = new FileReader();
-            reader.onload = function (e) {
-                if(!window.confirm(`This will overwrite your current userdata.`)){return}//Popup is part of a bugfix. See https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/51
-                console.log(`Loading your datafile. Event's target is: ${e.target}`);
-                // todo cast e.target to its type: let data = (<FileReader>e.target).result;
-                let dataString: string = (<FileReader>e.target).result;
-                let userData: UserData = JSON.parse(dataString, UserData.reviver);
-                let sites: Site[] = userData.sites;
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            if(!window.confirm(`This will overwrite your current userdata.`)){return}//Popup is part of a bugfix. See https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/51
+            console.log(`Loading your datafile. Event's target is: ${e.target}`);
+            // todo cast e.target to its type: let data = (<FileReader>e.target).result;
+            let dataString: string = (<FileReader>e.target).result;
+            let userData: UserData = JSON.parse(dataString, UserData.reviver);
+            let sites: Site[] = userData.sites;
 
-                let dataTableHTML: string = `
-                    <table id='locallyStoredUserData' border='1px solid brown' style="background-color: red; color: white">
-                        <thead>
-                            <td>domain</td>
-                            <td>userid</td>
-                            <td>salt</td>
-                            <td>seq.nr</td>
-                            <td>#chars</td>
-                            <td>allowed</td>
-                            <td>used at</td>
-                            <td>remark</td>
-                        </thead>`;
-                for (let site of sites) {
-                    dataTableHTML += `
-                        <tr><td>${site.getDomain()}</td>
-                                      <td>${site.getUserId()}</td>
-                                      <td>${site.getSalt()}</td>
-                                      <td>${site.getSequenceNr()}</td>
-                                      <td>${site.getMaxPwdChars()}</td>
-                                      <td>${site.getAllowedSpecialCharacters()}</td>
-                                      <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth() + 1}-${site.getLastUsed().getDate()}</td>
-                                      <td>${site.getRemark()}</td>
-                                   </tr>`;
-                }
-                dataTableHTML += '</table>';
-                let localStoredUserDataElement = document.getElementById('OPFES_localStoredUserData');
-                localStoredUserDataElement.innerHTML = dataTableHTML;
-                userData.persist();
-            };
+            let dataTableHTML: string = `
+                <table id='locallyStoredUserData' border='1px solid brown' style="background-color: red; color: white">
+                    <thead>
+                        <td>domain</td>
+                        <td>userid</td>
+                        <td>salt</td>
+                        <td>seq.nr</td>
+                        <td>#chars</td>
+                        <td>allowed</td>
+                        <td>used at</td>
+                        <td>remark</td>
+                    </thead>`;
+            for (let site of sites) {
+                dataTableHTML += `
+                    <tr><td>${site.getDomain()}</td>
+                                  <td>${site.getUserId()}</td>
+                                  <td>${site.getSalt()}</td>
+                                  <td>${site.getSequenceNr()}</td>
+                                  <td>${site.getMaxPwdChars()}</td>
+                                  <td>${site.getAllowedSpecialCharacters()}</td>
+                                  <td>${site.getLastUsed().getFullYear()}-${site.getLastUsed().getMonth() + 1}-${site.getLastUsed().getDate()}</td>
+                                  <td>${site.getRemark()}</td>
+                               </tr>`;
+            }
+            dataTableHTML += '</table>';
+            let localStoredUserDataElement = document.getElementById('OPFES_localStoredUserData');
+            localStoredUserDataElement.innerHTML = dataTableHTML;
+            userData.persist();
+        };
 
-            reader.readAsText(file);//attempts to read the file in question.
-            // console.log('The File ' + file.name + ' is now uploaded to your localData');
-        }(self));
+        reader.readAsText(file);//attempts to read the file in question.
+        // console.log('The File ' + file.name + ' is now uploaded to your localData');
     }
 
     /**
      * This function downloads the UserData to your local pc
      */
     static download() {
-        (function (view) {
-            "use strict";
-            let userData: UserData = UserData.retrieve();
-            //@todo encrypt this exportData
-            polyglot.extend(lang);
+        let userData: UserData = UserData.retrieve();
+        //@todo encrypt this exportData
+        polyglot.extend(lang);
 
-            if (confirm(`${polyglot.t("DOWNLOAD_DATA")}.`)) {
-                let data = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(userData))}`;
-                let downloadSitesLink = document.createElement('a');
-                downloadSitesLink.href = `data:${data}`;
-                downloadSitesLink.download = "data.json";
-                downloadSitesLink.click();
-                console.log(`You have downloaded the userdata containing your user-id's but not your passwords.`)
-            }
-            // });
-        }(self));
+        if (confirm(`${polyglot.t("DOWNLOAD_DATA")}.`)) {
+            let data = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(userData))}`;
+            let downloadSitesLink = document.createElement('a');
+            downloadSitesLink.href = `data:${data}`;
+            downloadSitesLink.download = "data.json";
+            downloadSitesLink.click();
+            console.log(`You have downloaded the userdata containing your user-id's but not your passwords.`)
+        }
     }
 
     /**
-     * This function downloads the UserData to your local pc
+     * This function is changing language
      */
     static changeLanguage() {
-        (function (view) {
-            "use strict";
-            lang = fr;
-        }(self));
+        lang = fr;
     }
 
     /**
      * This function downloads the UserData to your local pc
      */
     static downloadPasswords() {
-        (function (view) {
-            "use strict";
-
-            let document = view.document
-                // only get URL when necessary in case Blob.js hasn't defined it yet
-                , get_blob = function () {
-                    return view.Blob;
-                };
-            let userData: UserData = UserData.retrieve();
-            let sites: Site[] = userData.sites;
-            let sitePassword: string;
-            let passwordData: {site: Site, sitePassword: string}[] = [];
-            let yourOnlyPassword = (<HTMLInputElement>view.document.getElementById('OPFES_InputAppPassword')).value;
-            if (!yourOnlyPassword) {
-                alert('First enter your password in the field "Your only password".');
-                return;
+        let document = view.document
+            // only get URL when necessary in case Blob.js hasn't defined it yet
+            , get_blob = function () {
+                return view.Blob;
+            };
+        let userData: UserData = UserData.retrieve();
+        let sites: Site[] = userData.sites;
+        let sitePassword: string;
+        let passwordData: {site: Site, sitePassword: string}[] = [];
+        let yourOnlyPassword = (<HTMLInputElement>view.document.getElementById('OPFES_InputAppPassword')).value;
+        if (!yourOnlyPassword) {
+            alert('First enter your password in the field "Your only password".');
+            return;
+        }
+        if (confirm(`This will give you a file containing your user-id and password for the sites that you have visited.
+        This is useful for your own peace of mind and if you need your password without having OPFES helping you.
+        On the other hand: downloading this file is a security-risc.
+        Anyone stealing this file can use your user-id\'s and passwords on your sites.`)
+        ) {
+            let BB = get_blob();
+            for (let site of sites) {
+                sitePassword = SiteService.getSitePassword(site, yourOnlyPassword);
+                passwordData.push({site, sitePassword});
             }
-            if (confirm(`This will give you a file containing your user-id and password for the sites that you have visited.
-            This is useful for your own peace of mind and if you need your password without having OPFES helping you.
-            On the other hand: downloading this file is a security-risc.
-            Anyone stealing this file can use your user-id\'s and passwords on your sites.`)
-            ) {
-                let BB = get_blob();
-                for (let site of sites) {
-                    sitePassword = SiteService.getSitePassword(site, yourOnlyPassword);
-                    passwordData.push({site, sitePassword});
-                }
-                let exportData: string = JSON.stringify(passwordData);
-                saveAs(
-                    new BB([exportData], {type: "text/plain;charset=" + document.characterSet}),
-                    userDataDefaultFileName,
-                    true
-                );
-                alert(`This site is in your hands now, containing your user-id's and passwords'. Keep it safe.`);
-                console.log(`You have downloaded the userdata containing your user-id's and passwords.`)
-            }
-            //@todo encrypt this exportData
-            // });
-        }(self));
+            let exportData: string = JSON.stringify(passwordData);
+            saveAs(
+                new BB([exportData], {type: "text/plain;charset=" + document.characterSet}),
+                userDataDefaultFileName,
+                true
+            );
+            alert(`This site is in your hands now, containing your user-id's and passwords'. Keep it safe.`);
+            console.log(`You have downloaded the userdata containing your user-id's and passwords.`)
+        }
+        //@todo encrypt this exportData
     }
 }

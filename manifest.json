@@ -14,18 +14,18 @@
         "<all_urls>"
       ],
       "js": [
-        "CustomerBrowser.js",
-        "Site.js",
-        "SiteService.js",
-        "SHA512.js",
-        "UserData.js",
-        "WebPageWithPassword/AbstractForm.js",
-        "WebPageWithPassword/Factory.js",
-        "WebPageWithPassword/Login.js",
-        "WebPageWithPassword/NewAndVerifyPassword.js",
-        "WebPageWithPassword/NoUserData.js",
-        "WebPageWithPassword/OldNewAndVerifyPassword.js",
-        "WebPageWithPassword/UnknownSite.js"
+        "build/CustomerBrowser.js",
+        "build/Site.js",
+        "build/SiteService.js",
+        "build/SHA512.js",
+        "build/UserData.js",
+        "build/WebPageWithPassword/AbstractForm.js",
+        "build/WebPageWithPassword/Factory.js",
+        "build/WebPageWithPassword/Login.js",
+        "build/WebPageWithPassword/NewAndVerifyPassword.js",
+        "build/WebPageWithPassword/NoUserData.js",
+        "build/WebPageWithPassword/OldNewAndVerifyPassword.js",
+        "build/WebPageWithPassword/UnknownSite.js"
       ],
       "css": [
         "css/PopupForm.css"
@@ -36,7 +36,7 @@
         "*://*.opfes.com/runtests.html"
       ],
       "js": [
-        "tests/SiteServiceTests.js"
+        "build/tests/SiteServiceTests.js"
       ],
       "css": [
         "css/SiteServiceTests.css"
