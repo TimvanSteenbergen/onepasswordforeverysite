@@ -220,6 +220,7 @@ class UserData implements IUserData {
                 userDataDefaultFileName,
                 true
             );
+
             alert(`This site is in your hands now, containing your user-id's and passwords'. Keep it safe.`);
             console.log(`You have downloaded the userdata containing your user-id's and passwords.`)
         }
