@@ -5,13 +5,12 @@ import UserInfo = chrome.identity.UserInfo;
 // declare function SHA512(string): string;
 let a: number = 1;
 ///<reference path="chrome/index.d.ts"/>
-///<reference path="UserData.ts"/>
 
 document.addEventListener('DOMContentLoaded', function () {
 
     const specialCharacters: string[] = ["/", "~", "@", "#", "%", "^", "(", ")", "_", "+", "-", "=", ".", ":", "?", "!", "{", "}"];
 
-    let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserInfo.reviver);
+    let userData: UserData = JSON.parse(localStorage.getItem("OPFES_UserData"), UserData.reviver);
     if (userData.sites.length === 0) { //then show the Upload-button
         console.log('I have not yet any userData in my memory.');
     } else { //then show the userData in the popup screen
