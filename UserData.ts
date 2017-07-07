@@ -5,25 +5,23 @@
  *
  * UserData can be im- or exported to a local file, default named 'yourUserData.json'
  */
-var polyglot = new Polyglot();
-// import { en } from "./translations/en";
-import { fr } from "./translations/fr";
 
-var en = {
+let polyglot = new Polyglot();
+// import {en} from "./translations/en";
+// import {fr} from "./translations/fr";
+let en = {
     "OPFES_TITLE": "OPFES - One password for every site",
     "COPY_FILE": "Copy File",
     "DATA": "Data",
     "DOWNLOAD_DATA": "This will copy the sites and their related properties to a file for you to store on your local drive"
-}
-
-
-// var fr = {
-//     "OPFES_TITLE": "OPFES - Un mot de passe pour chaque site",
-//     "COPY_FILE": "Copier un fichier",
-//     "DATA": "Les données",
-//     "DOWNLOAD_DATA": "Cela copiera les sites et leurs propriétés connexes dans un fichier que vous devez stocker sur votre lecteur local"
-// }
-var lang = en;
+};
+let fr = {
+    "OPFES_TITLE": "OPFES - Un mot de passe pour chaque site",
+    "COPY_FILE": "Copier un fichier",
+    "DATA": "Les données",
+    "DOWNLOAD_DATA": "Cela copiera les sites et leurs propriétés connexes dans un fichier que vous devez stocker sur votre lecteur local"
+};
+let lang:object;
 
 interface IUserData {
     sites: Site[],
@@ -190,16 +188,16 @@ class UserData implements IUserData {
      * This function downloads the UserData to your local pc
      */
     static downloadPasswords() {
-        let document = view.document
+        let document = self.document
             // only get URL when necessary in case Blob.js hasn't defined it yet
             , get_blob = function () {
-                return view.Blob;
+                return self.Blob;
             };
         let userData: UserData = UserData.retrieve();
         let sites: Site[] = userData.sites;
         let sitePassword: string;
         let passwordData: {site: Site, sitePassword: string}[] = [];
-        let yourOnlyPassword = (<HTMLInputElement>view.document.getElementById('OPFES_InputAppPassword')).value;
+        let yourOnlyPassword = (<HTMLInputElement>self.document.getElementById('OPFES_InputAppPassword')).value;
         if (!yourOnlyPassword) {
             alert('First enter your password in the field "Your only password".');
             return;
