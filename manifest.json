@@ -18,6 +18,7 @@
         "build/Site.js",
         "build/SiteService.js",
         "build/SHA512.js",
+        "build/ToolbarForm.js",
         "build/UserData.js",
         "build/WebPageWithPassword/AbstractForm.js",
         "build/WebPageWithPassword/Factory.js",
