@@ -4,8 +4,14 @@
  * This is WebPageWithPassword for webpages having one password-field. We are trying to log in.
  */
 class Login extends AbstractForm {
-    constructor(thisSite, pwdInputs) {
+    constructor() {
         super();
+    }
+
+    /**
+     * Set the textelements and buttons and show the form
+     */
+    public showPopupForm(thisSite, pwdInputs){
 
         if (pwdInputs.length > 1) {
             console.log('Error in Login-form-detection: This loginForm should only have one passwordfield.');

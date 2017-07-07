@@ -3,13 +3,19 @@
  *
  * This is the template Form used by every other WebPageWithPassword. It contains functions used by all of them:
  */
-class NoUserData extends AbstractForm {
+class NoUserDataForm extends AbstractForm {
 
     /**
      * Simply set the message and show the popupForm
      */
     constructor() {
         super();
+    }
+
+    /**
+     *
+     */
+    public showPopupForm(){
         let shortMessage: string = 'Opfes says: Upload your userdata.';
         let message: string =
             `<p>NoUserData: I, Opfes, do see a ${(SiteService.getDomain(window.location.href))} login-form, but you have not yet uploaded your user-data. </p>` +

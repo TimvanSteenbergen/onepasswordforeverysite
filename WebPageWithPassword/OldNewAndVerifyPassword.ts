@@ -10,9 +10,14 @@
  *
  */
 class OldNewAndVerifyPassword extends AbstractForm {
-    constructor(thisSite, pwdInputs) {
+    constructor() {
         super();
+    }
 
+    /**
+     * Set the textelements and buttons and show the form
+     */
+    public showPopupForm(thisSite, pwdInputs){
         if (pwdInputs.length != 3){
             console.log('Error in Password-change-form-detection: This Password-change-form should have three password-fields.');
             return

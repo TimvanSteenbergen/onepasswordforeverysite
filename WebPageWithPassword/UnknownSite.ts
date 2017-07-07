@@ -10,6 +10,12 @@ class UnknownSite extends AbstractForm {
      */
     constructor() {
         super();
+    }
+
+    /**
+     * Set the textelements and buttons and show the form
+     */
+    public showPopupForm(){
         let shortMessage: string = `Opfes asks: Can I help you to log in?`;
 
         let message: string =
