@@ -6,11 +6,22 @@
  * UserData can be im- or exported to a local file, default named 'yourUserData.json'
  */
 
-var polyglot = new Polyglot({locale: "en"});
-import { en } from "./translations/en";
-import { fr } from "./translations/fr";
-
-var lang = en;
+let polyglot = new Polyglot();
+// import {en} from "./translations/en";
+// import {fr} from "./translations/fr";
+let en = {
+    "OPFES_TITLE": "OPFES - One password for every site",
+    "COPY_FILE": "Copy File",
+    "DATA": "Data",
+    "DOWNLOAD_DATA": "This will copy the sites and their related properties to a file for you to store on your local drive"
+};
+let fr = {
+    "OPFES_TITLE": "OPFES - Un mot de passe pour chaque site",
+    "COPY_FILE": "Copier un fichier",
+    "DATA": "Les données",
+    "DOWNLOAD_DATA": "Cela copiera les sites et leurs propriétés connexes dans un fichier que vous devez stocker sur votre lecteur local"
+};
+let lang:object;
 
 interface IUserData {
     sites: Site[],
