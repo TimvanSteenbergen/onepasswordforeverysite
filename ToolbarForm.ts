@@ -1,9 +1,8 @@
-// import UserInfo = chrome.identity.UserInfo;
 /**
  * Created by Tim van Steenbergen on 21-1-2017.
  */
 // declare function SHA512(string): string;
-import {UserData} from 'UserData';
+let a: number = 1;
 ///<reference path="chrome/index.d.ts"/>
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -17,6 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(`Your userData is in the browser's memory.`);
         // document.getElementById('OPFES_InputGetUserData').hidden;
         OPFES_WorkWithUserData(userData);
+    }
+
+    function changeLanguage(){
+        alert('Another language');
     }
 
     function toggleChangability() {

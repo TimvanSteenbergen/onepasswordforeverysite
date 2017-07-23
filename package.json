@@ -4,7 +4,7 @@
   "devDependencies": {
   },
   "dependencies": {
-    "@types/chrome": "0.0.40"
+    "@types/chrome": "0.0.40",
     "node-polyglot": "^2.2.2",
     "otp-generator": "^1.1.0"
   }
