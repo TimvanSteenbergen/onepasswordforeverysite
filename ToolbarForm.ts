@@ -1,9 +1,9 @@
-import UserInfo = chrome.identity.UserInfo;
+// import UserInfo = chrome.identity.UserInfo;
 /**
  * Created by Tim van Steenbergen on 21-1-2017.
  */
 // declare function SHA512(string): string;
-let a: number = 1;
+import {UserData} from 'UserData';
 ///<reference path="chrome/index.d.ts"/>
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -17,10 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(`Your userData is in the browser's memory.`);
         // document.getElementById('OPFES_InputGetUserData').hidden;
         OPFES_WorkWithUserData(userData);
-    }
-
-    function changeLanguage(){
-        alert('Another language');
     }
 
     function toggleChangability() {
@@ -50,9 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
-    (<HTMLInputElement>document.getElementById('OPFES_Language')).addEventListener('change', function () {
-        changeLanguage.call(this);
-    });
     (<HTMLInputElement>document.getElementById('OPFES_InputDomainToggle')).addEventListener('click', function () {
         // showTheLocallyStoredData(userData);
         toggleChangability.call(this);
@@ -95,7 +88,9 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     document.getElementById("OPFES_CopyDiskToLocalStorageButton").addEventListener("change", function (event) {
         event.preventDefault();
+        alert('ghjgjhjghjghjgh');
         UserData.upload((<HTMLInputElement>this).files[0]);
+        alert('asfasfasdf');
     }, false);
 
     /**
@@ -111,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     document.getElementById("OPFES_ChangeLanguageToFranceButton").addEventListener("click", function (event) {
         event.preventDefault();
-        UserData.changeLanguage();
+        // UserData.changeLanguage();
     }, false);
 
     /**

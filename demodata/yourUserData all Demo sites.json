@@ -4,9 +4,9 @@
       "domain": "jetbrains.com",
       "userId": "demo@opfes.com",
       "salt": "salt",
-      "sequenceNr": 2,
+      "sequenceNr": 1,
       "maxPwdChars": 120,
-      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "allowedSpecialCharacters": "/~@#%^()_+-=.:?!{}",
       "lastUsed": "2017-03-24T15:19:30.861Z",
       "remark": "The home of Opfes"
     },
@@ -16,9 +16,19 @@
       "salt": "demo",
       "sequenceNr": 1,
       "maxPwdChars": 120,
-      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "allowedSpecialCharacters": "/~@#%^()_+-=.:?!{}",
       "lastUsed": "2017-03-27T09:04:47.354Z",
       "remark": "Demo-account"
+    },
+    {
+      "domain": "sourcerers.nl",
+      "userId": "opfes",
+      "salt": "demoword",
+      "sequenceNr": 2,
+      "maxPwdChars": 120,
+      "allowedSpecialCharacters": "/~@#%^()_+-=.:?!{}",
+      "lastUsed": "2017-06-05T10:43:00.470Z",
+      "remark": ""
     },
     {
       "domain": "spelletjes.nl",
@@ -26,7 +36,7 @@
       "salt": "demo",
       "sequenceNr": 1,
       "maxPwdChars": 20,
-      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "allowedSpecialCharacters": "/~@#%^()_+-=.:?!{}",
       "lastUsed": "2017-03-27T09:05:53.899Z",
       "remark": "Dutch site for games."
     },
@@ -36,7 +46,7 @@
       "salt": "Can be any text",
       "sequenceNr": 1,
       "maxPwdChars": 25,
-      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "allowedSpecialCharacters": "/~@#%^()_+-=.:?!{}",
       "lastUsed": "2017-03-24T12:50:57.563Z",
       "remark": "Looks like a nice site"
     },
@@ -44,9 +54,9 @@
       "domain": "amazon.co.uk",
       "userId": "demo@opfes.com",
       "salt": "salt",
-      "sequenceNr": 1,
+      "sequenceNr": 3,
       "maxPwdChars": 120,
-      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "allowedSpecialCharacters": "/~@#%^()_+-=.:?!{}",
       "lastUsed": "2017-03-27T09:11:53.654Z",
       "remark": "domainextension includes a dot"
     },
@@ -56,9 +66,19 @@
       "salt": "demo",
       "sequenceNr": 1,
       "maxPwdChars": 36,
-      "allowedSpecialCharacters":"/~@#%^()_+-=.:?!{}",
+      "allowedSpecialCharacters": "/~@#%^()_+-=.:?!{}",
       "lastUsed": "2017-03-27T09:08:23.998Z",
       "remark": "For all my running shoes"
+    },
+    {
+      "domain": "amnesty.nl",
+      "userId": "demo@opfes.com",
+      "salt": "demo",
+      "sequenceNr": 1,
+      "maxPwdChars": 120,
+      "allowedSpecialCharacters": "/~@#%^()_+-=.:?!{}",
+      "lastUsed": "2017-07-06T12:33:16.835Z",
+      "remark": ""
     }
   ]
 }

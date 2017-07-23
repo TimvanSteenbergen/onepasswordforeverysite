@@ -6,22 +6,9 @@
  * UserData can be im- or exported to a local file, default named 'yourUserData.json'
  */
 
-let polyglot = new Polyglot();
-// import {en} from "./translations/en";
-// import {fr} from "./translations/fr";
-let en = {
-    "OPFES_TITLE": "OPFES - One password for every site",
-    "COPY_FILE": "Copy File",
-    "DATA": "Data",
-    "DOWNLOAD_DATA": "This will copy the sites and their related properties to a file for you to store on your local drive"
-};
-let fr = {
-    "OPFES_TITLE": "OPFES - Un mot de passe pour chaque site",
-    "COPY_FILE": "Copier un fichier",
-    "DATA": "Les données",
-    "DOWNLOAD_DATA": "Cela copiera les sites et leurs propriétés connexes dans un fichier que vous devez stocker sur votre lecteur local"
-};
-let lang:object;
+// let polyglot = new Polyglot();
+import {textstrings} from "textstrings";
+// polyglot.extend(textstrings);
 
 interface IUserData {
     sites: Site[],
@@ -31,7 +18,7 @@ interface IUserData {
 
 const userDataDefaultFileName: string = "yourUserData.json";
 
-class UserData implements IUserData {
+export class UserData implements IUserData {
     public get sites(): Site[] {
         return this._sites;
     }
@@ -165,9 +152,8 @@ class UserData implements IUserData {
     static download() {
         let userData: UserData = UserData.retrieve();
         //@todo encrypt this exportData
-        polyglot.extend(lang);
 
-        if (confirm(`${polyglot.t("DOWNLOAD_DATA")}.`)) {
+        if (confirm(`${textstrings.DOWNLOAD_DATA}.`)) {
             let data = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(userData))}`;
             let downloadSitesLink = document.createElement('a');
             downloadSitesLink.href = `data:${data}`;
@@ -175,13 +161,6 @@ class UserData implements IUserData {
             downloadSitesLink.click();
             console.log(`You have downloaded the userdata containing your user-id's but not your passwords.`)
         }
-    }
-
-    /**
-     * This function is changing language
-     */
-    static changeLanguage() {
-        lang = fr;
     }
 
     /**
