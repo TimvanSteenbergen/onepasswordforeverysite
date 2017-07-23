@@ -18,10 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
         OPFES_WorkWithUserData(userData);
     }
 
-    function changeLanguage(){
-        alert('Another language');
-    }
-
     function toggleChangability() {
         // showTheLocallyStoredData(userData);
         let elementId = this.id.substr(0, this.id.length - 6);
