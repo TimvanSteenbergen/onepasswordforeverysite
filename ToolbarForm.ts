@@ -18,19 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
         OPFES_WorkWithUserData(userData);
     }
 
-    function toggleChangability() {
-        // showTheLocallyStoredData(userData);
-        let elementId = this.id.substr(0, this.id.length - 6);
-        let elementToToggle = document.getElementById(elementId);
-        if (elementToToggle.hasAttribute('disabled')) {
-            elementToToggle.removeAttribute('disabled');
-            elementToToggle.focus();
-        } else {
-            elementToToggle.setAttribute("disabled", "disabled");
-            document.getElementById('#OPFES_InputAppPassword').focus();
-        }
-    }
-
     /**
      * This function checks the characters input by the user as one of the AllowedSpecialCharacters.
      */
@@ -45,30 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
-    (<HTMLInputElement>document.getElementById('OPFES_InputDomainToggle')).addEventListener('click', function () {
-        // showTheLocallyStoredData(userData);
-        toggleChangability.call(this);
-    });
-    (<HTMLInputElement>document.getElementById('OPFES_InputUserIdToggle')).addEventListener('click', function () {
-        toggleChangability.call(this);
-    });
-    (<HTMLInputElement>document.getElementById('OPFES_InputSaltToggle')).addEventListener('click', function () {
-        toggleChangability.call(this);
-    });
-    (<HTMLSelectElement>document.getElementById('OPFES_SelectSequenceNrToggle')).addEventListener('click', function () {
-        toggleChangability.call(this);
-    });
-    (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdCharsToggle')).addEventListener('click', function () {
-        toggleChangability.call(this);
-    });
     (<HTMLInputElement>document.getElementById('OPFES_InputAllowedSpecialCharacters')).addEventListener('keyup', function () {
         inputValidationForAllowedSpecialCharacters.call(this);
-    });
-    (<HTMLInputElement>document.getElementById('OPFES_InputAllowedSpecialCharactersToggle')).addEventListener('click', function () {
-        toggleChangability.call(this);
-    });
-    (<HTMLInputElement>document.getElementById('OPFES_InputRemarkToggle')).addEventListener('click', function () {
-        toggleChangability.call(this);
     });
     (<HTMLInputElement>document.getElementById('OPFES_InputAppPasswordShowHide')).addEventListener('click', function () {
         let elementId = this.id.substr(0, this.id.length - 8);
@@ -143,28 +108,21 @@ let OPFES_WorkWithUserData = function (userData: UserData) {
                 for (let site of sites) {
                     if (site.getDomain() == domain) {
                         //Set the values of the other input-fields on the popup-screen
-                        document.getElementById('OPFES_InputDomain').setAttribute('disabled', "disabled");
                         if (site.getUserId() != "") {
                             document.getElementById('OPFES_InputUserId').setAttribute('value', site.getUserId());
-                            document.getElementById('OPFES_InputUserId').setAttribute('disabled', "disabled");
                         }
                         if (site.getSalt() != "") {
                             document.getElementById('OPFES_InputSalt').setAttribute('value', site.getSalt());
-                            document.getElementById('OPFES_InputSalt').setAttribute('disabled', "disabled");
                         }
                         (<HTMLSelectElement>document.getElementById('OPFES_SelectMaxPwdChars')).selectedIndex = site.getMaxPwdChars() - 1;
-                        document.getElementById('OPFES_SelectMaxPwdChars').setAttribute('disabled', "disabled");
                         if (site.getSequenceNr() != 0) {
                             (<HTMLSelectElement>document.getElementById('OPFES_SelectSequenceNr')).selectedIndex = site.getSequenceNr() - 1;
-                            document.getElementById('OPFES_SelectSequenceNr').setAttribute('disabled', "disabled");
                         }
                         if (site.getRemark() != "") {
                             document.getElementById('OPFES_InputRemark').setAttribute('value', site.getRemark());
-                            document.getElementById('OPFES_InputRemark').setAttribute('disabled', "disabled");
                         }
                         if (site.getAllowedSpecialCharacters() != "") {
                             document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('value', (site.getAllowedSpecialCharacters()));
-                            document.getElementById('OPFES_InputAllowedSpecialCharacters').setAttribute('disabled', "disabled");
                         }
                     }
                 }
