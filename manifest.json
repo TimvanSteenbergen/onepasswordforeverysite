@@ -20,6 +20,7 @@
         "build/SHA512.js",
         "build/ToolbarForm.js",
         "build/UserData.js",
+        "build/ToolbarForm.js",
         "build/WebPageWithPassword/AbstractForm.js",
         "build/WebPageWithPassword/Factory.js",
         "build/WebPageWithPassword/Login.js",

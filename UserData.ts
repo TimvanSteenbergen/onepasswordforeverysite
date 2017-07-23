@@ -6,9 +6,33 @@
  * UserData can be im- or exported to a local file, default named 'yourUserData.json'
  */
 
-// let polyglot = new Polyglot();
-import {textstrings} from "textstrings";
-// polyglot.extend(textstrings);
+let polyglot = new Polyglot();
+// import {en} from "./translations/en";
+// import {fr} from "./translations/fr";
+let en = {
+    "OPFES_TITLE": "OPFES - One password for every site",
+    "COPY_FILE": "Copy File",
+    "DATA": "Data",
+    "OVERWRITE_CURRENT_USERDATA": "This will overwrite your current userdata.",
+    "LOADING_YOUR_DATAFILE": "Loading your datafile. Event's target is: %{file}",
+    "DOWNLOAD_DATA": "This will copy the sites and their related properties to a file for you to store on your local drive"
+};
+let fr = {
+    "OPFES_TITLE": "OPFES - Un mot de passe pour chaque site",
+    "COPY_FILE": "Copier un fichier",
+    "DATA": "Les données",
+    "OVERWRITE_CURRENT_USERDATA": "Cela remplacera votre data actuelle.",
+    "DOWNLOAD_DATA": "Cela copiera les sites et leurs propriétés connexes dans un fichier que vous devez stocker sur votre lecteur local"
+};
+let textstrings = {
+    "OPFES_TITLE": "OPFES - Een wachtwoord voor iedere website",
+    "COPY_FILE": "Kopieer het Bestand",
+    "DATA": "Data",
+    "OVERWRITE_CURRENT_USERDATA": "Dit overschrijft jouw userdata.",
+    "DOWNLOAD_DATA": "Hiermee maak je een kopie naar je pc/telefoon/laptop met daarin al jouw userdata, waaronder jouw userid's en websites.",
+};
+polyglot.extend(textstrings);
+// let lang:object;
 
 interface IUserData {
     sites: Site[],
@@ -18,7 +42,7 @@ interface IUserData {
 
 const userDataDefaultFileName: string = "yourUserData.json";
 
-export class UserData implements IUserData {
+class UserData implements IUserData {
     public get sites(): Site[] {
         return this._sites;
     }
@@ -105,8 +129,8 @@ export class UserData implements IUserData {
     static upload(file: File) {
         let reader = new FileReader();
         reader.onload = function (e) {
-            if(!window.confirm(`This will overwrite your current userdata.`)){return}//Popup is part of a bugfix. See https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/51
-            console.log(`Loading your datafile. Event's target is: ${e.target}`);
+            if(!window.confirm(`${polyglot.t("OVERWRITE_CURRENT_USERDATA")}`)){return}//Popup is part of a bugfix. See https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/51
+            console.log(`${polyglot.t("LOADING_YOUR_DATAFILE", {file: e.target})}`);
             // todo cast e.target to its type: let data = (<FileReader>e.target).result;
             let dataString: string = (<FileReader>e.target).result;
             let userData: UserData = JSON.parse(dataString, UserData.reviver);
@@ -153,7 +177,7 @@ export class UserData implements IUserData {
         let userData: UserData = UserData.retrieve();
         //@todo encrypt this exportData
 
-        if (confirm(`${textstrings.DOWNLOAD_DATA}.`)) {
+        if (confirm(`${polyglot.t("DOWNLOAD_DATA")}.`)) {
             let data = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(userData))}`;
             let downloadSitesLink = document.createElement('a');
             downloadSitesLink.href = `data:${data}`;

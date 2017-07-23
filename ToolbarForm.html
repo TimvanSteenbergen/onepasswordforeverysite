@@ -6,14 +6,15 @@
     <link type="text/css" rel="stylesheet" href="css/ToolbarForm.css"/>
     <script src="build/ToolbarForm.js"></script>
     <script src="SHA512.js"></script>
-    <script src="build/CustomerBrowser.js"></script>
-    <script src="build/FileSaver.js"></script>
-    <script src="build/UserData.js"></script>
-    <script src="build/Site.js"></script>
-    <script src="build/SiteService.js"></script>
 </head>
 <body style="background-color: lightgray;">
-<h1>OPFES - One password for every site</h1>
+<h1>OPFES - One password for every site
+    <select id="OPFES_Language">
+        <option value="English">English</option>
+        <option value="Francais">Francais</option>
+        <option value="Chinese">Chinese</option>
+    </select>
+</h1>
 <table id="locallyStoredUserData" border="1px">
     <thead>
     <tr>
@@ -34,7 +35,7 @@
     <tr>
         <td><input id="OPFES_InputDomain" value="" placeholder="domain name" size="20"/>
             <input id="OPFES_InputDomainToggle" type="button" value="Change"
-                   title="Need to change the domain name you need for this site? This button enables you to do so."/>
+                   title=`${polyglot.t("")Need to change the domain name you need for this site? This button enables you to do so.`/>
         </td>
         <td><input id="OPFES_InputUserId" value="" placeholder="user-id" size="16"/>
             <input id="OPFES_InputUserIdToggle" type="button" value="Change"
@@ -228,6 +229,7 @@
 
     <p>As you can see: no password is stored anywhere.</p>
 
+
     <p><span id="OPFES_localStoredUserData"></span>
         <span id="OPFES_ShowAllTheLocallyStoredData"
               style="display: none; background-color: white">... and some more ... click to show</span></p>
@@ -261,12 +263,12 @@
 
 <h2>Read more...</h2>
 For more detailed information about One-password-for-every-site app, visit <a
-        href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/blob/master/README.md">GitHub</a>.
+        href="https://github.com/TimvanSteenbergen/OnePasswordForEverySite/blob/master/README.md">GitHub</a>.
 
 <h2>100% Open source</h2>
 <p>Extra security because this code is <a
-        href="https://github.com/TimvanSteenbergen/onepasswordforeverysite/blob/master/README.md"
-        title="The Opfes-app is 'Open source code', meaning it is available to see and modify for anyone. The code is viewable on Github.">fully OpenSource</a>. This has several security advantages:
+        href="https://github.com/TimvanSteenbergen/OnePasswordForEverySite/master/README.md"
+        title="The Open source code available on Git">fully OpenSource</a>. This has several security advantages:
 <ul>
     <li>You can follow your password along every step of the way.</li>
     <li>Every single line of code is visible to you. No hidden functions. No surprises.</li>
@@ -282,6 +284,11 @@ For more detailed information about One-password-for-every-site app, visit <a
     find out what your-only-password is. Either by brute forcing or via rainbow-tables.<br/>
     The salt is unknown to the site-you-re-trying-to-login-to and thus makes that impossible.</p>
 
-<!--<script src="node_modules/node-polyglot/build/polyglot.min.js"></script>-->
+<script src="node_modules/node-polyglot/build/polyglot.min.js"></script>
+<script src="build/CustomerBrowser.js"></script>
+<script src="build/FileSaver.js"></script>
+<script src="build/UserData.js"></script>
+<script src="build/Site.js"></script>
+<script src="build/SiteService.js"></script>
 </body>
 </html>
