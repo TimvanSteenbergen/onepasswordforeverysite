@@ -52,9 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     document.getElementById("OPFES_CopyDiskToLocalStorageButton").addEventListener("change", function (event) {
         event.preventDefault();
-        alert('ghjgjhjghjghjgh');
         UserData.upload((<HTMLInputElement>this).files[0]);
-        alert('asfasfasdf');
     }, false);
 
     /**
