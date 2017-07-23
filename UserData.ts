@@ -14,6 +14,7 @@ let en = {
     "COPY_FILE": "Copy File",
     "DATA": "Data",
     "OVERWRITE_CURRENT_USERDATA": "This will overwrite your current userdata.",
+    "LOADING_YOUR_DATAFILE": "Loading your datafile. Event's target is: %{file}",
     "DOWNLOAD_DATA": "This will copy the sites and their related properties to a file for you to store on your local drive"
 };
 let fr = {
@@ -129,7 +130,7 @@ class UserData implements IUserData {
         let reader = new FileReader();
         reader.onload = function (e) {
             if(!window.confirm(`${polyglot.t("OVERWRITE_CURRENT_USERDATA")}`)){return}//Popup is part of a bugfix. See https://github.com/TimvanSteenbergen/onepasswordforeverysite/issues/51
-            console.log(`Loading your datafile. Event's target is: ${e.target}`);
+            console.log(`${polyglot.t("LOADING_YOUR_DATAFILE", {file: e.target})}`);
             // todo cast e.target to its type: let data = (<FileReader>e.target).result;
             let dataString: string = (<FileReader>e.target).result;
             let userData: UserData = JSON.parse(dataString, UserData.reviver);
