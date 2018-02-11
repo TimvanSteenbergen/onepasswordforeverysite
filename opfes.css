@@ -1,0 +1,31 @@
+#gettingStarted,
+#theSafestPasswordHelper,
+#faqs,
+#manual,
+#passwordOnline,
+#demoLogin,
+#howDoesItWork{
+    width: 400px;
+    height: 640px;
+}
+body{
+    background-color: antiquewhite;
+}
+body > div{
+    background-color: beige;
+    margin: 4px;
+    padding: 6px;
+    float: left;
+}
+body > div h1{
+    background-color: lightgoldenrodyellow;
+    margin-top: 0;
+}
+body > div#header{
+}
+body > div#privacyPolicy{
+}
+body > div#privacyPolicy, body > div#header{
+    width: 99%;
+    background-color: burlywood;
+}
