@@ -1,21 +1,27 @@
-### Dreamweaver template
-# DW Dreamweaver added files
-_notes
-_compareTemp
-configs/
-dwsync.xml
-dw_php_codehinting.config
-*.mno
-### CVS template
-/CVS/*
-**/CVS/*
-.cvsignore
-*/.cvsignore
+# Created by .ignore support plugin (hsz.mobi)
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
-.idea/*
-.idea/*/*
+
+# User-specific stuff:
+.idea/workspace.xml
+.idea/tasks.xml
+
+# Sensitive or high-churn files:
+.idea/dataSources/
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
+
+# Gradle:
+.idea/gradle.xml
+.idea/libraries
+
+# Mongo Explorer plugin:
+.idea/mongoSettings.xml
 
 ## File-based project format:
 *.iws
@@ -36,125 +42,6 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-### NetBeans template
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-.nb-gradle/
-### JDeveloper template
-# default application storage directory used by the IDE Performance Cache feature
-.data/
 
-# used for ADF styles caching
-temp/
-
-# default output directories
-classes/
-deploy/
-javadoc/
-
-# lock file, a part of Oracle Credential Store Framework
-cwallet.sso.lck### VisualStudioCode template
-.vscode
-
-### Xcode template
-# Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
-
-## Build generated
-#build/ Already defined in # NetBeans template
-DerivedData/
-
-## Various settings
-*.pbxuser
-!default.pbxuser
-*.mode1v3
-!default.mode1v3
-*.mode2v3
-!default.mode2v3
-*.perspectivev3
-!default.perspectivev3
-xcuserdata/
-
-## Other
-*.moved-aside
-*.xccheckout
-*.xcscmblueprint
-### Eclipse template
-
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
-.recommenders
-
-# Eclipse Core
-.project
-
-# External tool builders
-.externalToolBuilders/
-
-# Locally stored "Eclipse launch configurations"
-*.launch
-
-# PyDev specific (Python IDE for Eclipse)
-*.pydevproject
-
-# CDT-specific (C/C++ Development Tooling)
-.cproject
-
-# JDT-specific (Eclipse Java Development Tools)
-.classpath
-
-# Java annotation processor (APT)
-.factorypath
-
-# PDT-specific (PHP Development Tools)
-.buildpath
-
-# sbteclipse plugin
-.target
-
-# Tern plugin
-.tern-project
-
-# TeXlipse plugin
-.texlipse
-
-# STS (Spring Tool Suite)
-.springBeans
-
-# Code Recommenders
-.recommenders/
-### NotepadPP template
-# Notepad++ backups #
-#*.bak Already defined in metadata
-
-# Created by .ignore support plugin (hsz.mobi)
-/greeter/
-/greeter/*
-/set_page_color/
-/set_page_color/popup.html
-/set_page_color/popup.js
-/set_page_color/manifest.json
-/set_page_color/.idea/
-/set_page_color/icon.png
-/event_page/manifest.json
-/event_page/
-/event_page/sample.js
+.gitignore
 .idea/
-*.js.map
-demodata/myUserData.json
-demodata/myUserDataInclusive.json
-icons/opfes_19.pdn
-tests/*.js.map
